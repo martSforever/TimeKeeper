@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TimeKeeper</string>
+    <string name="btn_login_text">login</string>
+</resources>

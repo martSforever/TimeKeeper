@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/register_bg"
+    android:orientation="horizontal"
+    tools:context="com.martsforever.owa.timekeeper.register.EmailRegisterActivity">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:baselineAligned="false"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            style="@style/bg_register_item"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/bg_register_item_icon"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_user" />
+
+            <EditText
+                android:id="@+id/register_username_edit"
+                style="@style/bg_register_item_edit"
+                android:layout_height="match_parent"
+                android:hint="username" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/bg_register_item"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/bg_register_item_icon"
+                android:padding="18dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_email" />
+
+            <EditText
+                android:id="@+id/register_email_edit"
+                style="@style/bg_register_item_edit"
+                android:layout_height="match_parent"
+                android:hint="email" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/bg_register_item"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/bg_register_item_icon"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_password" />
+
+            <EditText
+                android:inputType="textPassword"
+                android:id="@+id/register_password_edit"
+                style="@style/bg_register_item_edit"
+                android:layout_height="match_parent"
+                android:hint="password" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/bg_register_item"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/bg_register_item_icon"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_password_repeat" />
+
+            <EditText
+                android:inputType="textPassword"
+                android:id="@+id/register_repeat_password_edit"
+                style="@style/bg_register_item_edit"
+                android:layout_height="match_parent"
+                android:hint="repeat password" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
+
+        <Button
+            android:id="@+id/register_submit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/bg_login_btn"
+            android:text="submit"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+</LinearLayout>

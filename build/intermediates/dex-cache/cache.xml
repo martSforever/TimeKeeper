@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_a02cfb599030c17d9919eede603b0b1901dabddc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-24.2.1_e2e8eae6e15898c5145c9a7ca162a9f2d661a470.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\rxjava-1.1.6.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ac615240b277e7fd3950d7b35f73b733f310cede">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\rxjava-1.1.6_e4cdfd937f052979f9e8b558619db5d6ce400fb7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_cb4249d4942690c3a51630499d39f343348c6307.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e47f10299673ab68f24c595f96b18086cc9a8384">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\cn.bmob.android-bmob-sdk-3.5.0_123e88478ed4337764b3bf0599de97304f9e4e1c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-24.2.1_eb8526ab20bfe6813002039725c734a64aa742d3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_6d7d623cf18ede2687f791f283ea73e9ea676a40.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="36de222aff3a116fc7cd2c91a011219a5aa5347e">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_22be9ae736866f0b3ef5e6e3dc1c5faa9fa38934.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\okhttp-3.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e7cb33d9f82d3b8521c6594b180f4dd9fc6d49f2">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\okhttp-3.3.1_3c2f38470b4140918f607637724b27503e2b00f5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-24.2.1_4f19b4d18a5dbc66f04a4467aad1f70688dafb01.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\gson-2.6.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="dd625f5e7bba8235782b5dc4244c3fd26953190f">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\gson-2.6.2_0608e86e7efb3903c3654d0c94ed4c98640dfc70.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\.gradle\caches\modules-2\files-2.1\cn.bmob.android\bmob-sms\1.0.1\df9db564e2842696a68deca39b0186aebf3dc07c\bmob-sms-1.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="df9db564e2842696a68deca39b0186aebf3dc07c">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\bmob-sms-1.0.1_7ccea9c6547a4d1a6fe206f08187758e8abedfda.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\BmobSDK_3.5.0_20160630.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8eb5c605a02f792e326c5ac8e4feb2c18dd171ad">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\BmobSDK_3.5.0_20160630_aa98b73e47a8136465accb78541248505bba7f46.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.2.1_e7d0fc41646db850085b986c06d48d30568616a7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-24.2.1_3fa89a1a40a20ddc3fc296e8766a189f2b9651d0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_6dfedc13d1de67131f6aa9d9af29379a9bd27799.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\okio-1.7.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bbeca71da43c8f4bc9ceedec002060f53437ad26">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\okio-1.7.0_561917797b039632fa5ad11641997a428283c968.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.2.1_e81e7afc3a7e8cb9acfed0a657c86591e11663c5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.2.1_da74f7fe6821b0f6321886be0fc6c8d622308e9d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.2.1_069204df02da2e07ea183cdbc0ef941da3a5f103.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_1a48190d8c39d6276ef0d5e7b972d553f297ebd1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="88ae147bb68b24d745d2d377d5fda5f1336594a3">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\instant-run_74826e509bdb4751573a034bf9a2c09c5cee7303.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\rxandroid-1.2.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="19beef6debb6a22febc28777464c71bfccbafe3d">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\rxandroid-1.2.0_c0a4f80e9aec2a6f215d53bedd42f1505423da50.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_21acee1cda54efac9a7dde8c46b0b7d34e51f88d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-24.2.1_16b064913ec3a45ad47730e03a78aa0bdc9e9c9e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.baoyz.swipemenulistview\library\1.3.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8ec8378e8d7aa3104f60823e6350f2728d3609ba">
+        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.baoyz.swipemenulistview-library-1.3.0_731a8d3d7329bcee031c1a739666512c4ac8afc7.jar" />
+    </item>
+
+</items>
