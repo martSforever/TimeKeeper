@@ -10,7 +10,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
-import com.martsforever.owa.timekeeper.main.friend.SwipListUtil;
+import com.martsforever.owa.timekeeper.main.friend.FriendMenuCreater;
 import com.martsforever.owa.timekeeper.main.friend.FriendAdapter;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         friendAdapter = new FriendAdapter(friends, this);
         friendListView = (SwipeMenuListView) friendsView.findViewById(R.id.friend_swip_list_view);
         friendListView.setAdapter(friendAdapter);
-        friendListView.setMenuCreator(SwipListUtil.getFriendsMenuCreater(this));
+        friendListView.setMenuCreator(FriendMenuCreater.getFriendsMenuCreater(this));
         friendListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
