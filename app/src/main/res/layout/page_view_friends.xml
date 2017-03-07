@@ -9,37 +9,39 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
             android:background="@drawable/bg_friend_search_edit"
-            android:layout_width="0dp"
             android:ellipsize="start"
-            android:layout_height="match_parent"
-            android:maxLines="1"
-            android:layout_weight="8" />
+            android:maxLines="1" />
 
         <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/bg_friend_search_btn"
-            android:src="@drawable/icon_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:padding="5dp"
+            android:src="@drawable/icon_search" />
 
         <ImageView
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/icon_add_friend"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:src="@drawable/icon_add" />
     </LinearLayout>
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/friend_swip_list_view"
         android:layout_width="match_parent"
-        android:dividerHeight="5dp"
-        android:divider="#33ffffff"
         android:layout_height="0dp"
-        android:layout_weight="9" />
+        android:layout_weight="9"
+        android:divider="#33ffffff"
+        android:dividerHeight="5dp" />
 </LinearLayout>

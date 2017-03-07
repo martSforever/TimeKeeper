@@ -15,8 +15,10 @@ import com.martsforever.owa.timekeeper.register.SelectRegisterActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
+import cn.bmob.v3.listener.SaveListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -76,11 +78,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     private void login() {
 
-        Person.loginByAccount(emailOrMobileEdit.getText().toString().trim(), passwordEdit.getText().toString().trim(), new LogInListener<Person>() {
+        String account = emailOrMobileEdit.getText().toString().trim();
+        System.out.println(account);
+        String password = passwordEdit.getText().toString().trim();
+        System.out.println(password);
+
+        Person.loginByAccount(account, password, new LogInListener<Person>() {
             @Override
             public void done(Person person, BmobException e) {
-                if (person != null) {
+                if (e == null && person != null) {
                     ShowMessageUtil.tosatFast("login success!", LoginActivity.this);
+                    System.out.println(person.getUsername());
                 } else {
                     ShowMessageUtil.tosatSlow("login failure! " + e.getMessage(), LoginActivity.this);
                 }

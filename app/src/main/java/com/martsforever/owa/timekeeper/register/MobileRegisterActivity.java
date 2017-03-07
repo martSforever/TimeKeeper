@@ -53,8 +53,6 @@ public class MobileRegisterActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_mobile);
         initView();
-        initData();
-
     }
 
     private void initView() {
@@ -67,11 +65,6 @@ public class MobileRegisterActivity extends AppCompatActivity implements View.On
         submitBtn = (Button) findViewById(R.id.register_submit_btn);
         getVertificationCodeBtn.setOnClickListener(this);
         submitBtn.setOnClickListener(this);
-    }
-
-    private void initData() {
-        BmobUtil.bmobInitialize(this);
-        BmobUtil.bmobSmsInitialize(this);
     }
 
     @Override

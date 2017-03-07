@@ -45,12 +45,12 @@ public class FriendAdapter extends BaseSwipListAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        if (convertView == null){
-            convertView = inflater.inflate(R.layout.item_friend_swip_list,null);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_friend_swip_list, null);
             viewHolder = new ViewHolder();
             viewHolder.usernameText = (TextView) convertView.findViewById(R.id.item_friend_username_text);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -59,22 +59,14 @@ public class FriendAdapter extends BaseSwipListAdapter {
         viewHolder.usernameText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(person.getUsername()+" had been clicked");
+                System.out.println(person.getUsername() + " had been clicked");
             }
         });
 
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         TextView usernameText;
-    }
-
-    @Override
-    public boolean getSwipEnableByPosition(int position) {
-        if(position % 2 == 0){
-            return false;
-        }
-        return true;
     }
 }

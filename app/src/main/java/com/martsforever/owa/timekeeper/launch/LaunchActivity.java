@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.bmob.BmobUtil;
 import com.martsforever.owa.timekeeper.login.LoginActivity;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 
@@ -28,8 +29,13 @@ public class LaunchActivity extends AppCompatActivity implements ViewPager.OnPag
         setContentView(R.layout.activity_launch);
         initView();
         initData();
-    }
+        initBmob();
 
+    }
+    private void initBmob() {
+        BmobUtil.bmobInitialize(this);
+        BmobUtil.bmobSmsInitialize(this);
+    }
     private void initView() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view1 = inflater.inflate(R.layout.launch_view_schedule, null);
@@ -51,7 +57,6 @@ public class LaunchActivity extends AppCompatActivity implements ViewPager.OnPag
         ViewPagerAdapter vpAdapter = new ViewPagerAdapter(viwePagerItems);
         viewPager.setOnPageChangeListener(this);
         viewPager.setAdapter(vpAdapter);
-
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

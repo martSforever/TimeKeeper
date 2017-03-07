@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.bmob.BmobUtil;
 
 public class RetrivePasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
