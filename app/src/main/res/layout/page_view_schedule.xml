@@ -7,6 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:padding="5dp"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
@@ -16,32 +17,61 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="18sp"
-            android:text="Past" />
+            android:textSize="18sp" />
 
         <TextView
-            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:text="schedule"
+            android:textColor="#fff"
+            android:textSize="24sp" />
+
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#33ffffff"
+            android:padding="5dp"
             android:gravity="center"
-            android:text="Present" />
+            android:src="@drawable/schedule_add"
+            android:textSize="18sp" />
+    </LinearLayout>
 
-        <TextView
-            android:textSize="18sp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="@drawable/bg_friend_search_edit"
+            android:ellipsize="start"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:hint="Search"
+            android:maxLines="1"
+            android:textColorHint="#fff" />
+
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Future" />
+            android:background="@drawable/bg_friend_search_btn"
+            android:padding="6dp"
+            android:src="@drawable/schedule_search" />
+
     </LinearLayout>
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/todo_swip_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_weight="11"
         android:divider="#00ffffff"
         android:dividerHeight="5dp" />
 </LinearLayout>

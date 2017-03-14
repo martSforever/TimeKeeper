@@ -17,10 +17,12 @@ import com.martsforever.owa.timekeeper.main.friend.FriendMenuCreater;
 import com.martsforever.owa.timekeeper.main.friend.FriendAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
+import com.martsforever.owa.timekeeper.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -185,17 +187,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<AVObject> getTodosData() {
 
         List<AVObject> todos = new ArrayList<>();
+        Random random = new Random();
 
         for (int i = 0; i < 15; i++) {
             AVObject todo = new AVObject(Todo.TABLE_TODO);
 
             todo.put(Todo.TITLE,"title:" + (i + 1));
-            todo.put(Todo.START_TIME,new Date());
-            todo.put(Todo.END_TIME,new Date());
-            todo.put(Todo.STATE,i);
+            todo.put(Todo.DESCRIPTION,"this is description:"+(i+1));
+            todo.put(Todo.END_TIME, DateUtil.getRandomDate());
+//            todo.put(Todo.END_TIME, new Date());
+            todo.put(Todo.STATE, random.nextInt(4)+1);
+            todo.put(Todo.LEVEL,random.nextInt(4)+1);
             todos.add(todo);
         }
-
         return todos;
     }
 }
