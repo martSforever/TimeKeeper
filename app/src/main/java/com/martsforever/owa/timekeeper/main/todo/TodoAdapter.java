@@ -1,27 +1,18 @@
 package com.martsforever.owa.timekeeper.main.todo;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.avos.avoscloud.AVObject;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.main.common.BaseSwipListAdapter;
-import com.martsforever.owa.timekeeper.main.friend.FriendAdapter;
+import com.martsforever.owa.timekeeper.util.DateUtil;
 
 import java.util.List;
-
-import cn.bmob.v3.datatype.BmobDate;
 
 /**
  * Created by owa on 2017/1/24.
@@ -29,10 +20,10 @@ import cn.bmob.v3.datatype.BmobDate;
 
 public class TodoAdapter extends BaseSwipListAdapter {
 
-    List<Todo> todos;
+    List<AVObject> todos;
     LayoutInflater layoutInflater;
 
-    public TodoAdapter(Context context, List<Todo> todos) {
+    public TodoAdapter(Context context, List<AVObject> todos) {
         this.todos = todos;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -66,10 +57,10 @@ public class TodoAdapter extends BaseSwipListAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        final Todo todo = todos.get(position);
-        viewHolder.titleText.setText(todo.getTitle());
-        viewHolder.timeText.setText(todo.getStartTime().getDate() + " to " + todo.getEndTime().getDate());
-        viewHolder.stateText.setText(todo.getState()+"");
+        final AVObject todo = todos.get(position);
+        viewHolder.titleText.setText(todo.getString(Todo.TITLE));
+        viewHolder.timeText.setText(DateUtil.dateToString(todo.getDate(Todo.START_TIME),DateUtil.SIMPLE_DATE) + " to " + DateUtil.dateToString(todo.getDate(Todo.END_TIME),DateUtil.SIMPLE_DATE));
+        viewHolder.stateText.setText(todo.getInt(Todo.STATE)+"");
 
         return convertView;
     }

@@ -1,14 +1,13 @@
 package com.martsforever.owa.timekeeper.main.friend;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVUser;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.main.common.BaseSwipListAdapter;
 
 import java.util.List;
@@ -19,10 +18,10 @@ import java.util.List;
 
 public class FriendAdapter extends BaseSwipListAdapter {
 
-    List<Person> persons;
+    List<AVUser> persons;
     LayoutInflater inflater;
 
-    public FriendAdapter(List<Person> persons, Context context) {
+    public FriendAdapter(List<AVUser> persons, Context context) {
         this.persons = persons;
         inflater = LayoutInflater.from(context);
     }
@@ -54,7 +53,7 @@ public class FriendAdapter extends BaseSwipListAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        final Person person = persons.get(position);
+        final AVUser person = persons.get(position);
         viewHolder.usernameText.setText(person.getUsername());
         viewHolder.usernameText.setOnClickListener(new View.OnClickListener() {
             @Override

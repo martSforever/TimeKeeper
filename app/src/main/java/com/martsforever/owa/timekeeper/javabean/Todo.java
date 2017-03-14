@@ -1,84 +1,30 @@
 package com.martsforever.owa.timekeeper.javabean;
 
-import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.datatype.BmobDate;
 
 /**
  * Created by owa on 2017/1/11.
  */
 
-public class Todo extends BmobObject {
+public class Todo{
 
-    private BmobDate startTime;
-    private BmobDate endTime;
-    private String title;
-    private Integer state;
-    private String description;
-    private Integer level;
-    private String place;
-    private String peoples;
+    /*表名*/
+    public static final String TABLE_TODO = "TODO";
 
-    public String getDescription() {
-        return description;
-    }
+    /*开始时间*/
+    public static final String START_TIME = "startTime";
+    /*结束时间*/
+    public static final String END_TIME = "endTime";
+    /*标题*/
+    public static final String TITLE = "title";
+    /*完成状态*/
+    public static final String STATE = "state";
+    /*描述*/
+    public static final String DESCRIPTION = "description";
+    /*重要等级*/
+    public static final String LEVEL = "level";
+    /*执行地点*/
+    public static final String PLACE = "place";
+    /*相关人员*/
+    public static final String PEOPLES = "peoples";
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BmobDate getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(BmobDate endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public String getPeoples() {
-        return peoples;
-    }
-
-    public void setPeoples(String peoples) {
-        this.peoples = peoples;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public BmobDate getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(BmobDate startTime) {
-        this.startTime = startTime;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

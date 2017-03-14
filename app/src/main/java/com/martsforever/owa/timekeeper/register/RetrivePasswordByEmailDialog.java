@@ -4,21 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
-
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by owa on 2017/1/14.
@@ -64,10 +61,9 @@ public class RetrivePasswordByEmailDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 final String email = emailEdit.getText().toString().trim();
-                Person.resetPasswordByEmail(email, new UpdateListener() {
-
+                AVUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
                     @Override
-                    public void done(BmobException e) {
+                    public void done(AVException e) {
                         if (e == null) {
                             ShowMessageUtil.tosatSlow("reset password request is successful,please go to the " + email + " mailbox to reset password", activity);
                         } else {

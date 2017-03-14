@@ -8,17 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.register.RetrivePasswordActivity;
 import com.martsforever.owa.timekeeper.register.SelectRegisterActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
-
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.LogInListener;
-import cn.bmob.v3.listener.SaveListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,25 +72,64 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * login by email
+     * login by username or mobile
      */
     private void login() {
 
         String account = emailOrMobileEdit.getText().toString().trim();
-        System.out.println(account);
         String password = passwordEdit.getText().toString().trim();
-        System.out.println(password);
+        System.out.println("account=" + account + ", password=" + password);
 
-        Person.loginByAccount(account, password, new LogInListener<Person>() {
+
+        /*if the character length of the account is greater than 10, this is mobile login process, otherwise this is the username login process*/
+        if (account.length() > 10) loginByMobile(account, password);
+        else loginByUsername(account, password);
+    }
+
+
+    /**
+     * login by username and password
+     *
+     * @param username
+     * @param password
+     */
+    private void loginByUsername(String username, String password) {
+        AVUser.logInInBackground(username, password, new LogInCallback<AVUser>() {
             @Override
-            public void done(Person person, BmobException e) {
-                if (e == null && person != null) {
-                    ShowMessageUtil.tosatFast("login success!", LoginActivity.this);
-                    System.out.println(person.getUsername());
-                } else {
-                    ShowMessageUtil.tosatSlow("login failure! " + e.getMessage(), LoginActivity.this);
-                }
+            public void done(AVUser avUser, AVException e) {
+                loginProcessing(avUser, e);
             }
         });
     }
+
+    /**
+     * login by mobile and password
+     *
+     * @param mobile
+     * @param password
+     */
+    private void loginByMobile(String mobile, String password) {
+        AVUser.loginByMobilePhoneNumberInBackground(mobile, password, new LogInCallback<AVUser>() {
+            @Override
+            public void done(AVUser avUser, AVException e) {
+                loginProcessing(avUser, e);
+            }
+        });
+    }
+
+    /**
+     * handle login result
+     *
+     * @param avUser
+     * @param e
+     */
+    private void loginProcessing(AVUser avUser, AVException e) {
+        if (e == null) {
+            ShowMessageUtil.tosatFast(avUser.getUsername() + " login success!", LoginActivity.this);
+            ActivityManager.entryMainActivity(this, MainActivity.class);
+        } else {
+            ShowMessageUtil.tosatSlow("login failure! " + e.getMessage(), LoginActivity.this);
+        }
+    }
+
 }

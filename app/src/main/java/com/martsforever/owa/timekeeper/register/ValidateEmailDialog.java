@@ -4,19 +4,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.RequestEmailVerifyCallback;
+import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.main.MainActivity;
@@ -24,11 +25,6 @@ import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by owa on 2017/1/13.
@@ -82,18 +78,18 @@ public class ValidateEmailDialog extends Dialog {
         positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BmobQuery<Person> query = new BmobQuery<Person>();
-                query.addWhereEqualTo("email", email);
-                query.findObjects(new FindListener<Person>() {
+                AVQuery<AVUser> query = new AVQuery<AVUser>(Person.TABLE_PERSON);
+                query.whereEqualTo(Person.EMAIL, email);
+                query.findInBackground(new FindCallback<AVUser>() {
                     @Override
-                    public void done(List<Person> list, BmobException e) {
+                    public void done(List<AVUser> list, AVException e) {
                         if (e == null) {
 //                            if the email is not registered
-                            if (!list.get(0).getEmailVerified()) {
+                            if (!list.get(0).getBoolean(Person.EMAIL_VERIFIED)) {
                                 msg.setText("Are you sure you have opened the verification link in your email?We haven't received any messages yet");
                             } else {
                                 ShowMessageUtil.tosatFast("verify pass!", activity);
-                                ActivityManager.entryMainActivity(activity,MainActivity.class);
+                                ActivityManager.entryMainActivity(activity, MainActivity.class);
                             }
                         } else {
                             ShowMessageUtil.tosatFast("fail to access data!" + e.getMessage(), activity);
@@ -109,9 +105,9 @@ public class ValidateEmailDialog extends Dialog {
         negativeBUtton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Person.requestEmailVerify(email, new UpdateListener() {
+                AVUser.requestEmailVerfiyInBackground(email, new RequestEmailVerifyCallback() {
                     @Override
-                    public void done(BmobException e) {
+                    public void done(AVException e) {
                         if (e == null) {
                             msg.setText("request email validation success!please go to " + email + " mailbox to active!");
                         } else {

@@ -6,16 +6,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.SignUpCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
 
 public class EmailRegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,23 +47,22 @@ public class EmailRegisterActivity extends AppCompatActivity implements View.OnC
             case R.id.register_submit_btn:
 
                 if (!validateInput()) break;
-//                check if it has been registered
-                BmobQuery<Person> query = new BmobQuery<Person>();
-                query.addWhereEqualTo("email", editEmail.getText().toString().trim());
-                query.findObjects(new FindListener<Person>() {
+                AVQuery<AVUser> query = new AVQuery<>(Person.TABLE_PERSON);
+                query.whereEqualTo(Person.EMAIL, editEmail.getText().toString().trim());
+                query.findInBackground(new FindCallback<AVUser>() {
                     @Override
-                    public void done(List<Person> list, BmobException e) {
+                    public void done(List<AVUser> list, AVException e) {
                         if (e == null) {
 //                            if the email is not registered
                             if (list.size() == 0) {
-                                register();
-                            } else if (!list.get(0).getEmailVerified()) {
+                                registerByEmail();
+                            } else if (!list.get(0).getBoolean(Person.EMAIL_VERIFIED)) {
                                 openValidateDialog();
-                            }else {
+                            } else {
                                 ShowMessageUtil.tosatFast("the email has been registered and verified!", EmailRegisterActivity.this);
                             }
                         } else {
-                            ShowMessageUtil.tosatFast("fail to access data!"+e.getMessage(), EmailRegisterActivity.this);
+                            ShowMessageUtil.tosatFast("fail to access data!" + e.getMessage(), EmailRegisterActivity.this);
                         }
                     }
                 });
@@ -73,21 +72,23 @@ public class EmailRegisterActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public void register() {
+    /**
+     * register by email process
+     */
+    private void registerByEmail() {
+
         String username = editUsername.getText().toString();
         String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
-        registerByEmail(username, email, password);
-    }
 
-    private void registerByEmail(String username, String email, String password) {
-        Person person = new Person();
+        AVUser person = new AVUser();
         person.setUsername(username);
         person.setEmail(email);
         person.setPassword(password);
-        person.signUp(new SaveListener<Person>() {
+
+        person.signUpInBackground(new SignUpCallback() {
             @Override
-            public void done(Person person, BmobException e) {
+            public void done(AVException e) {
                 if (e == null) {
                     ShowMessageUtil.tosatFast("register successful!", EmailRegisterActivity.this);
                     openValidateDialog();
@@ -98,6 +99,9 @@ public class EmailRegisterActivity extends AppCompatActivity implements View.OnC
         });
     }
 
+    /** verify user input data
+     * @return
+     */
     private boolean validateInput() {
         String username = editUsername.getText().toString().trim();
         String email = editEmail.getText().toString().trim();
@@ -110,10 +114,17 @@ public class EmailRegisterActivity extends AppCompatActivity implements View.OnC
             ShowMessageUtil.tosatSlow("every item can not be empty!", EmailRegisterActivity.this);
             return false;
         }
+        if (username.length()>10){
+            ShowMessageUtil.tosatSlow("the character length of the username can't be over than 10", EmailRegisterActivity.this);
+            return false;
+        }
         return true;
     }
 
-    private void openValidateDialog(){
-        final ValidateEmailDialog dialog = new ValidateEmailDialog(EmailRegisterActivity.this, EmailRegisterActivity.this,editEmail.getText().toString().trim());
+    /**
+     * open verify email dialog, send verify email
+     */
+    private void openValidateDialog() {
+        final ValidateEmailDialog dialog = new ValidateEmailDialog(EmailRegisterActivity.this, EmailRegisterActivity.this, editEmail.getText().toString().trim());
     }
 }

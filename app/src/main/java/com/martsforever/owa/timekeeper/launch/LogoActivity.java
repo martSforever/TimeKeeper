@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.bmob.BmobUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,8 +15,6 @@ public class LogoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
-        BmobUtil.bmobInitialize(this);
-        BmobUtil.bmobSmsInitialize(this);
         entryLaunchActivity(3000);
     }
 

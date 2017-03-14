@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
@@ -19,8 +21,6 @@ import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import cn.bmob.v3.datatype.BmobDate;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*friend interface element*/
-    List<Person> friends;
+    List<AVUser> friends;
     private FriendAdapter friendAdapter;
     private SwipeMenuListView friendListView;
 
     /*to do interface element*/
-    List<Todo> todos;
+    List<AVObject> todos;
     private TodoAdapter todoAdapter;
     private SwipeMenuListView todoListView;
 
@@ -155,13 +155,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*produce friends data to test*/
-    private List<Person> getFriendsData() {
-        List<Person> persons = new ArrayList<>();
-        Person p1 = new Person();
+    private List<AVUser> getFriendsData() {
+        List<AVUser> persons = new ArrayList<>();
+        AVUser p1 = new AVUser();
         p1.setUsername("alice");
-        Person p2 = new Person();
+        AVUser p2 = new AVUser();
         p2.setUsername("bob");
-        Person p3 = new Person();
+        AVUser p3 = new AVUser();
         p3.setUsername("marts");
         persons.add(p1);
         persons.add(p2);
@@ -182,16 +182,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*get todos data to test*/
-    private List<Todo> getTodosData() {
+    private List<AVObject> getTodosData() {
 
-        List<Todo> todos = new ArrayList<>();
+        List<AVObject> todos = new ArrayList<>();
 
         for (int i = 0; i < 15; i++) {
-            Todo todo = new Todo();
-            todo.setTitle("title-" + (i + 1));
-            todo.setStartTime(new BmobDate(new Date()));
-            todo.setEndTime(new BmobDate(new Date()));
-            todo.setState(i);
+            AVObject todo = new AVObject(Todo.TABLE_TODO);
+
+            todo.put(Todo.TITLE,"title:" + (i + 1));
+            todo.put(Todo.START_TIME,new Date());
+            todo.put(Todo.END_TIME,new Date());
+            todo.put(Todo.STATE,i);
             todos.add(todo);
         }
 

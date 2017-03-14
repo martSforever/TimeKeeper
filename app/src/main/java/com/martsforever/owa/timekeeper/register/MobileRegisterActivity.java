@@ -1,6 +1,7 @@
 package com.martsforever.owa.timekeeper.register;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -9,17 +10,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.SignUpCallback;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.bmob.BmobUtil;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
-
-import cn.bmob.sms.BmobSMS;
-import cn.bmob.sms.listener.RequestSMSCodeListener;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
 
 public class MobileRegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -71,17 +73,12 @@ public class MobileRegisterActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.register_get_vertification_code_btn:
-                String mobileNumber = mobilePhoneEdit.getText().toString().trim();
-                if (mobileNumber.equals("")) {
-                    ShowMessageUtil.tosatFast("Phone number can not be empty!", this);
-                    break;
-                }
-                sendVertificationCode(mobileNumber, this);
-                waitForMinute();
+                if (!checkRegisterInfoIsCorrect(this)) break;
+                else register(this);
                 break;
             case R.id.register_submit_btn:
-                if (!checkWetherTheInputIsCorrent(this)) break;
-                register(this);
+                if (!checkMobileAndCodeIsCorrect(this)) break;
+                else verifiedCode(this);
 
         }
     }
@@ -106,56 +103,113 @@ public class MobileRegisterActivity extends AppCompatActivity implements View.On
         }).start();
     }
 
-    /*send vertification code*/
-    private void sendVertificationCode(String mobile, final Context context) {
-        BmobSMS.requestSMSCode(this, mobile, "默认模板", new RequestSMSCodeListener() {
+    /**
+     * verify vertification code
+     *
+     * @param context
+     */
+    private void verifiedCode(final Context context) {
+        String code = vertificationCodeEdit.getText().toString().trim();
 
+        AVUser.verifyMobilePhoneInBackground(code, new AVMobilePhoneVerifyCallback() {
             @Override
-            public void done(Integer integer, cn.bmob.sms.exception.BmobException e) {
+            public void done(AVException e) {
                 if (e == null) {
-                    ShowMessageUtil.tosatFast("SMS vertification code sent successfully!", context);
+                    ShowMessageUtil.tosatFast("verify vertification code successfully!", context);
+                    ActivityManager.entryMainActivity(MobileRegisterActivity.this, MainActivity.class);
                 } else {
-                    ShowMessageUtil.tosatSlow("SMS failure!" + e.getMessage(), context);
+                    ShowMessageUtil.tosatSlow("verify vertification code failure!" + e.getMessage(), context);
                 }
             }
         });
     }
 
-    /*check wether the input is corrent*/
-    private boolean checkWetherTheInputIsCorrent(Context context) {
+    /**
+     * check wether the input is corrent
+     *
+     * @param context
+     * @return
+     */
+    private boolean checkMobileAndCodeIsCorrect(Context context) {
+        String mobile = mobilePhoneEdit.getText().toString().trim();
+        String code = vertificationCodeEdit.getText().toString().trim();
+        if (mobile.length() != 11 || code.equals("")) {
+            ShowMessageUtil.tosatSlow("mobile phone or code is wrong!", context);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * check wether the register info is correct
+     *
+     * @param context
+     * @return
+     */
+    private boolean checkRegisterInfoIsCorrect(Context context) {
         String username = usernameEdit.getText().toString().trim();
         String password = passwordEdit.getText().toString().trim();
         String repeatPassword = repeatpasswordEdit.getText().toString().trim();
         String mobile = mobilePhoneEdit.getText().toString().trim();
-        String code = vertificationCodeEdit.getText().toString().trim();
-        if (username.equals("") || password.equals("") || repeatPassword.equals("") || mobile.equals("") || code.equals("")) {
+        if (username.equals("") || password.equals("") || repeatPassword.equals("") || mobile.equals("")) {
             ShowMessageUtil.tosatSlow("every item can not be empty!", context);
             return false;
         }
         if (!password.equals(repeatPassword)) {
             ShowMessageUtil.tosatSlow("Enter passwords differ!", context);
+            return false;
+        }
+        if (username.length() > 10) {
+            ShowMessageUtil.tosatSlow("the character length of the username can't be over than 10", context);
+            return false;
         }
         return true;
     }
 
-    /*register and login by mobile*/
+    /**
+     * register by mobile
+     *
+     * @param context
+     */
     private void register(final Context context) {
-        String mobile = mobilePhoneEdit.getText().toString().trim();
-        String code = vertificationCodeEdit.getText().toString().trim();
-
-        Person person = new Person();
-        person.setUsername(usernameEdit.getText().toString().trim());
-        person.setPassword(passwordEdit.getText().toString().trim());
-        person.setMobilePhoneNumber(mobile);
-
-        person.signOrLogin(code, new SaveListener<Person>() {
+        String username = usernameEdit.getText().toString().trim();
+        final String mobile = mobilePhoneEdit.getText().toString().trim();
+        AVQuery<AVUser> query = new AVQuery<>(Person.TABLE_PERSON);
+        query.whereEqualTo(Person.USER_NAME, username);
+        query.whereEqualTo(Person.MOBILE_PHONE_NUMBER, mobile);
+        query.getFirstInBackground(new GetCallback<AVUser>() {
             @Override
-            public void done(Person person, BmobException e) {
+            public void done(AVUser avUser, AVException e) {
                 if (e == null) {
-                    ShowMessageUtil.tosatFast("register successful!", context);
-                    ActivityManager.entryMainActivity(MobileRegisterActivity.this, MainActivity.class);
+                    if (avUser == null) {
+                        final AVUser user = new AVUser();
+                        user.setUsername(usernameEdit.getText().toString().trim());
+                        user.setPassword(passwordEdit.getText().toString().trim());
+                        user.setMobilePhoneNumber(mobilePhoneEdit.getText().toString().trim());
+                        user.signUpInBackground(new SignUpCallback() {
+                            @Override
+                            public void done(AVException e) {
+                                if (e == null) {
+                                    ShowMessageUtil.tosatFast(user.getUsername() + " register successful! id:" + user.getObjectId() + " request sms code successful, please check your mobile message.", context);
+                                } else {
+                                    ShowMessageUtil.tosatFast("register failure! " + e.getMessage(), context);
+                                }
+                            }
+                        });
+                    } else {
+                        AVUser.requestMobilePhoneVerifyInBackground(mobile, new RequestMobileCodeCallback() {
+                            @Override
+                            public void done(AVException e) {
+                                if (e == null) {
+                                    ShowMessageUtil.tosatFast("request mobile verify code successful!", context);
+                                } else {
+                                    ShowMessageUtil.tosatFast("request mobile verify code failure!"+e.getMessage(), context);
+                                }
+                            }
+                        });
+                    }
                 } else {
-                    ShowMessageUtil.tosatFast("register failure! " + e.getMessage(), context);
+                    ShowMessageUtil.tosatSlow("fail to access data! " + e.getMessage(), context);
                 }
             }
         });

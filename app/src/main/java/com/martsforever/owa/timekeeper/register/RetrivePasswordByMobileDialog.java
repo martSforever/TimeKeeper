@@ -11,20 +11,18 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.UpdatePasswordCallback;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
-
-import cn.bmob.sms.BmobSMS;
-import cn.bmob.sms.exception.BmobException;
-import cn.bmob.sms.listener.RequestSMSCodeListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by owa on 2017/1/14.
  */
 
-public class RetrivePasswordByMobileDialog extends Dialog implements View.OnClickListener{
+public class RetrivePasswordByMobileDialog extends Dialog implements View.OnClickListener {
 
     private Activity activity;
     AlertDialog dialog;
@@ -74,38 +72,41 @@ public class RetrivePasswordByMobileDialog extends Dialog implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.retrive_mobile_code_btn:sendVertificationCode();break;
-            case R.id.retrive_mobile_submit_btn:resetPassword();break;
+        switch (v.getId()) {
+            case R.id.retrive_mobile_code_btn:
+                sendVertificationCode();
+                break;
+            case R.id.retrive_mobile_submit_btn:
+                resetPassword();
+                break;
         }
     }
 
-    private void sendVertificationCode(){
+    private void sendVertificationCode() {
         String mobile = mobileEdit.getText().toString().trim();
-        BmobSMS.requestSMSCode(activity,mobile,"默认模板", new RequestSMSCodeListener() {
+        AVUser.requestPasswordResetBySmsCodeInBackground(mobile, new RequestMobileCodeCallback() {
             @Override
-            public void done(Integer integer, BmobException e) {
-                if (e==null){
+            public void done(AVException e) {
+                if (e == null) {
                     ShowMessageUtil.tosatFast("SMS vertification code sent successfully!", activity);
-                }
-                else {
-                    ShowMessageUtil.tosatSlow("SMS failure!" + e.getMessage(), activity);
+                } else {
+                    ShowMessageUtil.tosatSlow("SMS failure!" + e.getMessage()+" please try again after 10 minutes!", activity);
                 }
             }
         });
     }
 
-    private void resetPassword(){
-        if (checkWetherInputIsCorrect()){
+    private void resetPassword() {
+        if (checkWetherInputIsCorrect()) {
             String password = passwordEdit.getText().toString().trim();
             String phoneNumber = mobileEdit.getText().toString().trim();
             String code = vertificationCodeEdit.getText().toString().trim();
-            Person.resetPasswordBySMSCode(code, password, new UpdateListener() {
+            AVUser.resetPasswordBySmsCodeInBackground(code, password, new UpdatePasswordCallback() {
                 @Override
-                public void done(cn.bmob.v3.exception.BmobException e) {
-                    if (e==null){
+                public void done(AVException e) {
+                    if (e == null) {
                         ShowMessageUtil.tosatFast("reset password successfully!", activity);
-                    }else {
+                    } else {
                         ShowMessageUtil.tosatFast("reset password failure!", activity);
                     }
                 }
@@ -113,12 +114,13 @@ public class RetrivePasswordByMobileDialog extends Dialog implements View.OnClic
         }
     }
 
-    private boolean checkWetherInputIsCorrect(){
+    private boolean checkWetherInputIsCorrect() {
         String password = passwordEdit.getText().toString().trim();
         String repeatPassword = repeatPasswordEdit.getText().toString().trim();
         String phoneNumber = mobileEdit.getText().toString().trim();
         String code = vertificationCodeEdit.getText().toString().trim();
-        if (password.equals("")||repeatPassword.equals("")||phoneNumber.equals("")||code.equals("")) return false;
+        if (password.equals("") || repeatPassword.equals("") || phoneNumber.equals("") || code.equals(""))
+            return false;
         return true;
     }
 }
