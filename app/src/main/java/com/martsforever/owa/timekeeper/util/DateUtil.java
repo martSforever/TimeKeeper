@@ -14,8 +14,8 @@ public class DateUtil {
     public static final int SIMPLE_DATE = 0x02;
     public static final int COMPLICATE_DATE_TOW_LINE = 0x03;
 
-    private static SimpleDateFormat complicatedDate = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-    private static SimpleDateFormat complicatedDateTwoLine = new SimpleDateFormat("yyyy-MM-dd\nHH-mm-ss");
+    private static SimpleDateFormat complicatedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat complicatedDateTwoLine = new SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss");
     private static SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
 
     /**

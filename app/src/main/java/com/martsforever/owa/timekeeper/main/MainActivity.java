@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
@@ -18,6 +19,7 @@ import com.martsforever.owa.timekeeper.main.friend.FriendAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import com.martsforever.owa.timekeeper.util.DateUtil;
+import com.skyfishjy.library.RippleBackground;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<AVObject> todos;
     private TodoAdapter todoAdapter;
     private SwipeMenuListView todoListView;
+
+    /*toamto interface element*/
+    RippleBackground rippleBackground;
+    TextView tomatoTimeText;
 
 
     @Override
@@ -134,6 +140,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        rippleBackground = (RippleBackground) tomatoView.findViewById(R.id.tomato_ripple_view);
+        tomatoTimeText = (TextView) tomatoView.findViewById(R.id.tomato_time_text);
+        tomatoTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (rippleBackground.isRippleAnimationRunning()) {
+                    /*结束动画*/
+                    rippleBackground.stopRippleAnimation();
+                } else
+                    /*开始动画*/
+                    rippleBackground.startRippleAnimation();
+            }
+        });
     }
 
     @Override
@@ -160,26 +180,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<AVUser> getFriendsData() {
         List<AVUser> persons = new ArrayList<>();
         AVUser p1 = new AVUser();
-        p1.setUsername("alice");
+        p1.setUsername("盖伦");
         AVUser p2 = new AVUser();
-        p2.setUsername("bob");
+        p2.setUsername("艾希");
         AVUser p3 = new AVUser();
-        p3.setUsername("marts");
+        p3.setUsername("凯特琳");
+        AVUser p4 = new AVUser();
+        p4.setUsername("卡特琳娜");
+        AVUser p5 = new AVUser();
+        p5.setUsername("易大师");
+        AVUser p6 = new AVUser();
+        p6.setUsername("泰达米尔");
+        AVUser p7 = new AVUser();
+        p7.setUsername("古加拉斯");
+        AVUser p8 = new AVUser();
+        p8.setUsername("莫甘娜");
+        AVUser p9 = new AVUser();
+        p9.setUsername("蕾欧娜");
+        AVUser p10 = new AVUser();
+        p10.setUsername("娜美");
+        AVUser p11 = new AVUser();
+        p11.setUsername("德莱厄斯");
+        AVUser p12 = new AVUser();
+        p12.setUsername("拉克丝");
+
         persons.add(p1);
         persons.add(p2);
         persons.add(p3);
-        persons.add(p1);
-        persons.add(p2);
-        persons.add(p3);
-        persons.add(p1);
-        persons.add(p2);
-        persons.add(p3);
-        persons.add(p1);
-        persons.add(p2);
-        persons.add(p3);
-        persons.add(p1);
-        persons.add(p2);
-        persons.add(p3);
+        persons.add(p4);
+        persons.add(p5);
+        persons.add(p6);
+        persons.add(p7);
+        persons.add(p8);
+        persons.add(p9);
+        persons.add(p10);
+        persons.add(p11);
+        persons.add(p12);
         return persons;
     }
 
@@ -192,12 +228,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < 15; i++) {
             AVObject todo = new AVObject(Todo.TABLE_TODO);
 
-            todo.put(Todo.TITLE,"title:" + (i + 1));
-            todo.put(Todo.DESCRIPTION,"this is description:"+(i+1));
+            todo.put(Todo.TITLE, "title:" + (i + 1));
+            todo.put(Todo.DESCRIPTION, "this is description:" + (i + 1));
             todo.put(Todo.END_TIME, DateUtil.getRandomDate());
 //            todo.put(Todo.END_TIME, new Date());
-            todo.put(Todo.STATE, random.nextInt(4)+1);
-            todo.put(Todo.LEVEL,random.nextInt(4)+1);
+            todo.put(Todo.STATE, random.nextInt(4) + 1);
+            todo.put(Todo.LEVEL, random.nextInt(4) + 1);
             todos.add(todo);
         }
         return todos;

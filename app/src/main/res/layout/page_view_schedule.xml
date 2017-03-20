@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#83fcd8"
+    android:background="#fff"
     android:orientation="vertical">
 
     <LinearLayout
@@ -24,8 +24,8 @@
             android:layout_height="match_parent"
             android:layout_weight="8"
             android:gravity="center"
-            android:text="schedule"
-            android:textColor="#fff"
+            android:text="Schedule"
+            android:textColor="#000"
             android:textSize="24sp" />
 
         <ImageView
@@ -34,14 +34,16 @@
             android:layout_weight="1"
             android:padding="5dp"
             android:gravity="center"
-            android:src="@drawable/schedule_add"
-            android:textSize="18sp" />
+            android:src="@drawable/icon_schedule_add"
+            android:textSize="18sp"
+            android:id="@+id/imageView2" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="#33000000"
         android:orientation="horizontal"
         android:padding="5dp">
 
@@ -55,15 +57,17 @@
             android:gravity="center"
             android:hint="Search"
             android:maxLines="1"
-            android:textColorHint="#fff" />
+            android:textColorHint="#66000000"
+            android:id="@+id/editText" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_friend_search_btn"
-            android:padding="6dp"
-            android:src="@drawable/schedule_search" />
+            android:padding="7dp"
+            android:src="@drawable/icon_schedule_search"
+            android:id="@+id/imageView3" />
 
     </LinearLayout>
 
@@ -72,6 +76,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11"
-        android:divider="#00ffffff"
-        android:dividerHeight="5dp" />
+        android:divider="#33000000"
+        android:dividerHeight="0.5dp" />
 </LinearLayout>

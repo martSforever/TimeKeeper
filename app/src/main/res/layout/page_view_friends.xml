@@ -2,46 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d9b3e6"
+    android:background="#fff"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:text="Friend"
+            android:textColor="#000"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:gravity="center"
+            android:src="@drawable/icon_schedule_add"
+            android:textSize="18sp"
+            android:id="@+id/imageView2" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="#33000000"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8"
+            android:layout_weight="9"
             android:background="@drawable/bg_friend_search_edit"
             android:ellipsize="start"
-            android:maxLines="1" />
+            android:textSize="12sp"
+            android:gravity="center"
+            android:hint="Search"
+            android:maxLines="1"
+            android:textColorHint="#66000000"
+            android:id="@+id/editText" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_friend_search_btn"
-            android:padding="5dp"
-            android:src="@drawable/icon_search" />
+            android:padding="7dp"
+            android:src="@drawable/icon_schedule_search"
+            android:id="@+id/imageView3" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:padding="5dp"
-            android:src="@drawable/icon_add" />
     </LinearLayout>
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:padding="10dp"
         android:id="@+id/friend_swip_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"
-        android:divider="#33ffffff"
-        android:dividerHeight="5dp" />
+        android:layout_weight="11"
+        android:divider="#33000000"
+        android:dividerHeight="0.5dp" />
 </LinearLayout>
