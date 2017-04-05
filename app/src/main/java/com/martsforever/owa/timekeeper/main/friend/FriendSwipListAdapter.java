@@ -16,12 +16,12 @@ import java.util.List;
  * Created by owa on 2017/1/18.
  */
 
-public class FriendAdapter extends BaseSwipListAdapter {
+public class FriendSwipListAdapter extends BaseSwipListAdapter {
 
     List<AVUser> persons;
     LayoutInflater inflater;
 
-    public FriendAdapter(List<AVUser> persons, Context context) {
+    public FriendSwipListAdapter(List<AVUser> persons, Context context) {
         this.persons = persons;
         inflater = LayoutInflater.from(context);
     }

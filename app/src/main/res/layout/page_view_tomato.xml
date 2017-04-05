@@ -16,11 +16,12 @@
 
         <TextView
             android:id="@+id/tomato_time_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:background="@drawable/bg_tomato_time_text"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:textColor="#88000000"
+            android:textColor="#fff"
             android:fontFamily="monospace"
             android:text="25:00"
             android:textSize="32sp" />

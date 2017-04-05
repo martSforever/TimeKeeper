@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="#59b4ca"
     android:orientation="vertical">
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_weight="8"
             android:gravity="center"
             android:text="Schedule"
-            android:textColor="#000"
+            android:textColor="#b9e8f3"
             android:textSize="24sp" />
 
         <ImageView
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#33000000"
+        android:background="#83cee0"
         android:orientation="horizontal"
         android:padding="5dp">
 
@@ -57,7 +57,7 @@
             android:gravity="center"
             android:hint="Search"
             android:maxLines="1"
-            android:textColorHint="#66000000"
+            android:textColorHint="#83cee0"
             android:id="@+id/editText" />
 
         <ImageView
@@ -76,6 +76,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11"
-        android:divider="#33000000"
+        android:divider="#83cee0"
         android:dividerHeight="0.5dp" />
 </LinearLayout>

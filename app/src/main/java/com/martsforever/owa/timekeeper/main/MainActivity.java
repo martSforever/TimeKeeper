@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVObject;
@@ -12,17 +13,16 @@ import com.avos.avoscloud.AVUser;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
+import com.martsforever.owa.timekeeper.main.friend.FriendBaseAdapter;
 import com.martsforever.owa.timekeeper.main.friend.FriendMenuCreater;
-import com.martsforever.owa.timekeeper.main.friend.FriendAdapter;
+import com.martsforever.owa.timekeeper.main.friend.FriendSwipListAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /*friend interface element*/
     List<AVUser> friends;
-    private FriendAdapter friendAdapter;
-    private SwipeMenuListView friendListView;
+    private FriendBaseAdapter friendAdapter;
+    private ListView friendListView;
 
     /*to do interface element*/
     List<AVObject> todos;
@@ -102,23 +102,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         /*friends interface*/
         friends = getFriendsData();
-        friendAdapter = new FriendAdapter(friends, this);
-        friendListView = (SwipeMenuListView) friendsView.findViewById(R.id.friend_swip_list_view);
+        friendAdapter = new FriendBaseAdapter(friends, this);
+        friendListView = (ListView) friendsView.findViewById(R.id.friend_swip_list_view);
         friendListView.setAdapter(friendAdapter);
-        friendListView.setMenuCreator(FriendMenuCreater.getFriendsMenuCreater(this));
-        friendListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        // delete
-                        friends.remove(position);
-                        friendAdapter.notifyDataSetChanged();
-                        break;
-                }
-                return false;
-            }
-        });
 
         /*todos interface*/
         todos = getTodosData();

@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.martsforever.owa.timekeeper">
 
-
     <!-- 允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 获取GSM（2g）、WCDMA（联通3g）等网络状态的信息 -->
@@ -31,19 +30,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".launch.LogoActivity"></activity>
+        <activity android:name=".launch.LogoActivity" />
         <activity android:name=".launch.LaunchActivity">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".register.EmailRegisterActivity" />
         <activity android:name=".register.MobileRegisterActivity" />
         <activity android:name=".register.SelectRegisterActivity" />
-        <activity android:name=".register.RetrivePasswordActivity"></activity>
+        <activity android:name=".register.RetrivePasswordActivity" />
+        <activity android:name=".main.friend.AddFriendsActivity"></activity>
     </application>
 
 </manifest>

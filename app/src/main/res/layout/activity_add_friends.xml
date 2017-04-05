@@ -7,36 +7,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:padding="5dp"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="18sp" />
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="8"
             android:gravity="center"
-            android:text="Friend"
+            android:text="Add Friends"
             android:textColor="#b9e8f3"
             android:textSize="24sp" />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="5dp"
-            android:gravity="center"
-            android:src="@drawable/icon_schedule_add"
-            android:textSize="18sp"
-            android:id="@+id/imageView2" />
     </LinearLayout>
 
     <LinearLayout
@@ -53,12 +36,11 @@
             android:layout_weight="9"
             android:background="@drawable/bg_friend_search_edit"
             android:ellipsize="start"
-            android:textSize="12sp"
             android:gravity="center"
             android:hint="Search"
             android:maxLines="1"
             android:textColorHint="#83cee0"
-            android:id="@+id/editText" />
+            android:textSize="12sp" />
 
         <ImageView
             android:layout_width="0dp"
@@ -66,16 +48,14 @@
             android:layout_weight="1"
             android:background="@drawable/bg_friend_search_btn"
             android:padding="7dp"
-            android:src="@drawable/icon_schedule_search"
-            android:id="@+id/imageView3" />
+            android:src="@drawable/icon_schedule_search" />
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/friend_swip_list_view"
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11"
         android:divider="#83cee0"
-        android:dividerHeight="2.5dp"/>
+        android:dividerHeight="0.5dp" />
 </LinearLayout>
