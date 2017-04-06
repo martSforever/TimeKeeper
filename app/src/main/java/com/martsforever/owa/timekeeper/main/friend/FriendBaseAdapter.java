@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Person;
 
 import java.util.List;
 
@@ -54,18 +55,24 @@ public class FriendBaseAdapter extends BaseAdapter {
         }
 
         final AVUser person = persons.get(position);
-        viewHolder.usernameText.setText(person.getUsername());
+        viewHolder.usernameText.setText((String) person.get(Person.NICK_NAME));
         viewHolder.usernameText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println(person.getUsername() + " had been clicked");
             }
         });
-
         return convertView;
     }
-
     class ViewHolder {
         TextView usernameText;
+    }
+
+    public List<AVUser> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<AVUser> persons) {
+        this.persons = persons;
     }
 }

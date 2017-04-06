@@ -1,31 +1,42 @@
 package com.martsforever.owa.timekeeper.main;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
+import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendBaseAdapter;
 import com.martsforever.owa.timekeeper.main.friend.FriendMenuCreater;
 import com.martsforever.owa.timekeeper.main.friend.FriendSwipListAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
+import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.skyfishjy.library.RippleBackground;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@ContentView(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     /*main interface element*/
@@ -56,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<AVUser> friends;
     private FriendBaseAdapter friendAdapter;
     private ListView friendListView;
+    private ImageView turnToAddFriendBtn;
 
     /*to do interface element*/
     List<AVObject> todos;
@@ -70,7 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+        /*xutils注入*/
+        x.view().inject(this);
         initView();
     }
 
@@ -101,10 +115,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.label_me).setOnClickListener(this);
 
         /*friends interface*/
-        friends = getFriendsData();
+        friends = DataUtils.getFriendsData();
         friendAdapter = new FriendBaseAdapter(friends, this);
         friendListView = (ListView) friendsView.findViewById(R.id.friend_swip_list_view);
         friendListView.setAdapter(friendAdapter);
+        turnToAddFriendBtn = (ImageView) friendsView.findViewById(R.id.friend_add_firends_btn);
+        turnToAddFriendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, AddFriendsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /*todos interface*/
         todos = getTodosData();
@@ -162,49 +185,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         labelViewPager.setCurrentItem(index);
     }
 
-    /*produce friends data to test*/
-    private List<AVUser> getFriendsData() {
-        List<AVUser> persons = new ArrayList<>();
-        AVUser p1 = new AVUser();
-        p1.setUsername("盖伦");
-        AVUser p2 = new AVUser();
-        p2.setUsername("艾希");
-        AVUser p3 = new AVUser();
-        p3.setUsername("凯特琳");
-        AVUser p4 = new AVUser();
-        p4.setUsername("卡特琳娜");
-        AVUser p5 = new AVUser();
-        p5.setUsername("易大师");
-        AVUser p6 = new AVUser();
-        p6.setUsername("泰达米尔");
-        AVUser p7 = new AVUser();
-        p7.setUsername("古加拉斯");
-        AVUser p8 = new AVUser();
-        p8.setUsername("莫甘娜");
-        AVUser p9 = new AVUser();
-        p9.setUsername("蕾欧娜");
-        AVUser p10 = new AVUser();
-        p10.setUsername("娜美");
-        AVUser p11 = new AVUser();
-        p11.setUsername("德莱厄斯");
-        AVUser p12 = new AVUser();
-        p12.setUsername("拉克丝");
-
-        persons.add(p1);
-        persons.add(p2);
-        persons.add(p3);
-        persons.add(p4);
-        persons.add(p5);
-        persons.add(p6);
-        persons.add(p7);
-        persons.add(p8);
-        persons.add(p9);
-        persons.add(p10);
-        persons.add(p11);
-        persons.add(p12);
-        return persons;
-    }
-
     /*get todos data to test*/
     private List<AVObject> getTodosData() {
 
@@ -224,4 +204,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return todos;
     }
+
 }

@@ -46,7 +46,11 @@
         <activity android:name=".register.MobileRegisterActivity" />
         <activity android:name=".register.SelectRegisterActivity" />
         <activity android:name=".register.RetrivePasswordActivity" />
-        <activity android:name=".main.friend.AddFriendsActivity"></activity>
+        <activity android:name=".main.friend.AddFriendsActivity" />
+        <activity
+            android:name=".main.friend.FriendDetailActivity"
+            android:label="@string/title_activity_friend_detail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

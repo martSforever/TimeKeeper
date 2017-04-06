@@ -12,6 +12,13 @@
         android:orientation="horizontal"
         android:padding="5dp">
 
+        <ImageView
+            android:id="@+id/friend_add_back_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_back"
+            android:layout_weight="1" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -20,6 +27,11 @@
             android:text="Add Friends"
             android:textColor="#b9e8f3"
             android:textSize="24sp" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -31,6 +43,7 @@
         android:padding="5dp">
 
         <EditText
+            android:id="@+id/friend_add_search_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="9"
@@ -43,6 +56,7 @@
             android:textSize="12sp" />
 
         <ImageView
+            android:id="@+id/friend_add_search_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -53,9 +67,10 @@
     </LinearLayout>
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/friend_add_swipe_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11"
         android:divider="#83cee0"
-        android:dividerHeight="0.5dp" />
+        android:dividerHeight="2.5dp" />
 </LinearLayout>
