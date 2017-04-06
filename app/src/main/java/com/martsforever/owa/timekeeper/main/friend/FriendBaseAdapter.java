@@ -21,6 +21,7 @@ public class FriendBaseAdapter extends BaseAdapter {
 
     List<AVUser> persons;
     LayoutInflater inflater;
+    ViewOnclickListener viewOnclickListener;
 
     public FriendBaseAdapter(List<AVUser> persons, Context context) {
         this.persons = persons;
@@ -56,14 +57,14 @@ public class FriendBaseAdapter extends BaseAdapter {
 
         final AVUser person = persons.get(position);
         viewHolder.usernameText.setText((String) person.get(Person.NICK_NAME));
-        viewHolder.usernameText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println(person.getUsername() + " had been clicked");
-            }
-        });
+
+        if (viewOnclickListener != null) {
+            viewOnclickListener.viewOnClick(convertView,persons.get(position));
+        }
+
         return convertView;
     }
+
     class ViewHolder {
         TextView usernameText;
     }
@@ -74,5 +75,17 @@ public class FriendBaseAdapter extends BaseAdapter {
 
     public void setPersons(List<AVUser> persons) {
         this.persons = persons;
+    }
+
+    public ViewOnclickListener getViewOnclickListener() {
+        return viewOnclickListener;
+    }
+
+    public void setViewOnclickListener(ViewOnclickListener viewOnclickListener) {
+        this.viewOnclickListener = viewOnclickListener;
+    }
+
+    interface ViewOnclickListener {
+        public void viewOnClick(View v,AVUser user);
     }
 }

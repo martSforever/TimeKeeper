@@ -13,21 +13,21 @@
         android:padding="5dp">
 
         <ImageView
-            android:id="@+id/friend_add_back_btn"
+            android:id="@+id/friend_detail_back_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/icon_back" />
 
         <TextView
+            android:id="@+id/textView5"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="8"
             android:gravity="center"
             android:text="Friends Detail"
             android:textColor="#b9e8f3"
-            android:textSize="24sp"
-            android:id="@+id/textView5" />
+            android:textSize="24sp" />
 
         <ImageView
             android:layout_width="0dp"
@@ -59,11 +59,11 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/friend_detail_username_text"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="13"
                 android:gravity="center_vertical|right"
-                android:text="gailun"
                 android:textColor="#666"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -87,11 +87,11 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/friend_detail_nickname_text"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="13"
                 android:gravity="center_vertical|right"
-                android:text="盖伦"
                 android:textColor="#666"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -115,11 +115,11 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/friend_detail_email_text"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="13"
                 android:gravity="center_vertical|right"
-                android:text="martsforever@aliyun.com"
                 android:textColor="#666"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -142,11 +142,11 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/friend_detail_mobile_text"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="13"
                 android:gravity="center_vertical|right"
-                android:text="13924569321"
                 android:textColor="#666"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -168,11 +168,13 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/editText2"
-                android:background="#66ffffff"
+                android:id="@+id/friend_detail_verify_message_edit"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="#66ffffff"
+                android:gravity="left|top"
+                android:padding="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -180,22 +182,24 @@
                 android:layout_gravity="bottom">
 
                 <Button
+                    android:id="@+id/friend_detail_confirm_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="0.25dp"
                     android:layout_weight="1"
                     android:background="#59b4ca"
-                    android:textColor="#b9e8f3"
-                    android:layout_marginRight="0.25dp"
-                    android:text="添加" />
+                    android:text="添加"
+                    android:textColor="#b9e8f3" />
 
                 <Button
+                    android:id="@+id/friend_detail_cancel_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:background="#59b4ca"
-                    android:textColor="#b9e8f3"
                     android:layout_marginLeft="0.25dp"
                     android:layout_weight="1"
-                    android:text="取消" />
+                    android:background="#59b4ca"
+                    android:text="取消"
+                    android:textColor="#b9e8f3" />
             </LinearLayout>
 
         </LinearLayout>
