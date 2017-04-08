@@ -23,34 +23,35 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".main.MainActivity"/>
         <activity android:name=".launch.LogoActivity" />
-        <activity android:name=".launch.LaunchActivity">
-
-            <!--
+        <activity android:name=".launch.LaunchActivity"/>
+        <activity android:name=".login.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
-        <activity android:name=".login.LoginActivity" />
         <activity android:name=".register.EmailRegisterActivity" />
         <activity android:name=".register.MobileRegisterActivity" />
         <activity android:name=".register.SelectRegisterActivity" />
         <activity android:name=".register.RetrivePasswordActivity" />
         <activity android:name=".main.friend.AddFriendsActivity" />
-        <activity
-            android:name=".main.friend.FriendDetailActivity"
-            android:label="@string/title_activity_friend_detail"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".main.friend.FriendDetailActivity" />
+
+        <!--leancloud push start-->
+        <service android:name="com.avos.avoscloud.PushService" />
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <!--leancloud push end-->
+
+
     </application>
 
 </manifest>

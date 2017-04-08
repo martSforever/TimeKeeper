@@ -22,6 +22,7 @@ public class Person {
     public static final String MOBILE_PHONE_VERIFIED = "mobildPhoneVerified";
     public static final String UPDATE_AT = "updateAt";
     public static final String NICK_NAME="nickname";/*昵称*/
+    public static final String INSTALLATION_ID = "installationId";/*关联设备的id*/
 
     /*自定义属性*/
     public static final String FRIEND = "friend";
