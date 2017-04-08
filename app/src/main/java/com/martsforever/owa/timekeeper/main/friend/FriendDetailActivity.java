@@ -10,19 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVInstallation;
-import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SendCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
-import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import org.xutils.view.annotation.ContentView;
@@ -109,46 +105,5 @@ public class FriendDetailActivity extends AppCompatActivity {
 
     @Event(R.id.friend_detail_confirm_btn)
     private void confirm(View view) {
-        /*if (friend == null) {
-            ShowMessageUtil.tosatFast("internal error!", FriendDetailActivity.this);
-        } else {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("type", com.martsforever.owa.timekeeper.javabean.Message.MESSAGE_TYPE_FRIENDS_INVITATION);
-            jsonObject.put("message", verifyMessageEdit.getText().toString().trim());
-            LeanCloudUtil.push(friend.get(Person.INSTALLATION_ID).toString(), jsonObject, this);
-        }*/
-
-        String installationId = friend.get(Person.INSTALLATION_ID).toString();
-
-        /*push to specific android device|*/
-        AVQuery pushQuery = AVInstallation.getQuery();
-        // 假设 THE_INSTALLATION_ID 是保存在用户表里的 installationId，
-        // 可以在应用启动的时候获取并保存到用户表
-        AVPush push = new AVPush();
-        String action = "com.avos.UPDATE_STATUS";
-        String name = "weishengjian";
-        String tag = "test leancloud push";
-        JSONObject data;
-        data = new JSONObject();
-        data.put("action", action);
-        data.put("name", name);
-        data.put("tag", tag);
-        data.put("message",verifyMessageEdit.getText().toString().trim());
-
-        push.setData(data);
-        push.setCloudQuery("select * from _Installation where installationId ='" + installationId + "'");
-        push.sendInBackground(new SendCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    // push successfully.
-                    ShowMessageUtil.tosatFast("push successful", FriendDetailActivity.this);
-                } else {
-                    // something wrong.
-                    ShowMessageUtil.tosatFast(e.getMessage(), FriendDetailActivity.this);
-                }
-            }
-        });
-
     }
 }

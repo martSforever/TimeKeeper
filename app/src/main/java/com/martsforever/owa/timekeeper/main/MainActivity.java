@@ -1,7 +1,6 @@
 package com.martsforever.owa.timekeeper.main;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -19,12 +17,10 @@ import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendBaseAdapter;
-import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.DateUtil;
-import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
 
 import org.xutils.view.annotation.ContentView;
@@ -84,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         x.view().inject(this);
         System.out.println("init");
         initView();
-        registerReceiver();
     }
 
     private void initView() {
@@ -203,25 +198,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return todos;
     }
-
-    /**
-     * register push message receiver
-     */
-    private void registerReceiver() {
-        System.out.println("retgister receiver 1111111");
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("android.intent.action.BOOT_COMPLETED");
-        intentFilter.addAction("android.intent.action.USER_PRESENT");
-        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        intentFilter.addAction("com.avos.UPDATE_STATUS");
-        MessageReceiver messageReceiver = new MessageReceiver();
-        messageReceiver.setHandleMessage(new MessageReceiver.HandleMessage() {
-            @Override
-            public void receiveMessage(JSONObject jsonObject) {
-                ShowMessageUtil.tosatFast(jsonObject.getString("message"),MainActivity.this);
-            }
-        });
-        registerReceiver(messageReceiver, intentFilter);
-    }
-
 }

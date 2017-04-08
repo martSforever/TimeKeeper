@@ -88,7 +88,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/cn.leancloud.android/avoscloud-feedback/v3.16.2/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/cn.leancloud.android/avoscloud-push/v3.16.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/cn.leancloud.android/avoscloud-search/v3.16.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/cn.leancloud.android/avoscloud-sns/v3.16.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support.test.espresso/espresso-core/2.2.2/jars" />
@@ -169,12 +168,9 @@
     <orderEntry type="library" exported="" name="avoscloud-sdk-v3.16.2" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0-leancloud" level="project" />
-    <orderEntry type="library" exported="" name="protobuf-java-2.6.1" level="project" />
     <orderEntry type="library" exported="" name="qq-sdk-1.6.1-leancloud" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="javawriter-2.1.1" level="project" />
-    <orderEntry type="library" exported="" name="avoscloud-push-v3.16.2" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" name="Java-WebSocket-1.3.2-leancloud" level="project" />
     <orderEntry type="library" exported="" name="avoscloud-feedback-v3.16.2" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-8.4.0" level="project" />

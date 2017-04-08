@@ -4,11 +4,8 @@ import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
 import com.martsforever.owa.timekeeper.main.MainActivity;
@@ -37,40 +34,4 @@ public class LeanCloudUtil {
     /**
      * if you want to use the leancloud service, you have to bind a installation id to your device
      */
-    private static void registerPushMessageReceiver() {
-        AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    System.out.println("save installation successful!");
-                    String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-                    System.out.println(installationId);
-                } else {
-
-                }
-            }
-        });
-    }
-
-    public static void push(String installationId, JSONObject jsonObject, final Context context) {
-        /*push to specific android device|*/
-//        AVQuery pushQuery = AVInstallation.getQuery();
-        AVPush push = new AVPush();
-        String action = "com.avos.UPDATE_STATUS";
-        jsonObject.put("action", action);
-        push.setData(jsonObject);
-        push.setCloudQuery("select * from _Installation where installationId ='" + installationId + "'");
-        push.sendInBackground(new SendCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    // push successfully.
-                    ShowMessageUtil.tosatFast("push successful", context);
-                } else {
-                    // something wrong.
-                    ShowMessageUtil.tosatFast(e.getMessage(), context);
-                }
-            }
-        });
-    }
 }
