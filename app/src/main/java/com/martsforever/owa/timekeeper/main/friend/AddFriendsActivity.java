@@ -81,6 +81,7 @@ public class AddFriendsActivity extends AppCompatActivity {
 
     private void searchUsers(String nickName) {
         AVQuery<AVUser> query = new AVQuery<>(Person.TABLE_PERSON);
+        query.addDescendingOrder("updatedAt");
         query.whereContains(Person.NICK_NAME, nickName);
         query.findInBackground(new FindCallback<AVUser>() {
             @Override

@@ -4,11 +4,15 @@ import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
 import com.martsforever.owa.timekeeper.main.MainActivity;
+import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 /**
@@ -29,9 +33,52 @@ public class LeanCloudUtil {
 
         /*默认启用中国节点*/
         AVOSCloud.useAVCloudCN();
+
     }
 
     /**
      * if you want to use the leancloud service, you have to bind a installation id to your device
      */
+
+    public static void registerPushService(final Context context){
+        AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    System.out.println("save installation successful!");
+                    String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+                    System.out.println(installationId);
+                    // 设置默认打开的 Activity,一定要有这句代码，不然会导致无法收到推送消息
+                    PushService.setDefaultPushCallback(context, MainActivity.class);
+                } else {
+                    ShowMessageUtil.tosatFast(e.getMessage(), context);
+                }
+            }
+        });
+    }
+
+    public static void pushMessage(String installationId, JSONObject jsonObject, final Context context){
+         /*push to specific android device|*/
+        AVQuery pushQuery = AVInstallation.getQuery();
+        // 假设 THE_INSTALLATION_ID 是保存在用户表里的 installationId，
+        // 可以在应用启动的时候获取并保存到用户表
+        AVPush push = new AVPush();
+        String action = "com.avos.UPDATE_STATUS";
+        jsonObject.put("action", action);
+
+        push.setData(jsonObject);
+        push.setCloudQuery("select * from _Installation where installationId ='" + installationId + "'");
+        push.sendInBackground(new SendCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    // push successfully.
+                    ShowMessageUtil.tosatFast("push successful", context);
+                } else {
+                    // something wrong.
+                    ShowMessageUtil.tosatFast(e.getMessage(), context);
+                }
+            }
+        });
+    }
 }

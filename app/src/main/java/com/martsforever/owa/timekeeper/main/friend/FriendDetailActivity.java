@@ -2,6 +2,7 @@ package com.martsforever.owa.timekeeper.main.friend;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +14,15 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SendCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import org.xutils.view.annotation.ContentView;
@@ -61,6 +65,8 @@ public class FriendDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
         init();
+//        testPushService();
+//        registerReceiver();
     }
 
     private void init() {
@@ -105,5 +111,11 @@ public class FriendDetailActivity extends AppCompatActivity {
 
     @Event(R.id.friend_detail_confirm_btn)
     private void confirm(View view) {
+        if (friend != null) {
+            String installationId = friend.get(Person.INSTALLATION_ID).toString();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("message", verifyMessageEdit.getText().toString().trim());
+            LeanCloudUtil.pushMessage(installationId, jsonObject, this);
+        }
     }
 }

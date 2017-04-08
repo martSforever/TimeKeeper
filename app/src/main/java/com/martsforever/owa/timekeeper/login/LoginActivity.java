@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
@@ -126,11 +127,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param avUser
      * @param e
      */
-    private void loginProcessing(AVUser avUser, AVException e) {
+    private void loginProcessing(final AVUser avUser, AVException e) {
         if (e == null) {
-            ShowMessageUtil.tosatFast(avUser.getUsername() + " login success!", LoginActivity.this);
-            ActivityManager.entryMainActivity(LoginActivity.this, MainActivity.class);
             /*sign in successful, bind the installation id of the device */
+            String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+            avUser.put(Person.INSTALLATION_ID,installationId);
+            avUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    ShowMessageUtil.tosatFast(avUser.getUsername() + " login success!", LoginActivity.this);
+                    ActivityManager.entryMainActivity(LoginActivity.this, MainActivity.class);
+                }
+            });
+
         } else {
             ShowMessageUtil.tosatSlow("login failure! " + e.getMessage(), LoginActivity.this);
         }
