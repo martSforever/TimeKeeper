@@ -3,237 +3,282 @@
 
     <item
         is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.leancloud.android\avoscloud-feedback\v3.16.2\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_a02cfb599030c17d9919eede603b0b1901dabddc.jar" />
+        sha1="f8e5f12bd8f88bcef0a7ec4ffef6a4c890f0bf32">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\cn.leancloud.android-avoscloud-feedback-v3.16.2_10141602a4aaee5159685c00af68d29a439bb9bb.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-24.2.1_e2e8eae6e15898c5145c9a7ca162a9f2d661a470.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\rxjava-1.1.6.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ac615240b277e7fd3950d7b35f73b733f310cede">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\rxjava-1.1.6_e4cdfd937f052979f9e8b558619db5d6ce400fb7.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_cb4249d4942690c3a51630499d39f343348c6307.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e47f10299673ab68f24c595f96b18086cc9a8384">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\cn.bmob.android-bmob-sdk-3.5.0_123e88478ed4337764b3bf0599de97304f9e4e1c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-24.2.1_eb8526ab20bfe6813002039725c734a64aa742d3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_6d7d623cf18ede2687f791f283ea73e9ea676a40.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="36de222aff3a116fc7cd2c91a011219a5aa5347e">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_22be9ae736866f0b3ef5e6e3dc1c5faa9fa38934.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\okhttp-3.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e7cb33d9f82d3b8521c6594b180f4dd9fc6d49f2">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\okhttp-3.3.1_3c2f38470b4140918f607637724b27503e2b00f5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-24.2.1_4f19b4d18a5dbc66f04a4467aad1f70688dafb01.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\gson-2.6.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="dd625f5e7bba8235782b5dc4244c3fd26953190f">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\gson-2.6.2_0608e86e7efb3903c3654d0c94ed4c98640dfc70.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\.gradle\caches\modules-2\files-2.1\cn.bmob.android\bmob-sms\1.0.1\df9db564e2842696a68deca39b0186aebf3dc07c\bmob-sms-1.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="df9db564e2842696a68deca39b0186aebf3dc07c">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\bmob-sms-1.0.1_7ccea9c6547a4d1a6fe206f08187758e8abedfda.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\BmobSDK_3.5.0_20160630.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8eb5c605a02f792e326c5ac8e4feb2c18dd171ad">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\BmobSDK_3.5.0_20160630_aa98b73e47a8136465accb78541248505bba7f46.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.2.1_e7d0fc41646db850085b986c06d48d30568616a7.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\classes.jar"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-24.2.1_3fa89a1a40a20ddc3fc296e8766a189f2b9651d0.jar" />
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-24.2.1_2e992f028c6dc39d7b9868272dde9a68e4110383.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.leancloud.android\avoscloud-search\v3.16.2\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="867dad63c33388ff8c7644b236579355036d075f">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_6dfedc13d1de67131f6aa9d9af29379a9bd27799.jar" />
+        sha1="f320a735a56dc49014a0003d5b9d9183fe8535c5">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\cn.leancloud.android-avoscloud-search-v3.16.2_54bef2b001ad63a1f0e566e7967f34485e624794.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\okio-1.7.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="bbeca71da43c8f4bc9ceedec002060f53437ad26">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\okio-1.7.0_561917797b039632fa5ad11641997a428283c968.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.2.1_e81e7afc3a7e8cb9acfed0a657c86591e11663c5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.2.1_da74f7fe6821b0f6321886be0fc6c8d622308e9d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.2.1_069204df02da2e07ea183cdbc0ef941da3a5f103.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_1a48190d8c39d6276ef0d5e7b972d553f297ebd1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="88ae147bb68b24d745d2d377d5fda5f1336594a3">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\instant-run_74826e509bdb4751573a034bf9a2c09c5cee7303.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.0\jars\libs\rxandroid-1.2.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="19beef6debb6a22febc28777464c71bfccbafe3d">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\rxandroid-1.2.0_c0a4f80e9aec2a6f215d53bedd42f1505423da50.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_21acee1cda54efac9a7dde8c46b0b7d34e51f88d.jar" />
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_4fea7731135cfcfada03a093144c72113a014f98.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\classes.jar"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-24.2.1_16b064913ec3a45ad47730e03a78aa0bdc9e9c9e.jar" />
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.2.1_931c6032466ad6b594033c8d8856720c88c0b5fd.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.baoyz.swipemenulistview\library\1.3.0\jars\classes.jar"
+        jar="C:\Users\OWA\.gradle\caches\modules-2\files-2.1\cn.leancloud.android\okhttp\2.6.0-leancloud\7d1a8dbbc128e91cf41ab6eafaa741ab2a6ff930\okhttp-2.6.0-leancloud.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7d1a8dbbc128e91cf41ab6eafaa741ab2a6ff930">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\okhttp-2.6.0-leancloud_0a62b2572c372b2b15ae890a5cd6fed8eb7f7c93.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_3f49ea3e91b91873d123f62d83547598872fdb7f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\design\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e03f47f3d1017a093bb3239d4ec47c3447f40744">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-design-24.2.1_78a95f3e2dc0250112aaf818d0a5271bc1a9476f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.baoyz.swipemenulistview\library\1.3.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="8ec8378e8d7aa3104f60823e6350f2728d3609ba">
-        <dex dex="C:\Users\owa\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.baoyz.swipemenulistview-library-1.3.0_731a8d3d7329bcee031c1a739666512c4ac8afc7.jar" />
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.baoyz.swipemenulistview-library-1.3.0_fbe53b36440b181cd2fe803a711448aff7adac17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.skyfishjy.ripplebackground\library\1.0.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="5a7cf2a41aedccc427107ebb37762a5e2f5be590">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.skyfishjy.ripplebackground-library-1.0.1_3a5f29d6fbea2888c1605af893df35015853c9b4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_ae5bf78dacb066f3ec2015d1206b3551aa0c6534.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="990a82981f3622af80b2c5b92ff0f09b52f86682">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_70af99f629a6c136ffa765d02841a9218c4bc689.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-24.2.1_d339bafb3934a2447abf6312ea22f0b9e9b1335a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e76b338cfa0e4e15b41cbb8c452d4e949adb188f">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\instant-run_8a1ab977fa647c76dae6340d2ca0cc470656c7d4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\OWA\.gradle\caches\modules-2\files-2.1\cn.leancloud.android\avoscloud-sdk\v3.16.2\81239119b13b51d0c5f43abb58e4f61e80a29155\avoscloud-sdk-v3.16.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="81239119b13b51d0c5f43abb58e4f61e80a29155">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\avoscloud-sdk-v3.16.2_a235a32ffdfa7dc9504bb12d0656911fe1fb9261.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_aee33fafb3e8f515d7db72e5d89c8dc949998304.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-24.2.1_fcf9cb1499833313826525ead21ec846727a2db5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.2.1_a9cb707cdea9b3e7be860d025941b396431e050e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\OWA\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_ec6d0037ac49df2378b3e5daec4ecd50d352efef.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\OWA\.gradle\caches\modules-2\files-2.1\cn.leancloud.android\qq-sdk\1.6.1-leancloud\896145203364b9e1d055cb81ac127bab139ad91d\qq-sdk-1.6.1-leancloud.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="896145203364b9e1d055cb81ac127bab139ad91d">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\qq-sdk-1.6.1-leancloud_be214c89b08fc535dd2a9da0a4c833f6e298234c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\OWA\.gradle\caches\modules-2\files-2.1\cn.leancloud.android\fastjson\1.1.39-leancloud\94d4ebd4acdaf01d7445435382eea2d2d38e7534\fastjson-1.1.39-leancloud.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="94d4ebd4acdaf01d7445435382eea2d2d38e7534">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\fastjson-1.1.39-leancloud_1562ab759f8a1723bfe0b5b267f0d5c59fbcff34.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\OWA\.gradle\caches\modules-2\files-2.1\cn.leancloud.android\okio\1.6.0-leancloud\7086c00a30a6de0ee3b963ec2c3702d37f1de11d\okio-1.6.0-leancloud.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7086c00a30a6de0ee3b963ec2c3702d37f1de11d">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\okio-1.6.0-leancloud_6da7ff34b7856767d22198dc97e0a102e4653ab8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-24.2.1_9842a108b6f91d5c640914339a356968422a6acb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\org.xutils\xutils\3.5.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c70d3d4cb2d0b16c435c716fa169cb506929269b">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\org.xutils-xutils-3.5.0_c3e7acee7d1e2519ca0e94a8c99892d38b74413f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\OWA\.gradle\caches\modules-2\files-2.1\cn.leancloud.android\avoscloud-statistics\v3.16.2\57a18238c0b174b41729e94666ebf737b1027d3d\avoscloud-statistics-v3.16.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="57a18238c0b174b41729e94666ebf737b1027d3d">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\avoscloud-statistics-v3.16.2_ea0e0eec1cba431668b5415e7f62fa38027576fe.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.2.1_ba9c5c5e20a41e67c0262e3debaf20d64fb37217.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.2.1_7a703c700727ee034d9dfcd5b04cf1eeb4e5ad73.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\cn.leancloud.android\avoscloud-sns\v3.16.2\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cfe4f2be0a6fff2a6c056e2b39824c6283c91a2a">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\cn.leancloud.android-avoscloud-sns-v3.16.2_71b06dd718e420688b154f29bf13e5581feb9383.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_d2bd6be1d5d2518fa99671160a4e314b44c77246.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-24.2.1_1182ed5778884df2aecc2db55b28dced758b4034.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="D:\programfiles\AndroidStudioProjects\TimeKeeper\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-24.2.1_7ce36fe4735faea8970d4de22fea135ff194f3e8.jar" />
     </item>
 
 </items>
