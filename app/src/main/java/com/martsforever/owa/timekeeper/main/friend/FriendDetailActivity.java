@@ -23,6 +23,8 @@ import com.avos.avoscloud.SendCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
+import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
+import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import org.xutils.view.annotation.ContentView;
@@ -114,7 +116,9 @@ public class FriendDetailActivity extends AppCompatActivity {
         if (friend != null) {
             String installationId = friend.get(Person.INSTALLATION_ID).toString();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("message", verifyMessageEdit.getText().toString().trim());
+            jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, verifyMessageEdit.getText().toString().trim());
+            jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME,AVUser.getCurrentUser().get(Person.NICK_NAME).toString());
+            jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, FriendsInvitationMessageHandler.class.getName());
             LeanCloudUtil.pushMessage(installationId, jsonObject, this);
         }
     }
