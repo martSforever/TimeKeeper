@@ -8,21 +8,29 @@ import com.avos.avoscloud.AVUser;
 
 public class Message {
 
-    public static String MESSAGE_TYPE_FRIENDS_INVITATION = "friends invitation";
-    public static String MESSAGE_TYPE_TODOS_INVITATION = "todosinvitation";
+    /*message type, used to be message title*/
+    public static final String MESSAGE_TYPE_FRIENDS_INVITATION = "friends invitation";
+    public static final String MESSAGE_TYPE_TODOS_INVITATION = "todos invitation";
+    /*read state*/
+    public static final String READ = "read";
+    public static final String UNREAD = "unread";
 
     /*table name*/
     public static final String TABLE_MESSAGE = "MESSAGE";
 
     /*sender*/
-    private AVUser sender;
+    public static final String SENDER = "sender";
     /*receiver*/
-    private AVUser receiver;
+    public static final String RECEIVER = "receiver";
     /*message type*/
-    private String MESSAGE_TYPE = "message type";
+    public static final String MESSAGE_TYPE = "messageType";
     /*verify message*/
-    private String VERIFY_MESSAGE = "verify message";
+    public static final String VERIFY_MESSAGE = "verifyMessage";
+    /*is readed?*/
+    public static final String IS_READ = "isRead";
+    /*time*/
+    public static final String TIME = "time";
     /*handle class name*/
-    private String HANDLE_CLASS_NAME = "handle class name";
+    public static final String HANDLE_CLASS_NAME = "handleClassName";
 
 }

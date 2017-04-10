@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         myCustomReceiver.setHandleMessage(new MessageReceiver.HandleMessage() {
             @Override
             public void receiveMessage(JSONObject jsonObject) {
-                ShowMessageUtil.tosatFast(jsonObject.getString("message"), MainActivity.this);
+                ShowMessageUtil.tosatFast("You have new Message", MainActivity.this);
             }
         });
         registerReceiver(myCustomReceiver, intentFilter);

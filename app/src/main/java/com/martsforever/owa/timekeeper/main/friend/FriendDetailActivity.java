@@ -2,25 +2,22 @@ package com.martsforever.owa.timekeeper.main.friend;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVInstallation;
-import com.avos.avoscloud.AVPush;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
-import com.avos.avoscloud.SendCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
 import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
@@ -31,6 +28,8 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.Date;
 
 @ContentView(R.layout.activity_friend_detail)
 public class FriendDetailActivity extends AppCompatActivity {
@@ -46,16 +45,12 @@ public class FriendDetailActivity extends AppCompatActivity {
 
     @ViewInject(R.id.friend_detail_verify_message_edit)
     EditText verifyMessageEdit;
-    @ViewInject(R.id.friend_detail_confirm_btn)
-    Button confirmBtn;
-    @ViewInject(R.id.friend_detail_cancel_btn)
-    Button cancelBtn;
 
     AVUser friend;
 
     Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(android.os.Message msg) {
             super.handleMessage(msg);
             friend = (AVUser) msg.obj;
         }
@@ -85,7 +80,7 @@ public class FriendDetailActivity extends AppCompatActivity {
                     AVUser currentUser = AVUser.getCurrentUser();
                     verifyMessageEdit.setText("I'm " + currentUser.get(Person.NICK_NAME).toString());
 
-                    Message message = new Message();
+                    android.os.Message message = new android.os.Message();
                     message.obj = user;
                     handler.sendMessage(message);
                 } else {
@@ -114,12 +109,44 @@ public class FriendDetailActivity extends AppCompatActivity {
     @Event(R.id.friend_detail_confirm_btn)
     private void confirm(View view) {
         if (friend != null) {
-            String installationId = friend.get(Person.INSTALLATION_ID).toString();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, verifyMessageEdit.getText().toString().trim());
-            jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME,AVUser.getCurrentUser().get(Person.NICK_NAME).toString());
-            jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, FriendsInvitationMessageHandler.class.getName());
-            LeanCloudUtil.pushMessage(installationId, jsonObject, this);
+            addNewMessage(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null){
+                        pushFriendsInviteMessage();
+                    }
+                    else {
+                        ShowMessageUtil.tosatFast(e.getMessage(), FriendDetailActivity.this);
+                    }
+                }
+            });
+        }
+        else {
+            ShowMessageUtil.tosatFast("System error!", FriendDetailActivity.this);
         }
     }
+
+    /**
+     * push friend's invitation message
+     */
+    private void pushFriendsInviteMessage(){
+        String installationId = friend.get(Person.INSTALLATION_ID).toString();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, verifyMessageEdit.getText().toString().trim());
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME,AVUser.getCurrentUser().get(Person.NICK_NAME).toString());
+        jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, FriendsInvitationMessageHandler.class.getName());
+        LeanCloudUtil.pushMessage(installationId, jsonObject, this);
+    }
+
+    private void addNewMessage(SaveCallback saveCallback){
+        AVObject message = new AVObject(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
+        message.put(Message.MESSAGE_TYPE, Message.MESSAGE_TYPE_FRIENDS_INVITATION);
+        message.put(Message.SENDER,AVUser.getCurrentUser());
+        message.put(Message.RECEIVER,friend);
+        message.put(Message.IS_READ,Message.UNREAD);
+        message.put(Message.TIME,new Date());
+        message.put(Message.VERIFY_MESSAGE,verifyMessageEdit.getText().toString().trim());
+        message.saveInBackground(saveCallback);
+    }
+
 }
