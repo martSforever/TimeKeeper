@@ -36,6 +36,7 @@
             android:paddingLeft="10dp">
 
             <TextView
+                android:id="@+id/me_message_text"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="13"

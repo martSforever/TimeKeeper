@@ -65,7 +65,7 @@ public class TodoAdapter extends BaseSwipListAdapter {
         viewHolder.descriptionText.setText(todo.getString(Todo.DESCRIPTION));
 
         Date endTime = todo.getDate(Todo.END_TIME);
-        viewHolder.endTimeText.setText(DateUtil.dateToString(endTime,DateUtil.COMPLICATE_DATE_TOW_LINE));
+        viewHolder.endTimeText.setText(DateUtil.dateToString(endTime,DateUtil.COMPLICATE_DATE_TWO_LINE));
         viewHolder.levelImg.setImageResource(Todo.getLevelImage(todo.getInt(Todo.LEVEL)));
         viewHolder.statusImg.setImageResource(Todo.getStatusImage(todo.getInt(Todo.STATE)));
         return convertView;

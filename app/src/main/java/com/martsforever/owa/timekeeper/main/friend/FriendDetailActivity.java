@@ -145,6 +145,7 @@ public class FriendDetailActivity extends AppCompatActivity {
         message.put(Message.RECEIVER,friend);
         message.put(Message.IS_READ,Message.UNREAD);
         message.put(Message.TIME,new Date());
+        message.put(Message.HANDLE_CLASS_NAME,FriendsInvitationMessageHandler.class.getName());
         message.put(Message.VERIFY_MESSAGE,verifyMessageEdit.getText().toString().trim());
         message.saveInBackground(saveCallback);
     }

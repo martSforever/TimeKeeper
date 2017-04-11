@@ -20,6 +20,7 @@ import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendBaseAdapter;
 import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
+import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
@@ -29,6 +30,8 @@ import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RippleBackground rippleBackground;
     TextView tomatoTimeText;
 
+    /*me interface element*/
+    TextView messageText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-
         /*main interface*/
         LayoutInflater inflater = LayoutInflater.from(this);
         View todoView = inflater.inflate(R.layout.page_view_schedule, null);
@@ -154,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tomatoTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (rippleBackground.isRippleAnimationRunning()) {
                     /*结束动画*/
                     rippleBackground.stopRippleAnimation();
@@ -163,6 +166,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     rippleBackground.startRippleAnimation();
             }
         });
+
+        /*me interface*/
+        messageText = (TextView) meView.findViewById(R.id.me_message_text);
+        messageText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageActivity.actionStart(MainActivity.this);
+            }
+        });
+
     }
 
     @Override

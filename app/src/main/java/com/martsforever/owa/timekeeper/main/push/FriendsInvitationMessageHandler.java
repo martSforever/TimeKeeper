@@ -1,5 +1,8 @@
 package com.martsforever.owa.timekeeper.main.push;
 
+import android.content.Context;
+import android.view.View;
+
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -15,4 +18,14 @@ public class FriendsInvitationMessageHandler implements MessageHandler {
         result.put(MessageReceiver.NOTIFICATION_TICKER,"You have new Message!");
         return result;
     }
+    @Override
+    public View.OnClickListener getOnclickListener(Context context, String messageId) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("hello haha");
+            }
+        };
+    }
+
 }
