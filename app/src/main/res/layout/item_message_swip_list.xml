@@ -3,54 +3,58 @@
     android:layout_width="match_parent"
     android:layout_height="68dp"
     android:background="#aaffffff"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="5dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:orientation="horizontal">
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/item_message_title_txt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="friend's invitation" />
 
         <TextView
-            android:id="@+id/item_message_isread_txt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:id="@+id/item_message_verify_message_txt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:text="unread" />
+            android:gravity="center_vertical"
+            android:text="vertify message: I'm marts"
+            android:textColor="#999"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:orientation="horizontal">
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
 
         <TextView
-            android:id="@+id/item_message_verify_message_txt"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textColor="#999"
-            android:textSize="12sp"
-            android:text="vertify message: I'm marts" />
+            android:id="@+id/item_message_isread_txt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="unread" />
 
         <TextView
             android:id="@+id/item_message_time_txt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:textColor="#999"
-            android:textSize="12sp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center_vertical|right"
-            android:text="2017-4-10 22:30" />
+            android:text="2017-4-10 22:30"
+            android:textColor="#999"
+            android:textSize="12sp" />
+
     </LinearLayout>
 </LinearLayout>
