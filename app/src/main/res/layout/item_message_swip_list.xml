@@ -8,8 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="34dp"
         android:orientation="horizontal">
 
         <TextView
@@ -31,15 +30,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="34dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/item_message_verify_message_txt"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="4"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textColor="#999"
             android:textSize="12sp"

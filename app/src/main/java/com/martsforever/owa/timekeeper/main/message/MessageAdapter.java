@@ -75,13 +75,6 @@ public class MessageAdapter extends BaseSwipListAdapter {
         } else {
             viewHolder.isReadText.setTextColor(0x88ff0000);
         }
-
-        try {
-            MessageHandler messageHandler = (MessageHandler) Class.forName(message.get(Message.HANDLE_CLASS_NAME).toString()).newInstance();
-            convertView.setOnClickListener(messageHandler.getOnclickListener(context, message.getObjectId()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return convertView;
     }
 

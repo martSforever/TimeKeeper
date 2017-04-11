@@ -19,5 +19,5 @@ public interface MessageHandler {
 
     public JSONObject getNotificationMessage(JSONObject jsonObject);
 
-    public View.OnClickListener getOnclickListener(Context context, String messageId);
+    public void onMessageClick(Context context, String messageId);
 }
