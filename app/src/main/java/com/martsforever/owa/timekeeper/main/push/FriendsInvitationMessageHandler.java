@@ -1,10 +1,9 @@
 package com.martsforever.owa.timekeeper.main.push;
 
 import android.content.Context;
-import android.view.View;
 
 import com.alibaba.fastjson.JSONObject;
-import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
+import com.martsforever.owa.timekeeper.main.message.MessageDetailActivity;
 
 /**
  * Created by OWA on 2017/4/8.
@@ -22,7 +21,7 @@ public class FriendsInvitationMessageHandler implements MessageHandler {
 
     @Override
     public void onMessageClick(Context context, String messageId) {
-        ShowMessageUtil.tosatFast(messageId, context);
+        MessageDetailActivity.actionStart(context, messageId);
     }
 
 }

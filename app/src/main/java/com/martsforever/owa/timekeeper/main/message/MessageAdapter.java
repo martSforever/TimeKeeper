@@ -5,14 +5,17 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Message;
-import com.martsforever.owa.timekeeper.main.common.BaseSwipListAdapter;
-import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.util.DateUtil;
+import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -21,7 +24,7 @@ import java.util.List;
  * Created by OWA on 2017/4/10.
  */
 
-public class MessageAdapter extends BaseSwipListAdapter {
+public class MessageAdapter extends BaseAdapter {
 
     List<AVObject> messages;
     LayoutInflater layoutInflater;
@@ -59,6 +62,7 @@ public class MessageAdapter extends BaseSwipListAdapter {
             viewHolder.isReadText = (TextView) convertView.findViewById(R.id.item_message_isread_txt);
             viewHolder.verifyMessageText = (TextView) convertView.findViewById(R.id.item_message_verify_message_txt);
             viewHolder.timeText = (TextView) convertView.findViewById(R.id.item_message_time_txt);
+            viewHolder.isReadText.setOnClickListener(mOnClickListener);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -72,9 +76,13 @@ public class MessageAdapter extends BaseSwipListAdapter {
         viewHolder.isReadText.setText(isRead);
         if (isRead.equals(Message.READ)) {
             viewHolder.isReadText.setTextColor(0x6600ff00);
+            viewHolder.isReadText.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
         } else {
-            viewHolder.isReadText.setTextColor(0x88ff0000);
+            viewHolder.isReadText.setTextColor(0xaaffffff);
+            viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 89, 180, 202));
         }
+
+        viewHolder.isReadText.setTag(position);
         return convertView;
     }
 
@@ -84,4 +92,27 @@ public class MessageAdapter extends BaseSwipListAdapter {
         TextView verifyMessageText;
         TextView timeText;
     }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final Object o = v.getTag();
+            if (o instanceof Integer) {
+                AVObject message = messages.get((Integer)o);
+                message.put(Message.IS_READ,Message.READ);
+                message.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null){
+                            v.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
+                            ((TextView)v).setTextColor(0x6600ff00);
+                            ((TextView)v).setText(Message.READ);
+                        }else {
+                            ShowMessageUtil.tosatFast(e.getMessage(),context);
+                        }
+                    }
+                });
+            }
+        }
+    };
 }

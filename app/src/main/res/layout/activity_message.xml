@@ -15,12 +15,12 @@
         android:orientation="horizontal"
         android:padding="5dp">
 
-        <TextView
+        <ImageView
+            android:id="@+id/message_back_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="18sp" />
+            android:src="@drawable/icon_back"
+            android:layout_weight="1" />
 
         <TextView
             android:layout_width="0dp"
@@ -39,41 +39,13 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#83cee0"
-        android:orientation="horizontal"
-        android:padding="5dp">
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
-            android:background="@drawable/bg_friend_search_edit"
-            android:ellipsize="start"
-            android:gravity="center"
-            android:hint="Search"
-            android:maxLines="1"
-            android:textColorHint="#83cee0"
-            android:textSize="12sp" />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_friend_search_btn"
-            android:padding="7dp"
-            android:src="@drawable/icon_schedule_search" />
-
-    </LinearLayout>
-
-    <com.baoyz.swipemenulistview.SwipeMenuListView
+    <com.yydcdut.sdlv.SlideAndDragListView
         android:id="@+id/message_swip_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11"
         android:divider="#83cee0"
-        android:dividerHeight="0.5dp" />
+        android:dividerHeight="0.5dp">
+    </com.yydcdut.sdlv.SlideAndDragListView>
 </LinearLayout>

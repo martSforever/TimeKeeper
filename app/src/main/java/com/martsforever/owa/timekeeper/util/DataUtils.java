@@ -1,5 +1,8 @@
 package com.martsforever.owa.timekeeper.util;
 
+import android.app.Activity;
+import android.util.TypedValue;
+
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
@@ -96,6 +99,11 @@ public class DataUtils {
                 }
             });
         }
+    }
+
+    public static int dp2px(int dp,Activity activity) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                activity.getResources().getDisplayMetrics());
     }
 
 }
