@@ -3,7 +3,7 @@ package com.martsforever.owa.timekeeper.main.push;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
-import com.martsforever.owa.timekeeper.main.message.MessageDetailActivity;
+import com.martsforever.owa.timekeeper.main.message.FriendsInviteMessageDetailActivity;
 
 /**
  * Created by OWA on 2017/4/8.
@@ -21,7 +21,7 @@ public class FriendsInvitationMessageHandler implements MessageHandler {
 
     @Override
     public void onMessageClick(Context context, String messageId) {
-        MessageDetailActivity.actionStart(context, messageId);
+        FriendsInviteMessageDetailActivity.actionStart(context, messageId);
     }
 
 }

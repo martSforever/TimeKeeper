@@ -9,8 +9,9 @@ import com.avos.avoscloud.AVUser;
 public class Message {
 
     /*message type, used to be message title*/
-    public static final String MESSAGE_TYPE_FRIENDS_INVITATION = "friends invitation";
-    public static final String MESSAGE_TYPE_TODOS_INVITATION = "todos invitation";
+    public static final String MESSAGE_TYPE_FRIENDS_INVITATION = "Friends invitation";
+    public static final String MESSAGE_TYPE_TODOS_INVITATION = "Todos invitation";
+    public static final String MESSAGE_TYPE_SYATEM = "System Message";
     /*read state*/
     public static final String READ = "read";
     public static final String UNREAD = "unread";

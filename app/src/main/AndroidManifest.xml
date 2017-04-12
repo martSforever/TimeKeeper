@@ -53,7 +53,7 @@
         <!-- leancloud push end -->
 
         <activity android:name=".main.message.MessageActivity" />
-        <activity android:name=".main.message.MessageDetailActivity"></activity>
+        <activity android:name=".main.message.FriendsInviteMessageDetailActivity"></activity>
     </application>
 
 </manifest>
