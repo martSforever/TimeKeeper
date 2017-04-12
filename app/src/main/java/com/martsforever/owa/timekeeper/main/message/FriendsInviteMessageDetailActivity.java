@@ -51,7 +51,6 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
                     message = (AVObject) msg.obj;
                     initView();
                     initSender();
-                    markAsRead();
                     break;
                 case 2:
                     sender = (AVUser) msg.obj;
@@ -92,11 +91,6 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void markAsRead(){
-        message.put(Message.IS_READ,Message.READ);
-        message.saveInBackground();
     }
 
     private void initSender() {

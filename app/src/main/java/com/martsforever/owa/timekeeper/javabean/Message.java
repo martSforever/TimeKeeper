@@ -13,8 +13,10 @@ public class Message {
     public static final String MESSAGE_TYPE_TODOS_INVITATION = "Todos invitation";
     public static final String MESSAGE_TYPE_SYATEM = "System Message";
     /*read state*/
-    public static final String READ = "read";
-    public static final String UNREAD = "unread";
+    public static final int READ = 1;
+    public static final int UNREAD = 2;
+    public static final int REJECT = 3;
+    public static final int ACCEPT = 4;
 
     /*table name*/
     public static final String TABLE_MESSAGE = "MESSAGE";

@@ -16,6 +16,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
@@ -112,6 +113,9 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
         AVObject message = messages.get(position);
         MessageHandler messageHandler = null;
         try {
+            message.put(Message.IS_READ,Message.READ);
+            message.saveInBackground();
+            messageAdapter.notifyDataSetChanged();
             messageHandler = (MessageHandler) Class.forName(message.get(Message.HANDLE_CLASS_NAME).toString()).newInstance();
             messageHandler.onMessageClick(this, message.getObjectId());
         } catch (Exception e) {
@@ -156,7 +160,7 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode){
-            
+
         }
     }
 

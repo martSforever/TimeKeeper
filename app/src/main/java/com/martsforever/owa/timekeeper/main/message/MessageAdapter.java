@@ -72,14 +72,28 @@ public class MessageAdapter extends BaseAdapter {
         viewHolder.titleText.setText(message.get(Message.MESSAGE_TYPE).toString());
         viewHolder.verifyMessageText.setText("Verify message: " + message.get(Message.VERIFY_MESSAGE).toString());
         viewHolder.timeText.setText(DateUtil.dateToString((Date) (message.get(Message.TIME)), DateUtil.COMPLICATED_DATE));
-        String isRead = message.get(Message.IS_READ).toString();
-        viewHolder.isReadText.setText(isRead);
-        if (isRead.equals(Message.READ)) {
-            viewHolder.isReadText.setTextColor(0x6600ff00);
-            viewHolder.isReadText.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
-        } else {
-            viewHolder.isReadText.setTextColor(0xaaffffff);
-            viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 89, 180, 202));
+        int isRead = message.getInt(Message.IS_READ);
+        switch (isRead){
+            case Message.READ:
+                viewHolder.isReadText.setTextColor(0xff376956);
+                viewHolder.isReadText.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
+                viewHolder.isReadText.setText("READ");
+                break;
+            case Message.UNREAD:
+                viewHolder.isReadText.setTextColor(0xaaffffff);
+                viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 89, 180, 202));
+                viewHolder.isReadText.setText("UNREAD");
+                break;
+            case Message.REJECT:
+                viewHolder.isReadText.setTextColor(0xaaffffff);
+                viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 179, 24, 0));
+                viewHolder.isReadText.setText("REJECT");
+                break;
+            case Message.ACCEPT:
+                viewHolder.isReadText.setTextColor(0xaaffffff);
+                viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 73, 90, 128));
+                viewHolder.isReadText.setText("ACCEPT");
+                break;
         }
 
         viewHolder.isReadText.setTag(position);
@@ -105,8 +119,8 @@ public class MessageAdapter extends BaseAdapter {
                     public void done(AVException e) {
                         if (e == null){
                             v.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
-                            ((TextView)v).setTextColor(0x6600ff00);
-                            ((TextView)v).setText(Message.READ);
+                            ((TextView)v).setTextColor(0xff376956);
+                            ((TextView)v).setText("READ");
                         }else {
                             ShowMessageUtil.tosatFast(e.getMessage(),context);
                         }
