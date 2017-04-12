@@ -62,7 +62,6 @@ public class MessageAdapter extends BaseAdapter {
             viewHolder.isReadText = (TextView) convertView.findViewById(R.id.item_message_isread_txt);
             viewHolder.verifyMessageText = (TextView) convertView.findViewById(R.id.item_message_verify_message_txt);
             viewHolder.timeText = (TextView) convertView.findViewById(R.id.item_message_time_txt);
-            viewHolder.isReadText.setOnClickListener(mOnClickListener);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -78,20 +77,24 @@ public class MessageAdapter extends BaseAdapter {
                 viewHolder.isReadText.setTextColor(0xff376956);
                 viewHolder.isReadText.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
                 viewHolder.isReadText.setText("READ");
+                viewHolder.isReadText.setOnClickListener(null);
                 break;
             case Message.UNREAD:
                 viewHolder.isReadText.setTextColor(0xaaffffff);
                 viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 89, 180, 202));
                 viewHolder.isReadText.setText("UNREAD");
+                viewHolder.isReadText.setOnClickListener(mOnClickListener);
                 break;
             case Message.REJECT:
-                viewHolder.isReadText.setTextColor(0xaaffffff);
-                viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 179, 24, 0));
+                viewHolder.isReadText.setTextColor(Color.argb(0xff, 179, 24, 0));
+                viewHolder.isReadText.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
+                viewHolder.isReadText.setOnClickListener(null);
                 viewHolder.isReadText.setText("REJECT");
                 break;
             case Message.ACCEPT:
-                viewHolder.isReadText.setTextColor(0xaaffffff);
-                viewHolder.isReadText.setBackgroundColor(Color.argb(0xff, 73, 90, 128));
+                viewHolder.isReadText.setTextColor(Color.argb(0xff, 73, 90, 128));
+                viewHolder.isReadText.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
+                viewHolder.isReadText.setOnClickListener(null);
                 viewHolder.isReadText.setText("ACCEPT");
                 break;
         }

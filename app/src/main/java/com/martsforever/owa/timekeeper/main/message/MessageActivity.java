@@ -42,6 +42,8 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
     @ViewInject(R.id.message_swip_list_view)
     SlideAndDragListView<Message> messageListView;
 
+    public static final int RESULT_MESSAGE_CHANGE = 0x001;
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -108,11 +110,13 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
         AVObject message = messages.get(position);
         MessageHandler messageHandler = null;
         try {
-            message.put(Message.IS_READ,Message.READ);
-            message.saveInBackground();
-            messageAdapter.notifyDataSetChanged();
+            if (message.getInt(Message.IS_READ) == Message.UNREAD) {
+                message.put(Message.IS_READ, Message.READ);
+                messageAdapter.notifyDataSetChanged();
+                message.saveInBackground();
+            }
             messageHandler = (MessageHandler) Class.forName(message.get(Message.HANDLE_CLASS_NAME).toString()).newInstance();
-            messageHandler.onMessageClick(this, message.getObjectId());
+            messageHandler.onMessageClick(this, message.getObjectId(), position);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,5 +153,20 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
     @Event(R.id.message_back_btn)
     private void back(View view) {
         this.finish();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_MESSAGE_CHANGE:
+                int messagePosition = data.getIntExtra("messagePosition", 0);
+                int messageIsRead = data.getIntExtra("messageIsRead", Message.READ);
+                AVObject message = messages.get(messagePosition);
+                message.put(Message.IS_READ, messageIsRead);
+                messageAdapter.notifyDataSetChanged();
+                break;
+        }
     }
 }

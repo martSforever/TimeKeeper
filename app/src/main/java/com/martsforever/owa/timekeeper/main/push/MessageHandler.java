@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.main.push;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
@@ -19,5 +20,5 @@ public interface MessageHandler {
 
     public JSONObject getNotificationMessage(JSONObject jsonObject);
 
-    public void onMessageClick(Context context, String messageId);
+    public void onMessageClick(Activity activity, String messageId, int messagePosition);
 }

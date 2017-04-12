@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.main.message;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -68,11 +69,12 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         initMessage();
     }
 
-    public static void actionStart(Context context, String messageId) {
+    public static void actionStart(Activity activity, String messageId,int messagePosition) {
         Intent intent = new Intent();
-        intent.setClass(context, FriendsInviteMessageDetailActivity.class);
+        intent.setClass(activity, FriendsInviteMessageDetailActivity.class);
         intent.putExtra("messageId", messageId);
-        context.startActivity(intent);
+        intent.putExtra("messagePosition",messagePosition);
+        activity.startActivityForResult(intent, 0);//这里采用startActivityForResult来做跳转，此处的0为一个依据，可以写其他的值，但一定要>=0
     }
 
     private void initMessage() {
@@ -128,8 +130,14 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
     private void reject(View view) {
         ShowMessageUtil.tosatFast(sender.getUsername(), this);
         /*push message*/
-
-
+        pushRejectMessage();
+        addRejectMessage();
+        Intent intent = getIntent();
+        intent.putExtra("messageIsRead",Message.REJECT);
+        message.put(Message.IS_READ,Message.REJECT);
+        message.saveInBackground();
+        setResult(MessageActivity.RESULT_MESSAGE_CHANGE,intent);
+        finish();
     }
 
     private void pushRejectMessage() {
@@ -140,7 +148,6 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
         LeanCloudUtil.pushMessage(installationId, jsonObject, this);
     }
-
     private void addRejectMessage() {
         /*add new Message*/
         AVObject avMessage = new AVObject(Message.TABLE_MESSAGE);
@@ -151,6 +158,7 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         avMessage.put(Message.IS_READ, Message.UNREAD);
         avMessage.put(Message.TIME, new Date());
         avMessage.put(Message.HANDLE_CLASS_NAME, SystemMessageHandler.class.getName());
+        avMessage.saveInBackground();
     }
 
     @Event(R.id.message_detail_back_btn)

@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.main.push;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
@@ -20,8 +21,8 @@ public class FriendsInvitationMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void onMessageClick(Context context, String messageId) {
-        FriendsInviteMessageDetailActivity.actionStart(context, messageId);
+    public void onMessageClick(Activity activity, String messageId, int messagePosition) {
+        FriendsInviteMessageDetailActivity.actionStart(activity, messageId,messagePosition);
     }
 
 }
