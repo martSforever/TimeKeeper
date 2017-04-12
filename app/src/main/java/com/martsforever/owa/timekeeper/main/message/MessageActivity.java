@@ -82,11 +82,6 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
 
     public void initMenu() {
         listViewMenu = new Menu(false, false);
-        /*listViewMenu.addItem(new MenuItem.Builder().setWidth(DataUtils.dp2px(90,MessageActivity.this))
-                .setBackground((new ColorDrawable(Color.argb(0xdd,222, 140, 104)))
-                .setDirection(MenuItem.DIRECTION_RIGHT)
-                .setIcon(getResources().getDrawable(R.drawable.icon_operation))
-                .build());*/
         listViewMenu.addItem(new MenuItem.Builder().setWidth(DataUtils.dp2px(90, MessageActivity.this))
                 .setBackground((new ColorDrawable(Color.argb(0xdd, 222, 140, 104))))
                 .setDirection(MenuItem.DIRECTION_RIGHT)
@@ -155,13 +150,4 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
     private void back(View view) {
         this.finish();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode){
-
-        }
-    }
-
 }
