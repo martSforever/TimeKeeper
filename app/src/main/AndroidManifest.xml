@@ -38,7 +38,7 @@
         <activity android:name=".register.SelectRegisterActivity" />
         <activity android:name=".register.RetrivePasswordActivity" />
         <activity android:name=".main.friend.AddFriendsActivity" />
-        <activity android:name=".main.friend.FriendDetailActivity" />
+        <activity android:name=".main.friend.AddFriendDetailActivity" />
 
         <!-- leancloud push start -->
         <service android:name="com.avos.avoscloud.PushService" />
@@ -54,7 +54,8 @@
 
         <activity android:name=".main.message.MessageActivity" />
         <activity android:name=".main.message.FriendsInviteMessageDetailActivity" />
-        <activity android:name=".main.message.SystemMessageDetailActivity"></activity>
+        <activity android:name=".main.message.SystemMessageDetailActivity" />
+        <activity android:name=".main.friend.FriendDetailActivity"></activity>
     </application>
 
 </manifest>

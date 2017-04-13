@@ -70,11 +70,11 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         initMessage();
     }
 
-    public static void actionStart(Activity activity, String messageId,int messagePosition) {
+    public static void actionStart(Activity activity, String messageId, int messagePosition) {
         Intent intent = new Intent();
         intent.setClass(activity, FriendsInviteMessageDetailActivity.class);
         intent.putExtra("messageId", messageId);
-        intent.putExtra("messagePosition",messagePosition);
+        intent.putExtra("messagePosition", messagePosition);
         activity.startActivityForResult(intent, 0);//这里采用startActivityForResult来做跳转，此处的0为一个依据，可以写其他的值，但一定要>=0
     }
 
@@ -129,21 +129,22 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         pushRejectMessage();
         addRejectMessage();
         Intent intent = getIntent();
-        intent.putExtra("messageIsRead",Message.REJECT);
-        message.put(Message.IS_READ,Message.REJECT);
+        intent.putExtra("messageIsRead", Message.REJECT);
+        message.put(Message.IS_READ, Message.REJECT);
         message.saveInBackground();
-        setResult(MessageActivity.RESULT_MESSAGE_CHANGE,intent);
+        setResult(MessageActivity.RESULT_MESSAGE_CHANGE, intent);
         finish();
     }
 
     private void pushRejectMessage() {
         String installationId = sender.get(Person.INSTALLATION_ID).toString();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString()+ " has rejected your friend's invitation!");
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString() + " has rejected your friend's invitation!");
         jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, currentUser.get(Person.NICK_NAME).toString());
         jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
         LeanCloudUtil.pushMessage(installationId, jsonObject, this);
     }
+
     private void addRejectMessage() {
         /*add new Message*/
         AVObject avMessage = new AVObject(Message.TABLE_MESSAGE);
@@ -163,17 +164,17 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         addAcceptMessage();
         addFriendShip();
         Intent intent = getIntent();
-        intent.putExtra("messageIsRead",Message.ACCEPT);
-        message.put(Message.IS_READ,Message.ACCEPT);
+        intent.putExtra("messageIsRead", Message.ACCEPT);
+        message.put(Message.IS_READ, Message.ACCEPT);
         message.saveInBackground();
-        setResult(MessageActivity.RESULT_MESSAGE_CHANGE,intent);
+        setResult(MessageActivity.RESULT_MESSAGE_CHANGE, intent);
         finish();
     }
 
-    private void pushAcceptMessage(){
+    private void pushAcceptMessage() {
         String installationId = sender.get(Person.INSTALLATION_ID).toString();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString()+ " has accepted your friend's invitation!");
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString() + " has accepted your friend's invitation!");
         jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, currentUser.get(Person.NICK_NAME).toString());
         jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
         LeanCloudUtil.pushMessage(installationId, jsonObject, this);
@@ -192,14 +193,16 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         avMessage.saveInBackground();
     }
 
-    private void addFriendShip(){
+    private void addFriendShip() {
         AVObject friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
-        friendship.put(FriendShip.SELF,currentUser);
-        friendship.put(FriendShip.FRIEND,sender);
+        friendship.put(FriendShip.SELF, currentUser);
+        friendship.put(FriendShip.FRIEND, sender);
+        friendship.put(FriendShip.FRIEND_NAME, sender.get(Person.NICK_NAME));
         friendship.saveInBackground();
         friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
-        friendship.put(FriendShip.FRIEND,currentUser);
-        friendship.put(FriendShip.SELF,sender);
+        friendship.put(FriendShip.FRIEND, currentUser);
+        friendship.put(FriendShip.SELF, sender);
+        friendship.put(FriendShip.FRIEND_NAME, currentUser.get(Person.NICK_NAME));
         friendship.saveInBackground();
     }
 

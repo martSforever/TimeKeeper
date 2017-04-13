@@ -10,4 +10,6 @@ public class FriendShip {
 
     public static final String SELF = "self";
     public static final String FRIEND = "friend";
+
+    public static final String FRIEND_NAME = "friendName";
 }

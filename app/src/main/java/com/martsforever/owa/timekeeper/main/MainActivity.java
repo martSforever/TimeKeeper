@@ -2,24 +2,29 @@ package com.martsforever.owa.timekeeper.main;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendBaseAdapter;
-import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
+import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
 import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
@@ -28,10 +33,9 @@ import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
+import com.yydcdut.sdlv.SlideAndDragListView;
 
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.Event;
-import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -40,6 +44,21 @@ import java.util.Random;
 
 @ContentView(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final int INIT_FRIENDSHIPS = 0x001;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case INIT_FRIENDSHIPS:
+                    friendShips = (List<AVObject>) msg.obj;
+                    initFriendInterface();
+                    break;
+            }
+        }
+    };
 
     /*main interface element*/
     private NoScrollViewPager labelViewPager;
@@ -64,10 +83,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.pagerItems = pagerItems;
     }
 
+    private View todoView;
+    private View tomatoView;
+    private View friendsView;
+    private View meView;
+
     /*friend interface element*/
-    List<AVUser> friends;
-    private FriendBaseAdapter friendAdapter;
-    private ListView friendListView;
+    List<AVObject> friendShips;
+    private FriendShipBaseAdapter friendAdapter;
+    private SlideAndDragListView<AVObject> friendListView;
     private ImageView turnToAddFriendBtn;
 
     /*to do interface element*/
@@ -85,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
         /*xutils注入*/
         x.view().inject(this);
         System.out.println("init");
@@ -94,12 +117,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
+        initMainInterface();
+        initDataFriendShips();
+        initTodosInterface();
+        initTomatoInterface();
+        initMeInterface();
+    }
+
+    private void initMainInterface() {
         /*main interface*/
         LayoutInflater inflater = LayoutInflater.from(this);
-        View todoView = inflater.inflate(R.layout.page_view_schedule, null);
-        View tomatoView = inflater.inflate(R.layout.page_view_tomato, null);
-        View friendsView = inflater.inflate(R.layout.page_view_friends, null);
-        View meView = inflater.inflate(R.layout.page_view_me, null);
+        todoView = inflater.inflate(R.layout.page_view_schedule, null);
+        tomatoView = inflater.inflate(R.layout.page_view_tomato, null);
+        friendsView = inflater.inflate(R.layout.page_view_friends, null);
+        meView = inflater.inflate(R.layout.page_view_me, null);
 
         pagerItems = new ArrayList<>();
         pagerItems.add(todoView);
@@ -117,11 +148,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.label_tomato).setOnClickListener(this);
         findViewById(R.id.label_friends).setOnClickListener(this);
         findViewById(R.id.label_me).setOnClickListener(this);
+    }
 
-        /*friends interface*/
-        friends = DataUtils.getFriendsData();
-        friendAdapter = new FriendBaseAdapter(friends, this);
-        friendListView = (ListView) friendsView.findViewById(R.id.friend_swip_list_view);
+    private void initFriendInterface() {
+         /*friendShips interface*/
+        friendListView = (SlideAndDragListView) friendsView.findViewById(R.id.friend_swip_list_view);
+        friendAdapter = new FriendShipBaseAdapter(friendShips, this, friendListView);
+        friendListView.setMenu(friendAdapter.getListMenu());
+        friendListView.setOnItemDeleteListener(friendAdapter);
+        friendListView.setOnMenuItemClickListener(friendAdapter);
+        friendListView.setOnListItemClickListener(friendAdapter);
+
         friendListView.setAdapter(friendAdapter);
         turnToAddFriendBtn = (ImageView) friendsView.findViewById(R.id.friend_add_firends_btn);
         turnToAddFriendBtn.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +169,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
             }
         });
+    }
 
+    private void initTodosInterface() {
         /*todos interface*/
         todos = getTodosData();
         final TodoAdapter todoAdapter = new TodoAdapter(this, todos);
@@ -152,7 +191,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+    }
 
+    private void initTomatoInterface() {
         rippleBackground = (RippleBackground) tomatoView.findViewById(R.id.tomato_ripple_view);
         tomatoTimeText = (TextView) tomatoView.findViewById(R.id.tomato_time_text);
         tomatoTimeText.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +207,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     rippleBackground.startRippleAnimation();
             }
         });
+    }
 
+    private void initMeInterface() {
         /*me interface*/
         messageText = (TextView) meView.findViewById(R.id.me_message_text);
         messageText.setOnClickListener(new View.OnClickListener() {
@@ -175,8 +218,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 MessageActivity.actionStart(MainActivity.this);
             }
         });
-
     }
+
+    private void initDataFriendShips() {
+        AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
+        query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                if (e == null) {
+                    Message message = new Message();
+                    message.what = INIT_FRIENDSHIPS;
+                    message.obj = list;
+                    handler.sendMessage(message);
+                } else {
+                    ShowMessageUtil.tosatFast(e.getMessage(), MainActivity.this);
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View v) {

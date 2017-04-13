@@ -12,7 +12,6 @@ import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
 import com.martsforever.owa.timekeeper.main.MainActivity;
-import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 /**

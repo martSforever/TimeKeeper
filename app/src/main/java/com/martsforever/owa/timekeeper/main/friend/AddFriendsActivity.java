@@ -71,7 +71,7 @@ public class AddFriendsActivity extends AppCompatActivity {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FriendDetailActivity.actionStart(AddFriendsActivity.this, user.getObjectId());
+                        AddFriendDetailActivity.actionStart(AddFriendsActivity.this, user.getObjectId());
                     }
                 });
             }
