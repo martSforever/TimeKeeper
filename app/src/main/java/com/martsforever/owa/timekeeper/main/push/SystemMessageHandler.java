@@ -3,6 +3,7 @@ package com.martsforever.owa.timekeeper.main.push;
 import android.app.Activity;
 
 import com.alibaba.fastjson.JSONObject;
+import com.martsforever.owa.timekeeper.main.message.SystemMessageDetailActivity;
 
 /**
  * Created by OWA on 2017/4/12.
@@ -20,6 +21,6 @@ public class SystemMessageHandler implements MessageHandler {
 
     @Override
     public void onMessageClick(Activity activity, String messageId, int messagePosition) {
-        System.out.println("system message click!");
+        SystemMessageDetailActivity.actionStart(activity, messageId);
     }
 }

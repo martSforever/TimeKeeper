@@ -16,6 +16,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
@@ -121,11 +122,6 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         });
     }
 
-    @Event(R.id.message_detail_accept_btn)
-    private void accept(View view) {
-        ShowMessageUtil.tosatFast("accept", this);
-    }
-
     @Event(R.id.message_detail_reject_btn)
     private void reject(View view) {
         ShowMessageUtil.tosatFast(sender.getUsername(), this);
@@ -154,11 +150,57 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         avMessage.put(Message.MESSAGE_TYPE, Message.MESSAGE_TYPE_SYATEM);
         avMessage.put(Message.SENDER, currentUser);
         avMessage.put(Message.RECEIVER, sender);
-        avMessage.put(Message.VERIFY_MESSAGE, sender.get(Person.NICK_NAME) + " has rejected you friend's invitation!");
+        avMessage.put(Message.VERIFY_MESSAGE, currentUser.get(Person.NICK_NAME) + " has rejected you friend's invitation!");
         avMessage.put(Message.IS_READ, Message.UNREAD);
         avMessage.put(Message.TIME, new Date());
         avMessage.put(Message.HANDLE_CLASS_NAME, SystemMessageHandler.class.getName());
         avMessage.saveInBackground();
+    }
+
+    @Event(R.id.message_detail_accept_btn)
+    private void accept(View view) {
+        pushAcceptMessage();
+        addAcceptMessage();
+        addFriendShip();
+        Intent intent = getIntent();
+        intent.putExtra("messageIsRead",Message.ACCEPT);
+        message.put(Message.IS_READ,Message.ACCEPT);
+        message.saveInBackground();
+        setResult(MessageActivity.RESULT_MESSAGE_CHANGE,intent);
+        finish();
+    }
+
+    private void pushAcceptMessage(){
+        String installationId = sender.get(Person.INSTALLATION_ID).toString();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString()+ " has accepted your friend's invitation!");
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, currentUser.get(Person.NICK_NAME).toString());
+        jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
+        LeanCloudUtil.pushMessage(installationId, jsonObject, this);
+    }
+
+    private void addAcceptMessage() {
+        /*add new Message*/
+        AVObject avMessage = new AVObject(Message.TABLE_MESSAGE);
+        avMessage.put(Message.MESSAGE_TYPE, Message.MESSAGE_TYPE_SYATEM);
+        avMessage.put(Message.SENDER, currentUser);
+        avMessage.put(Message.RECEIVER, sender);
+        avMessage.put(Message.VERIFY_MESSAGE, currentUser.get(Person.NICK_NAME) + " has accspted you friend's invitation!");
+        avMessage.put(Message.IS_READ, Message.UNREAD);
+        avMessage.put(Message.TIME, new Date());
+        avMessage.put(Message.HANDLE_CLASS_NAME, SystemMessageHandler.class.getName());
+        avMessage.saveInBackground();
+    }
+
+    private void addFriendShip(){
+        AVObject friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
+        friendship.put(FriendShip.SELF,currentUser);
+        friendship.put(FriendShip.FRIEND,sender);
+        friendship.saveInBackground();
+        friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
+        friendship.put(FriendShip.FRIEND,currentUser);
+        friendship.put(FriendShip.SELF,sender);
+        friendship.saveInBackground();
     }
 
     @Event(R.id.message_detail_back_btn)
