@@ -1,7 +1,6 @@
 package com.martsforever.owa.timekeeper.main.message;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
-import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.SystemMessageHandler;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -198,14 +196,14 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         friendship.put(FriendShip.SELF, currentUser);
         friendship.put(FriendShip.FRIEND, sender);
         friendship.put(FriendShip.FRIEND_NAME, sender.get(Person.NICK_NAME));
-        friendship.put(FriendShip.SCHEUDLE_AVAILABLE,true);
+        friendship.put(FriendShip.SCHEDULE_AVAILABLE,true);
         friendship.put(FriendShip.INVITATION_AVAILABLE,true);
         friendship.saveInBackground();
         friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
         friendship.put(FriendShip.FRIEND, currentUser);
         friendship.put(FriendShip.SELF, sender);
         friendship.put(FriendShip.FRIEND_NAME, currentUser.get(Person.NICK_NAME));
-        friendship.put(FriendShip.SCHEUDLE_AVAILABLE,true);
+        friendship.put(FriendShip.SCHEDULE_AVAILABLE,true);
         friendship.put(FriendShip.INVITATION_AVAILABLE,true);
         friendship.saveInBackground();
     }

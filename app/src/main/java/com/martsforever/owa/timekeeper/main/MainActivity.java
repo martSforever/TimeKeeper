@@ -23,13 +23,12 @@ import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
-import com.martsforever.owa.timekeeper.main.friend.FriendBaseAdapter;
+import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
 import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
-import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
@@ -46,6 +45,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int INIT_FRIENDSHIPS = 0x001;
+    public static final int FRIENDSHIP_CHANGE = 0x002;
 
     private Handler handler = new Handler() {
         @Override
@@ -297,5 +297,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         registerReceiver(myCustomReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case FRIENDSHIP_CHANGE:
+                String friendshipString = data.getStringExtra(FriendDetailActivity.SERIALIZE_FRIENDSHIP);
+                try {
+                    int position = data.getIntExtra(FriendDetailActivity.POSITION_FRIENDSHIP, -1);
+                    AVObject changeFriendShip = AVObject.parseAVObject(friendshipString);
+                    AVObject friendship = friendShips.get(position);
+                    friendship.put(FriendShip.INVITATION_AVAILABLE,changeFriendShip.getBoolean(FriendShip.INVITATION_AVAILABLE));
+                    friendship.put(FriendShip.SCHEDULE_AVAILABLE,changeFriendShip.getBoolean(FriendShip.SCHEDULE_AVAILABLE));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 }

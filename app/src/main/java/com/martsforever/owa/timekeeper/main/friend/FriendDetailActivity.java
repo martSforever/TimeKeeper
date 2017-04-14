@@ -18,9 +18,9 @@ import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -42,10 +42,13 @@ public class FriendDetailActivity extends AppCompatActivity {
     @ViewInject(R.id.friend_detail_switch_invitation_btn)
     private SwitchIconView switchInvitationAvailableBtn;
 
+    public static final String SERIALIZE_FRIENDSHIP = "friendshipSerializedString";
+    public static final String POSITION_FRIENDSHIP = "position";
+
     private AVObject friendShip;
     private AVUser friend;
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -63,18 +66,17 @@ public class FriendDetailActivity extends AppCompatActivity {
 
     private void initData() {
         try {
-            friendShip = AVObject.parseAVObject(getIntent().getStringExtra("friendshipSerializedString"));
+            friendShip = AVObject.parseAVObject(getIntent().getStringExtra(SERIALIZE_FRIENDSHIP));
             AVQuery<AVUser> query = new AVQuery<>(Person.TABLE_PERSON);
             query.getInBackground(((AVUser) friendShip.get(FriendShip.FRIEND)).getObjectId(), new GetCallback<AVUser>() {
                 @Override
                 public void done(AVUser user, AVException e) {
-                    if (e == null){
+                    if (e == null) {
                         Message message = new Message();
                         message.obj = user;
                         handler.sendMessage(message);
-                    }
-                    else {
-                        ShowMessageUtil.tosatSlow(e.getMessage(),FriendDetailActivity.this);
+                    } else {
+                        ShowMessageUtil.tosatSlow(e.getMessage(), FriendDetailActivity.this);
                     }
                 }
             });
@@ -84,8 +86,8 @@ public class FriendDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void initView(){
-        switchScheduleAvailableBtn.setIconEnabled(friendShip.getBoolean(FriendShip.SCHEUDLE_AVAILABLE));
+    private void initView() {
+        switchScheduleAvailableBtn.setIconEnabled(friendShip.getBoolean(FriendShip.SCHEDULE_AVAILABLE));
         switchInvitationAvailableBtn.setIconEnabled(friendShip.getBoolean(FriendShip.INVITATION_AVAILABLE));
         usernateText.setText(friend.getUsername());
         nicknameText.setText(friend.getString(Person.NICK_NAME));
@@ -95,19 +97,44 @@ public class FriendDetailActivity extends AppCompatActivity {
 
     @Event(R.id.friend_detail_switch_schedule_btn)
     private void switchSchedule(View view) {
-        ((SwitchIconView) view).switchState();
+        SwitchIconView switchIconView = (SwitchIconView) view;
+        switchIconView.switchState();
+        friendShip.put(FriendShip.SCHEDULE_AVAILABLE, switchIconView.isIconEnabled());
+        friendShip.saveInBackground();
     }
 
     @Event(R.id.friend_detail_switch_invitation_btn)
     private void switchInvitation(View view) {
-        ((SwitchIconView) view).switchState();
+        SwitchIconView switchIconView = (SwitchIconView) view;
+        switchIconView.switchState();
+        friendShip.put(FriendShip.INVITATION_AVAILABLE, switchIconView.isIconEnabled());
+        friendShip.saveInBackground();
     }
 
-    public static void actionStart(Activity activity, String friendshipSerializedString) {
+    public static void actionStart(Activity activity, String friendshipSerializedString, int position) {
         Intent intent = new Intent();
         intent.setClass(activity, FriendDetailActivity.class);
-        intent.putExtra("friendshipSerializedString", friendshipSerializedString);
-        activity.startActivity(intent);
+        intent.putExtra(SERIALIZE_FRIENDSHIP, friendshipSerializedString);
+        intent.putExtra(POSITION_FRIENDSHIP, position);
+        activity.startActivityForResult(intent, 0);
     }
+
+    @Override
+    public void onBackPressed() {
+        returnFriendShipState();
+    }
+
+    @Event(R.id.friend_detail_back_btn)
+    private void back(View view) {
+        returnFriendShipState();
+    }
+
+    private void returnFriendShipState() {
+        Intent intent = getIntent();
+        intent.putExtra(SERIALIZE_FRIENDSHIP, friendShip.toString());
+        setResult(MainActivity.FRIENDSHIP_CHANGE,intent);
+        finish();
+    }
+
 
 }

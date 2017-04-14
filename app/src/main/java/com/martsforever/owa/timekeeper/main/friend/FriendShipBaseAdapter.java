@@ -87,7 +87,7 @@ public class FriendShipBaseAdapter extends BaseAdapter implements SlideAndDragLi
     @Override
     public void onListItemClick(View v, int position) {
         AVObject friendShip = friendships.get(position);
-        FriendDetailActivity.actionStart(activity, friendShip.toString());
+        FriendDetailActivity.actionStart(activity, friendShip.toString(),position);
     }
 
     @Override
