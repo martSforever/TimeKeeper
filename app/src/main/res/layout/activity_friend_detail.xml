@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#59b4ca"
     android:orientation="vertical">
 
@@ -162,19 +163,25 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="68dp"
-                android:layout_weight="6"
+                android:layout_weight="8"
                 android:gravity="center_vertical"
                 android:text="不让他看我的日程表"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
-            <TextView
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/friend_detail_switch_schedule_btn"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="2"
-                android:gravity="center_vertical|right"
-                android:textColor="#666"
-                android:textSize="18sp" />
+                android:padding="15dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#48036f"
+                app:si_tint_color="#1d8c00"
+                app:si_enabled="false"
+                app:srcCompat="@drawable/switch_schedule"/>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -187,19 +194,24 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="68dp"
-                android:layout_weight="6"
+                android:layout_weight="8"
                 android:gravity="center_vertical"
                 android:text="不接受他的日程邀请"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
-            <TextView
+            <com.github.zagum.switchicon.SwitchIconView
+                android:id="@+id/friend_detail_switch_invitation_btn"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="2"
-                android:gravity="center_vertical|right"
-                android:textColor="#666"
-                android:textSize="18sp" />
+                android:padding="15dp"
+                app:si_animation_duration="500"
+                app:si_disabled_alpha=".3"
+                app:si_disabled_color="#48036f"
+                app:si_tint_color="#1d8c00"
+                app:si_enabled="false"
+                app:srcCompat="@drawable/switch_invitation"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

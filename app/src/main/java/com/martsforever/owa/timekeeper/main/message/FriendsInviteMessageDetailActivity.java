@@ -198,11 +198,15 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         friendship.put(FriendShip.SELF, currentUser);
         friendship.put(FriendShip.FRIEND, sender);
         friendship.put(FriendShip.FRIEND_NAME, sender.get(Person.NICK_NAME));
+        friendship.put(FriendShip.SCHEUDLE_AVAILABLE,true);
+        friendship.put(FriendShip.INVITATION_AVAILABLE,true);
         friendship.saveInBackground();
         friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
         friendship.put(FriendShip.FRIEND, currentUser);
         friendship.put(FriendShip.SELF, sender);
         friendship.put(FriendShip.FRIEND_NAME, currentUser.get(Person.NICK_NAME));
+        friendship.put(FriendShip.SCHEUDLE_AVAILABLE,true);
+        friendship.put(FriendShip.INVITATION_AVAILABLE,true);
         friendship.saveInBackground();
     }
 
