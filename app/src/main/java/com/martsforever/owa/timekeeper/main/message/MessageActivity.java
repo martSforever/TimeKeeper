@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.main.message;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Message;
+import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -67,6 +69,7 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
         AVUser currentUser = AVUser.getCurrentUser();
         AVQuery<AVObject> query = new AVQuery<>(Message.TABLE_MESSAGE);
         query.whereEqualTo(Message.RECEIVER, currentUser);
+        query.orderByDescending("updatedAt");
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -99,10 +102,10 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
         messageListView.setOnItemDeleteListener(this);
     }
 
-    public static void actionStart(Context context) {
+    public static void actionStart(Activity activity) {
         Intent intent = new Intent();
-        intent.setClass(context, MessageActivity.class);
-        context.startActivity(intent);
+        intent.setClass(activity, MessageActivity.class);
+        activity.startActivityForResult(intent,0);
     }
 
     @Override
@@ -152,9 +155,18 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
 
     @Event(R.id.message_back_btn)
     private void back(View view) {
-        this.finish();
+        backToMainAcitivty();
     }
 
+    @Override
+    public void onBackPressed() {
+        backToMainAcitivty();
+    }
+
+    private void backToMainAcitivty(){
+        setResult(MainActivity.MESSAGE_BADGE_CHANGE);
+        this.finish();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

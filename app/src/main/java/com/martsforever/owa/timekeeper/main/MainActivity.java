@@ -16,6 +16,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
@@ -35,17 +36,21 @@ import com.skyfishjy.library.RippleBackground;
 import com.yydcdut.sdlv.SlideAndDragListView;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import q.rorbin.badgeview.QBadgeView;
+
 @ContentView(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int INIT_FRIENDSHIPS = 0x001;
     public static final int FRIENDSHIP_CHANGE = 0x002;
+    public static final int MESSAGE_BADGE_CHANGE = 0x003;
 
     private Handler handler = new Handler() {
         @Override
@@ -62,9 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /*main interface element*/
     private NoScrollViewPager labelViewPager;
-
     private int currentIndex;
-
     private List<View> pagerItems;
 
     public int getCurrentIndex() {
@@ -87,24 +90,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View tomatoView;
     private View friendsView;
     private View meView;
-
     /*friend interface element*/
     List<AVObject> friendShips;
     private FriendShipBaseAdapter friendAdapter;
     private SlideAndDragListView<AVObject> friendListView;
     private ImageView turnToAddFriendBtn;
-
     /*to do interface element*/
     List<AVObject> todos;
     private TodoAdapter todoAdapter;
     private SwipeMenuListView todoListView;
-
     /*toamto interface element*/
     RippleBackground rippleBackground;
     TextView tomatoTimeText;
-
     /*me interface element*/
     TextView messageText;
+    ImageView messageInformImg;
+    QBadgeView messageTextBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +219,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 MessageActivity.actionStart(MainActivity.this);
             }
         });
+        messageInformImg = (ImageView) meView.findViewById(R.id.me_message_badge);
+        messageTextBadge = new QBadgeView(this);
+        messageTextBadge.bindTarget(messageInformImg);
+        messageTextBadge.setBadgeTextSize(5, true);
+        messageTextBadge.setGravityOffset(0, 0, true);
+        initMessageTextBadge();
     }
 
     private void initDataFriendShips() {
@@ -238,6 +245,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void initMessageTextBadge() {
+        AVQuery<AVObject> query = new AVQuery<>(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
+        query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER, AVUser.getCurrentUser());
+        query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.IS_READ, com.martsforever.owa.timekeeper.javabean.Message.UNREAD);
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, AVException e) {
+                if (e == null) {
+                    messageTextBadge.setBadgeNumber(i);
+                } else {
+                    ShowMessageUtil.tosatSlow(e.getMessage(), MainActivity.this);
+                }
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
@@ -294,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void receiveMessage(JSONObject jsonObject) {
                 ShowMessageUtil.tosatFast("You have new Message", MainActivity.this);
+                messageTextBadge.setBadgeNumber(messageTextBadge.getBadgeNumber()+1);
             }
         });
         registerReceiver(myCustomReceiver, intentFilter);
@@ -309,11 +332,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     int position = data.getIntExtra(FriendDetailActivity.POSITION_FRIENDSHIP, -1);
                     AVObject changeFriendShip = AVObject.parseAVObject(friendshipString);
                     AVObject friendship = friendShips.get(position);
-                    friendship.put(FriendShip.INVITATION_AVAILABLE,changeFriendShip.getBoolean(FriendShip.INVITATION_AVAILABLE));
-                    friendship.put(FriendShip.SCHEDULE_AVAILABLE,changeFriendShip.getBoolean(FriendShip.SCHEDULE_AVAILABLE));
+                    friendship.put(FriendShip.INVITATION_AVAILABLE, changeFriendShip.getBoolean(FriendShip.INVITATION_AVAILABLE));
+                    friendship.put(FriendShip.SCHEDULE_AVAILABLE, changeFriendShip.getBoolean(FriendShip.SCHEDULE_AVAILABLE));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                break;
+            case MESSAGE_BADGE_CHANGE:
+                initMessageTextBadge();
                 break;
         }
     }

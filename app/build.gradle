@@ -49,5 +49,6 @@ dependencies {
     /*SlideAndDragListView library*/
     compile 'com.yydcdut.sdlv:sdlv:0.5.5'
     compile 'com.github.zagum:Android-SwitchIcon:1.3.4'
+    compile 'q.rorbin:badgeview:1.1.0'
     testCompile 'junit:junit:4.12'
 }

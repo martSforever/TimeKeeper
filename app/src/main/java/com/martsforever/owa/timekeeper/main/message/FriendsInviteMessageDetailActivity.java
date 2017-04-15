@@ -2,10 +2,12 @@ package com.martsforever.owa.timekeeper.main.message;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -37,6 +39,10 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
     private TextView titleText;
     @ViewInject(R.id.message_detail_vertify_message_text)
     private TextView veritfyMessageText;
+    @ViewInject(R.id.message_detail_accept_btn)
+    private Button acceptBtn;
+    @ViewInject(R.id.message_detail_reject_btn)
+    private Button rejectBtn;
 
     AVObject message;
     AVUser sender;
@@ -49,8 +55,8 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
             switch (msg.what) {
                 case 1:
                     message = (AVObject) msg.obj;
-                    initView();
                     initSender();
+                    initBtn();
                     break;
                 case 2:
                     sender = (AVUser) msg.obj;
@@ -100,6 +106,10 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         query.getInBackground(sender.getObjectId(), new GetCallback<AVUser>() {
             @Override
             public void done(AVUser user, AVException e) {
+
+                titleText.setText(user.get(Person.NICK_NAME) + " apply to add you as friend!");
+                veritfyMessageText.setText(message.get(Message.VERIFY_MESSAGE).toString());
+
                 android.os.Message msg = new android.os.Message();
                 msg.what = 2;
                 msg.obj = user;
@@ -108,21 +118,17 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void initView() {
-        final AVUser sender = (AVUser) message.get(Message.SENDER);
-        AVQuery<AVUser> query = new AVQuery<>(Person.TABLE_PERSON);
-        query.getInBackground(sender.getObjectId(), new GetCallback<AVUser>() {
-            @Override
-            public void done(AVUser user, AVException e) {
-                titleText.setText(user.get(Person.NICK_NAME) + " apply to add you as friend!");
-                veritfyMessageText.setText(message.get(Message.VERIFY_MESSAGE).toString());
-            }
-        });
+    private void initBtn() {
+        if (message.getInt(Message.IS_READ) != Message.UNREAD && message.getInt(Message.IS_READ) != Message.READ) {
+            acceptBtn.setEnabled(false);
+            acceptBtn.setBackgroundColor(Color.GRAY);
+            rejectBtn.setEnabled(false);
+            rejectBtn.setBackgroundColor(Color.GRAY);
+        }
     }
 
     @Event(R.id.message_detail_reject_btn)
     private void reject(View view) {
-        ShowMessageUtil.tosatFast(sender.getUsername(), this);
         /*push message*/
         pushRejectMessage();
         addRejectMessage();
@@ -196,15 +202,15 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         friendship.put(FriendShip.SELF, currentUser);
         friendship.put(FriendShip.FRIEND, sender);
         friendship.put(FriendShip.FRIEND_NAME, sender.get(Person.NICK_NAME));
-        friendship.put(FriendShip.SCHEDULE_AVAILABLE,true);
-        friendship.put(FriendShip.INVITATION_AVAILABLE,true);
+        friendship.put(FriendShip.SCHEDULE_AVAILABLE, true);
+        friendship.put(FriendShip.INVITATION_AVAILABLE, true);
         friendship.saveInBackground();
         friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
         friendship.put(FriendShip.FRIEND, currentUser);
         friendship.put(FriendShip.SELF, sender);
         friendship.put(FriendShip.FRIEND_NAME, currentUser.get(Person.NICK_NAME));
-        friendship.put(FriendShip.SCHEDULE_AVAILABLE,true);
-        friendship.put(FriendShip.INVITATION_AVAILABLE,true);
+        friendship.put(FriendShip.SCHEDULE_AVAILABLE, true);
+        friendship.put(FriendShip.INVITATION_AVAILABLE, true);
         friendship.saveInBackground();
     }
 
