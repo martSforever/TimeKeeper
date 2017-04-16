@@ -23,6 +23,7 @@ import java.util.List;
 public class TodoAdapter extends BaseSwipListAdapter {
 
     List<AVObject> todos;
+
     LayoutInflater layoutInflater;
 
     public TodoAdapter(Context context, List<AVObject> todos) {

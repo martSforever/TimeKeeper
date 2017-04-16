@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.martsforever.owa.timekeeper.main.message.SystemMessageDetailActivity;
+import com.martsforever.owa.timekeeper.util.NotificationUtils;
 
 /**
  * Created by OWA on 2017/4/12.
@@ -13,9 +14,9 @@ public class SystemMessageHandler implements MessageHandler {
     @Override
     public JSONObject getNotificationMessage(JSONObject jsonObject) {
         JSONObject result = new JSONObject();
-        result.put(MessageReceiver.NOTIFICATION_TITLE, "System Message!");
-        result.put(MessageReceiver.NOTIFICATION_MESSAGE, "Veritify message:" + jsonObject.get(MESSAGE_SENDER_MESSAGE));
-        result.put(MessageReceiver.NOTIFICATION_TICKER, "You have new Message!");
+        result.put(NotificationUtils.NOTIFICATION_TITLE, "System Message!");
+        result.put(NotificationUtils.NOTIFICATION_MESSAGE, "Veritify message:" + jsonObject.get(MESSAGE_SENDER_MESSAGE));
+        result.put(NotificationUtils.NOTIFICATION_TICKER, "You have new Message!");
         return result;
     }
 

@@ -14,9 +14,11 @@ import com.martsforever.owa.timekeeper.javabean.Message;
 
 public interface MessageHandler {
 
-    public static String MESSAGE_SENDER_NAME = "message sender's name";
-    public static String MESSAGE_SENDER_MESSAGE = "message sender's message";
-    public static String MESSAGE_HANDLE_CLASS = "message handle class";
+    public static final String MESSAGE_SENDER_NAME = "message sender's name";
+    public static final String MESSAGE_SENDER_MESSAGE = "message sender's message";
+    public static final String MESSAGE_HANDLE_CLASS = "message handle class";
+    public static final String MESSAGE_ADD_NEW_FRIEND = "should add new friend";
+    public static final String MESSAGE_FRIENDSHIP_ID = "friendship's id";
 
     public JSONObject getNotificationMessage(JSONObject jsonObject);
 

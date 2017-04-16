@@ -18,15 +18,18 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.GetCallback;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
 import com.martsforever.owa.timekeeper.main.message.MessageActivity;
+import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
@@ -36,7 +39,6 @@ import com.skyfishjy.library.RippleBackground;
 import com.yydcdut.sdlv.SlideAndDragListView;
 
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -317,6 +319,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void receiveMessage(JSONObject jsonObject) {
                 ShowMessageUtil.tosatFast("You have new Message", MainActivity.this);
                 messageTextBadge.setBadgeNumber(messageTextBadge.getBadgeNumber()+1);
+
+                Boolean addNewFriend = jsonObject.getBoolean(MessageHandler.MESSAGE_ADD_NEW_FRIEND);
+                if (addNewFriend!=null && addNewFriend){
+                    String friendshipId = jsonObject.getString(MessageHandler.MESSAGE_FRIENDSHIP_ID);
+                    AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
+                    query.getInBackground(friendshipId, new GetCallback<AVObject>() {
+                        @Override
+                        public void done(AVObject avObject, AVException e) {
+                            friendShips.add(0,avObject);
+                            friendAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
             }
         });
         registerReceiver(myCustomReceiver, intentFilter);

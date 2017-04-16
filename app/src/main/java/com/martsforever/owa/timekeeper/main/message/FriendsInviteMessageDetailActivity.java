@@ -16,6 +16,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
@@ -164,7 +165,6 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
 
     @Event(R.id.message_detail_accept_btn)
     private void accept(View view) {
-        pushAcceptMessage();
         addAcceptMessage();
         addFriendShip();
         Intent intent = getIntent();
@@ -175,14 +175,30 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         finish();
     }
 
-    private void pushAcceptMessage() {
+    private void pushAcceptMessageToFriend(String friendsFriendshipId) {
+        /*push message to friends*/
         String installationId = sender.get(Person.INSTALLATION_ID).toString();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString() + " has accepted your friend's invitation!");
         jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, currentUser.get(Person.NICK_NAME).toString());
         jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
+        jsonObject.put(MessageHandler.MESSAGE_ADD_NEW_FRIEND, true);
+        jsonObject.put(MessageHandler.MESSAGE_FRIENDSHIP_ID, friendsFriendshipId);
         LeanCloudUtil.pushMessage(installationId, jsonObject, this);
     }
+
+    private void pushAcceptMessageToCurrentUser(String currentUserFriendshipId) {
+        /*push message to currentuser*/
+        String installationId = currentUser.get(Person.INSTALLATION_ID).toString();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, "You have a new friend!");
+//        jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, currentUser.get(Person.NICK_NAME).toString());
+        jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
+        jsonObject.put(MessageHandler.MESSAGE_ADD_NEW_FRIEND, true);
+        jsonObject.put(MessageHandler.MESSAGE_FRIENDSHIP_ID, currentUserFriendshipId);
+        LeanCloudUtil.pushMessage(installationId, jsonObject, this);
+    }
+
 
     private void addAcceptMessage() {
         /*add new Message*/
@@ -204,14 +220,36 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         friendship.put(FriendShip.FRIEND_NAME, sender.get(Person.NICK_NAME));
         friendship.put(FriendShip.SCHEDULE_AVAILABLE, true);
         friendship.put(FriendShip.INVITATION_AVAILABLE, true);
-        friendship.saveInBackground();
+        final AVObject finalFriendship = friendship;
+        friendship.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null){
+                    pushAcceptMessageToCurrentUser(finalFriendship.getObjectId());
+                }
+                else {
+                    ShowMessageUtil.tosatFast(e.getMessage(),FriendsInviteMessageDetailActivity.this);
+                }
+            }
+        });
         friendship = new AVObject(FriendShip.TABLE_FRIENDSHIP);
         friendship.put(FriendShip.FRIEND, currentUser);
         friendship.put(FriendShip.SELF, sender);
         friendship.put(FriendShip.FRIEND_NAME, currentUser.get(Person.NICK_NAME));
         friendship.put(FriendShip.SCHEDULE_AVAILABLE, true);
         friendship.put(FriendShip.INVITATION_AVAILABLE, true);
-        friendship.saveInBackground();
+        final AVObject finalFriendship1 = friendship;
+        friendship.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null){
+                    pushAcceptMessageToFriend(finalFriendship1.getObjectId());
+                }
+                else {
+                    ShowMessageUtil.tosatFast(e.getMessage(),FriendsInviteMessageDetailActivity.this);
+                }
+            }
+        });
     }
 
     @Event(R.id.message_detail_back_btn)
