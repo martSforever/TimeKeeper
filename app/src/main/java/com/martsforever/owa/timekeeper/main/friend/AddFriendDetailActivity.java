@@ -2,6 +2,7 @@ package com.martsforever.owa.timekeeper.main.friend;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,9 +18,11 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
+import com.martsforever.owa.timekeeper.main.message.FriendsInviteMessageDetailActivity;
 import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -108,15 +111,34 @@ public class AddFriendDetailActivity extends AppCompatActivity {
 
     @Event(R.id.friend_detail_confirm_btn)
     private void confirm(View view) {
+        if (friend.getObjectId().equals(AVUser.getCurrentUser().getObjectId())){
+            return;
+        }
         if (friend != null) {
-            addNewMessage(new SaveCallback() {
+            AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
+            query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+            query.whereEqualTo(FriendShip.FRIEND, friend);
+            query.getFirstInBackground(new GetCallback<AVObject>() {
                 @Override
-                public void done(AVException e) {
-                    if (e == null){
-                        pushFriendsInviteMessage();
-                    }
-                    else {
-                        ShowMessageUtil.tosatFast(e.getMessage(), AddFriendDetailActivity.this);
+                public void done(AVObject avObject, AVException e) {
+                    if (e == null) {
+                        if (avObject != null) {
+                            ShowMessageUtil.tosatSlow("You are already friends!", AddFriendDetailActivity.this);
+                        }else {
+                            addNewMessage(new SaveCallback() {
+                                @Override
+                                public void done(AVException e) {
+                                    if (e == null){
+                                        pushFriendsInviteMessage();
+                                    }
+                                    else {
+                                        ShowMessageUtil.tosatFast(e.getMessage(), AddFriendDetailActivity.this);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        ShowMessageUtil.tosatSlow(e.getMessage(), AddFriendDetailActivity.this);
                     }
                 }
             });

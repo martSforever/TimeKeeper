@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class MessageAdapter extends BaseAdapter {
             viewHolder.isReadText = (TextView) convertView.findViewById(R.id.item_message_isread_txt);
             viewHolder.verifyMessageText = (TextView) convertView.findViewById(R.id.item_message_verify_message_txt);
             viewHolder.timeText = (TextView) convertView.findViewById(R.id.item_message_time_txt);
+            viewHolder.iconImg = (ImageView) convertView.findViewById(R.id.item_message_icon_img);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -71,8 +73,9 @@ public class MessageAdapter extends BaseAdapter {
         viewHolder.titleText.setText(message.get(Message.MESSAGE_TYPE).toString());
         viewHolder.verifyMessageText.setText("Verify message: " + message.get(Message.VERIFY_MESSAGE).toString());
         viewHolder.timeText.setText(DateUtil.dateToString((Date) (message.get(Message.TIME)), DateUtil.COMPLICATED_DATE));
+        viewHolder.iconImg.setImageResource(getIcon(message.getString(Message.MESSAGE_TYPE)));
         int isRead = message.getInt(Message.IS_READ);
-        switch (isRead){
+        switch (isRead) {
             case Message.READ:
                 viewHolder.isReadText.setTextColor(0xff376956);
                 viewHolder.isReadText.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
@@ -108,6 +111,7 @@ public class MessageAdapter extends BaseAdapter {
         TextView isReadText;
         TextView verifyMessageText;
         TextView timeText;
+        ImageView iconImg;
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -115,21 +119,34 @@ public class MessageAdapter extends BaseAdapter {
         public void onClick(final View v) {
             final Object o = v.getTag();
             if (o instanceof Integer) {
-                AVObject message = messages.get((Integer)o);
-                message.put(Message.IS_READ,Message.READ);
+                AVObject message = messages.get((Integer) o);
+                message.put(Message.IS_READ, Message.READ);
                 message.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException e) {
-                        if (e == null){
+                        if (e == null) {
                             v.setBackgroundColor(Color.argb(0x00, 255, 255, 255));
-                            ((TextView)v).setTextColor(0xff376956);
-                            ((TextView)v).setText("READ");
-                        }else {
-                            ShowMessageUtil.tosatFast(e.getMessage(),context);
+                            ((TextView) v).setTextColor(0xff376956);
+                            ((TextView) v).setText("READ");
+                        } else {
+                            ShowMessageUtil.tosatFast(e.getMessage(), context);
                         }
                     }
                 });
             }
         }
     };
+
+    private int getIcon(String type) {
+        switch (type) {
+            case Message.MESSAGE_TYPE_SYATEM:
+                return R.drawable.icon_message_system;
+            case Message.MESSAGE_TYPE_FRIENDS_INVITATION:
+                return R.drawable.icon_message_friend;
+            case Message.MESSAGE_TYPE_TODOS_INVITATION:
+                return R.drawable.icon_message_invitation;
+            default:
+                return R.drawable.icon_message_system;
+        }
+    }
 }

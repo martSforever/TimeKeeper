@@ -106,15 +106,33 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         AVQuery<AVUser> query = new AVQuery<>(Person.TABLE_PERSON);
         query.getInBackground(sender.getObjectId(), new GetCallback<AVUser>() {
             @Override
-            public void done(AVUser user, AVException e) {
-
-                titleText.setText(user.get(Person.NICK_NAME) + " apply to add you as friend!");
+            public void done(AVUser sender, AVException e) {
+                titleText.setText(sender.get(Person.NICK_NAME) + " apply to add you as friend!");
                 veritfyMessageText.setText(message.get(Message.VERIFY_MESSAGE).toString());
-
                 android.os.Message msg = new android.os.Message();
                 msg.what = 2;
-                msg.obj = user;
+                msg.obj = sender;
                 handler.sendMessage(msg);
+
+                AVQuery<AVObject> query1 = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
+                query1.whereEqualTo(FriendShip.SELF, currentUser);
+                query1.whereEqualTo(FriendShip.FRIEND, sender);
+                query1.getFirstInBackground(new GetCallback<AVObject>() {
+                    @Override
+                    public void done(AVObject avObject, AVException e) {
+                        if (e == null) {
+                            if (avObject != null) {
+                                acceptBtn.setEnabled(false);
+                                acceptBtn.setBackgroundColor(Color.GRAY);
+                                rejectBtn.setEnabled(false);
+                                rejectBtn.setBackgroundColor(Color.GRAY);
+                            }
+                        } else {
+                            ShowMessageUtil.tosatSlow(e.getMessage(), FriendsInviteMessageDetailActivity.this);
+                        }
+                    }
+                });
+
             }
         });
     }
@@ -224,11 +242,10 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         friendship.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                if (e == null){
+                if (e == null) {
                     pushAcceptMessageToCurrentUser(finalFriendship.getObjectId());
-                }
-                else {
-                    ShowMessageUtil.tosatFast(e.getMessage(),FriendsInviteMessageDetailActivity.this);
+                } else {
+                    ShowMessageUtil.tosatFast(e.getMessage(), FriendsInviteMessageDetailActivity.this);
                 }
             }
         });
@@ -242,11 +259,10 @@ public class FriendsInviteMessageDetailActivity extends AppCompatActivity {
         friendship.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                if (e == null){
+                if (e == null) {
                     pushAcceptMessageToFriend(finalFriendship1.getObjectId());
-                }
-                else {
-                    ShowMessageUtil.tosatFast(e.getMessage(),FriendsInviteMessageDetailActivity.this);
+                } else {
+                    ShowMessageUtil.tosatFast(e.getMessage(), FriendsInviteMessageDetailActivity.this);
                 }
             }
         });
