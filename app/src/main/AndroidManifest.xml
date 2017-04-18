@@ -55,7 +55,8 @@
         <activity android:name=".main.message.MessageActivity" />
         <activity android:name=".main.message.FriendsInviteMessageDetailActivity" />
         <activity android:name=".main.message.SystemMessageDetailActivity" />
-        <activity android:name=".main.friend.FriendDetailActivity"></activity>
+        <activity android:name=".main.friend.FriendDetailActivity" />
+        <activity android:name=".main.self.PersonInfoActivity"></activity>
     </application>
 
 </manifest>

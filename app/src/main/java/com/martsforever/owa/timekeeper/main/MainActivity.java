@@ -31,6 +31,7 @@ import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
 import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
+import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import com.martsforever.owa.timekeeper.util.DateUtil;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView messageText;
     ImageView messageInformImg;
     QBadgeView messageTextBadge;
+    TextView informationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,8 +219,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         messageText = (TextView) meView.findViewById(R.id.me_message_text);
         messageText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                MessageActivity.actionStart(MainActivity.this);
+            public void onClick(View v) {MessageActivity.actionStart(MainActivity.this);
             }
         });
         messageInformImg = (ImageView) meView.findViewById(R.id.me_message_badge);
@@ -227,6 +228,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         messageTextBadge.setBadgeTextSize(5, true);
         messageTextBadge.setGravityOffset(0, 0, true);
         initMessageTextBadge();
+        informationText = (TextView) meView.findViewById(R.id.me_information_text);
+        informationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {PersonInfoActivity.actionStart(MainActivity.this);}
+        });
     }
 
     private void initDataFriendShips() {
@@ -307,7 +313,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * register the push message receiver
      */
     private void registerReceiver() {
-        System.out.println("retgister receiver 1111111");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.BOOT_COMPLETED");
         intentFilter.addAction("android.intent.action.USER_PRESENT");
@@ -318,16 +323,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void receiveMessage(JSONObject jsonObject) {
                 ShowMessageUtil.tosatFast("You have new Message", MainActivity.this);
-                messageTextBadge.setBadgeNumber(messageTextBadge.getBadgeNumber()+1);
+                messageTextBadge.setBadgeNumber(messageTextBadge.getBadgeNumber() + 1);
 
                 Boolean addNewFriend = jsonObject.getBoolean(MessageHandler.MESSAGE_ADD_NEW_FRIEND);
-                if (addNewFriend!=null && addNewFriend){
+                if (addNewFriend != null && addNewFriend) {
                     String friendshipId = jsonObject.getString(MessageHandler.MESSAGE_FRIENDSHIP_ID);
                     AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
                     query.getInBackground(friendshipId, new GetCallback<AVObject>() {
                         @Override
                         public void done(AVObject avObject, AVException e) {
-                            friendShips.add(0,avObject);
+                            friendShips.add(0, avObject);
                             friendAdapter.notifyDataSetChanged();
                         }
                     });

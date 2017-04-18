@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_person_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#59b4ca"
+    android:orientation="vertical"
+    tools:context="com.martsforever.owa.timekeeper.main.self.PersonInfoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0.5dp"
+            android:background="#aaffffff">
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/me_person" />
+
+            <EditText
+                android:id="@+id/self_username_edit"
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                android:layout_weight="13"
+                android:gravity="center_vertical"
+                android:text="username"
+                android:enabled="false"
+                android:textColor="#666"
+                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/self_username_edit_btn"
+                android:layout_width="34dp"
+                android:layout_height="68dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/icon_edit" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:text="Personal Information"
+            android:textColor="#b9e8f3"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+</LinearLayout>
