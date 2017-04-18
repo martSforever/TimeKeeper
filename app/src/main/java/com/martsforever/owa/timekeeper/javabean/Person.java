@@ -23,6 +23,8 @@ public class Person {
     public static final String UPDATE_AT = "updateAt";
     public static final String NICK_NAME="nickname";/*昵称*/
     public static final String INSTALLATION_ID = "installationId";/*关联设备的id*/
+    public static final String SCHEDULE_AVAILABLE = "scheduleAvailable";/*是否拒绝所有人查看用户的日程信息*/
+    public static final String RECEIVE_INVITATION = "receiveInvitation";/*是否拒绝所有人的日程邀请*/
 
     /*自定义属性*/
     public static final String FRIEND = "friend";
