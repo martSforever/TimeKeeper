@@ -19,7 +19,7 @@ public class Person {
 
     /*以下是AvUser非自带属性，但是在控制台自带的属性，有可能用得到*/
     public static final String EMAIL_VERIFIED = "emailVerified";
-    public static final String MOBILE_PHONE_VERIFIED = "mobildPhoneVerified";
+    public static final String MOBILE_PHONE_VERIFIED = "mobilePhoneVerified";
     public static final String UPDATE_AT = "updateAt";
     public static final String NICK_NAME="nickname";/*昵称*/
     public static final String INSTALLATION_ID = "installationId";/*关联设备的id*/

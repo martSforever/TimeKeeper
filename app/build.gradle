@@ -24,25 +24,37 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    /*leancloud library*/
+    compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }// 推送与实时聊天需要的包
+    // LeanCloud 基础包
+    // LeanCloud 统计包
+    // LeanCloud 用户反馈包
+    // avoscloud-sns：LeanCloud 第三方登录包,目前新浪微博官方只提供 jar 包的集成方式,请手动下载新浪微博 SDK 的 jar 包，将其放在 libs 目录下进行集成
+    // LeanCloud 应用内搜索包
+    /*customer library*/
+    /*滑动listview*/
+    /*专注界面中水波纹插件*/
+    /*xutils*/
+    /*SlideAndDragListView*/
+    /*SwitchIcon*/
+    /*BadgeView*/
+    /*MaterialDesignEditText*/
+
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.0'
-    testCompile 'junit:junit:4.12'
-    /*leancloud library*/
-    compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }// 推送与实时聊天需要的包
-    compile 'cn.leancloud.android:avoscloud-sdk:v3.+'// LeanCloud 基础包
-    compile 'cn.leancloud.android:avoscloud-statistics:v3.+' // LeanCloud 统计包
-    compile 'cn.leancloud.android:avoscloud-feedback:v3.+@aar'  // LeanCloud 用户反馈包
-    compile 'cn.leancloud.android:avoscloud-sns:v3.+@aar'    // avoscloud-sns：LeanCloud 第三方登录包,目前新浪微博官方只提供 jar 包的集成方式,请手动下载新浪微博 SDK 的 jar 包，将其放在 libs 目录下进行集成
+    compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
+    compile 'cn.leancloud.android:avoscloud-statistics:v3.+'
+    compile 'cn.leancloud.android:avoscloud-feedback:v3.+@aar'
+    compile 'cn.leancloud.android:avoscloud-sns:v3.+@aar'
     compile 'cn.leancloud.android:qq-sdk:1.6.1-leancloud'
-    compile 'cn.leancloud.android:avoscloud-search:v3.+@aar'   // LeanCloud 应用内搜索包
-    /*customer library*/
-    compile 'com.baoyz.swipemenulistview:library:1.3.0' /*滑动listview*/
-    compile 'com.skyfishjy.ripplebackground:library:1.0.1'  /*专注界面中水波纹插件*/
-    compile 'org.xutils:xutils:3.5.0'/*xutils*/
-    compile 'com.yydcdut.sdlv:sdlv:0.5.5'/*SlideAndDragListView*/
-    compile 'com.github.zagum:Android-SwitchIcon:1.3.4'/*SwitchIcon*/
-    compile 'q.rorbin:badgeview:1.1.0'/*BadgeView*/
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'/*MaterialDesignEditText*/
-
+    compile 'cn.leancloud.android:avoscloud-search:v3.+@aar'
+    compile 'com.baoyz.swipemenulistview:library:1.3.0'
+    compile 'com.skyfishjy.ripplebackground:library:1.0.1'
+    compile 'org.xutils:xutils:3.5.0'
+    compile 'com.yydcdut.sdlv:sdlv:0.5.5'
+    compile 'com.github.zagum:Android-SwitchIcon:1.3.4'
+    compile 'q.rorbin:badgeview:1.1.0'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    testCompile 'junit:junit:4.12'
 }

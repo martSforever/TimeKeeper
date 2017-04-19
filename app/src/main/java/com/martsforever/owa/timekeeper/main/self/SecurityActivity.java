@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.avos.avoscloud.AVUser;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -28,17 +31,27 @@ public class SecurityActivity extends AppCompatActivity {
 
     @Event(R.id.security_reset_password_text)
     private void resetPassword(View view) {
-        System.out.println("reset password");
+        new SelectResetPasswordDialog(this, this);
     }
 
-    @Event(R.id.security_change_email_text)
-    private void changeEmail(View view) {
-        System.out.println("change email");
+    @Event(R.id.security_bind_email_text)
+    private void bindEmail(View view) {
+        AVUser cuerrentUser = AVUser.getCurrentUser();
+        if (cuerrentUser.getBoolean(Person.EMAIL_VERIFIED)) {
+            ShowMessageUtil.tosatSlow("You have already binded and veritified the email: " + cuerrentUser.getEmail(), SecurityActivity.this);
+        } else {
+            new BindEmailDialog(this, this);
+        }
     }
 
-    @Event(R.id.security_change_mobile_text)
-    private void changeMobile(View view) {
-        System.out.println("change mobile");
+    @Event(R.id.security_bind_mobile_text)
+    private void bindMobile(View view) {
+        AVUser cuerrentUser = AVUser.getCurrentUser();
+        if (cuerrentUser.getBoolean(Person.MOBILE_PHONE_VERIFIED)) {
+            ShowMessageUtil.tosatSlow("You have already binded and veritified the mobile: " + cuerrentUser.getMobilePhoneNumber(), SecurityActivity.this);
+        } else {
+            new BindMobileDialog(this, this);
+        }
     }
 
 

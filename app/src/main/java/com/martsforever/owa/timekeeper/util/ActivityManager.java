@@ -51,4 +51,11 @@ public class ActivityManager {
         intent.setClass(activity, c);
         activity.startActivity(intent);
     }
+
+    public static void destroyAllActivity(){
+        Set<String> keys = map.keySet();
+        for (String key:keys){
+            map.get(key).finish();
+        }
+    }
 }

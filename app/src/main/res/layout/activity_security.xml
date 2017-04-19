@@ -86,12 +86,12 @@
                 android:src="@drawable/self_email" />
 
             <TextView
-                android:id="@+id/security_change_email_text"
+                android:id="@+id/security_bind_email_text"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="13"
                 android:gravity="center_vertical"
-                android:text="Change Binding Email"
+                android:text="Binding Email"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
@@ -116,12 +116,12 @@
                 android:src="@drawable/self_mobile" />
 
             <TextView
-                android:id="@+id/security_change_mobile_text"
+                android:id="@+id/security_bind_mobile_text"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="13"
                 android:gravity="center_vertical"
-                android:text="Change Binding Mobile"
+                android:text="Binding Mobile"
                 android:textColor="#666"
                 android:textSize="18sp" />
 

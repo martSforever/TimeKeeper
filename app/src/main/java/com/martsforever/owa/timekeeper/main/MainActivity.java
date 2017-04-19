@@ -35,6 +35,7 @@ import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
+import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private QBadgeView messageTextBadge;
     private TextView informationText;
     private TextView securityText;
+    private TextView juridictionText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +223,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         messageText = (TextView) meView.findViewById(R.id.me_message_text);
         messageText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {MessageActivity.actionStart(MainActivity.this);
+            public void onClick(View v) {
+                MessageActivity.actionStart(MainActivity.this);
             }
         });
         messageInformImg = (ImageView) meView.findViewById(R.id.me_message_badge);
@@ -233,12 +236,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         informationText = (TextView) meView.findViewById(R.id.me_information_text);
         informationText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {PersonInfoActivity.actionStart(MainActivity.this);}
+            public void onClick(View v) {
+                PersonInfoActivity.actionStart(MainActivity.this);
+            }
         });
         securityText = (TextView) meView.findViewById(R.id.me_security_text);
         securityText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {SecurityActivity.actionStart(MainActivity.this);}
+            public void onClick(View v) {
+                SecurityActivity.actionStart(MainActivity.this);
+                ActivityManager.addDestoryActivity(MainActivity.this, MainActivity.class.getName());
+            }
+        });
+        juridictionText = (TextView) meView.findViewById(R.id.me_juridiction_text);
+        juridictionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
+                query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+                query.orderByAscending(FriendShip.FRIEND);
+                query.findInBackground(new FindCallback<AVObject>() {
+                    @Override
+                    public void done(List<AVObject> list, AVException e) {
+                        for (AVObject avObject : list) {
+                            System.out.println(((AVUser)avObject.get(FriendShip.FRIEND)).getObjectId()+"-------self");
+                        }
+                    }
+                });
+                query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
+                query.whereEqualTo(FriendShip.FRIEND,AVUser.getCurrentUser());
+                query.orderByAscending(FriendShip.SELF);
+                query.findInBackground(new FindCallback<AVObject>() {
+                    @Override
+                    public void done(List<AVObject> list, AVException e) {
+                        for (AVObject object:list){
+                            System.out.println(((AVUser)object.get(FriendShip.SELF)).getObjectId()+"-------------friend");
+                        }
+                    }
+                });
+            }
         });
     }
 
@@ -298,13 +334,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /*get todos data to test*/
     private List<AVObject> getTodosData() {
-
         List<AVObject> todos = new ArrayList<>();
         Random random = new Random();
-
         for (int i = 0; i < 15; i++) {
             AVObject todo = new AVObject(Todo.TABLE_TODO);
-
             todo.put(Todo.TITLE, "title:" + (i + 1));
             todo.put(Todo.DESCRIPTION, "this is description:" + (i + 1));
             todo.put(Todo.END_TIME, DateUtil.getRandomDate());

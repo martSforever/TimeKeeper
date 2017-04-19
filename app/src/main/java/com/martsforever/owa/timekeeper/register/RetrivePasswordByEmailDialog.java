@@ -24,10 +24,10 @@ import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 public class RetrivePasswordByEmailDialog extends Dialog {
 
     private Activity activity;
-    AlertDialog dialog;
+    private AlertDialog dialog;
 
-    EditText emailEdit;
-    Button submitBtn;
+    private EditText emailEdit;
+    private Button submitBtn;
 
     /*横向占屏比*/
     double widthProportion = 0.8;
