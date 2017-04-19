@@ -32,6 +32,7 @@ import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
+import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import com.martsforever.owa.timekeeper.util.DateUtil;
@@ -99,17 +100,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SlideAndDragListView<AVObject> friendListView;
     private ImageView turnToAddFriendBtn;
     /*to do interface element*/
-    List<AVObject> todos;
+    private List<AVObject> todos;
     private TodoAdapter todoAdapter;
     private SwipeMenuListView todoListView;
     /*toamto interface element*/
-    RippleBackground rippleBackground;
-    TextView tomatoTimeText;
+    private RippleBackground rippleBackground;
+    private TextView tomatoTimeText;
     /*me interface element*/
-    TextView messageText;
-    ImageView messageInformImg;
-    QBadgeView messageTextBadge;
-    TextView informationText;
+    private TextView messageText;
+    private ImageView messageInformImg;
+    private QBadgeView messageTextBadge;
+    private TextView informationText;
+    private TextView securityText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         informationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {PersonInfoActivity.actionStart(MainActivity.this);}
+        });
+        securityText = (TextView) meView.findViewById(R.id.me_security_text);
+        securityText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {SecurityActivity.actionStart(MainActivity.this);}
         });
     }
 

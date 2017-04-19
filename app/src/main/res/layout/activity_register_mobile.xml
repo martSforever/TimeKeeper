@@ -35,7 +35,7 @@
             <ImageView
                 style="@style/bg_register_item_icon"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_user" />
+                android:src="@drawable/register_username" />
 
             <EditText
                 android:id="@+id/register_username_edit"
@@ -55,7 +55,7 @@
             <ImageView
                 style="@style/bg_register_item_icon"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_password" />
+                android:src="@drawable/register_password" />
 
             <EditText
                 android:id="@+id/register_password_edit"
@@ -73,9 +73,10 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/imageView7"
                 style="@style/bg_register_item_icon"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_password_repeat" />
+                android:src="@drawable/register_repeatpassword" />
 
             <EditText
                 android:id="@+id/register_repeat_password_edit"
@@ -95,7 +96,7 @@
             <ImageView
                 style="@style/bg_register_item_icon"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_mobile" />
+                android:src="@drawable/register_mobile" />
 
             <EditText
                 android:id="@+id/register_mobile_phone_edit"
@@ -115,7 +116,7 @@
             <ImageView
                 style="@style/bg_register_item_icon"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_mobile_vertification" />
+                android:src="@drawable/register_verifymobile" />
 
             <LinearLayout
                 android:layout_width="0dp"

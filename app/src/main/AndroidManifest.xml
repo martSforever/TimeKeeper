@@ -56,7 +56,11 @@
         <activity android:name=".main.message.FriendsInviteMessageDetailActivity" />
         <activity android:name=".main.message.SystemMessageDetailActivity" />
         <activity android:name=".main.friend.FriendDetailActivity" />
-        <activity android:name=".main.self.PersonInfoActivity"></activity>
+        <activity android:name=".main.self.PersonInfoActivity" />
+        <activity
+            android:name=".main.self.SecurityActivity"
+            android:label="@string/title_activity_security"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
