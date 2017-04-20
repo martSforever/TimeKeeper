@@ -19,8 +19,8 @@
             android:id="@+id/jurisdiction_back_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/icon_back"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:src="@drawable/icon_back" />
 
         <TextView
             android:layout_width="0dp"
@@ -40,12 +40,12 @@
     </LinearLayout>
 
 
-    <com.yydcdut.sdlv.SlideAndDragListView
+    <ListView
         android:id="@+id/jurisdiction_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11"
         android:divider="#83cee0"
         android:dividerHeight="0.5dp">
-    </com.yydcdut.sdlv.SlideAndDragListView>
+    </ListView>
 </LinearLayout>

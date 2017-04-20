@@ -31,6 +31,7 @@ import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
 import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
+import com.martsforever.owa.timekeeper.main.self.JurisdictionActivity;
 import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
@@ -42,6 +43,7 @@ import com.skyfishjy.library.RippleBackground;
 import com.yydcdut.sdlv.SlideAndDragListView;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int INIT_FRIENDSHIPS = 0x001;
     public static final int FRIENDSHIP_CHANGE = 0x002;
     public static final int MESSAGE_BADGE_CHANGE = 0x003;
+    public static final int FRIENDSHIP_ALL_CHANGE = 0x004;
 
     private Handler handler = new Handler() {
         @Override
@@ -252,28 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         juridictionText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
-                query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
-                query.orderByAscending(FriendShip.FRIEND);
-                query.findInBackground(new FindCallback<AVObject>() {
-                    @Override
-                    public void done(List<AVObject> list, AVException e) {
-                        for (AVObject avObject : list) {
-                            System.out.println(((AVUser)avObject.get(FriendShip.FRIEND)).getObjectId()+"-------self");
-                        }
-                    }
-                });
-                query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
-                query.whereEqualTo(FriendShip.FRIEND,AVUser.getCurrentUser());
-                query.orderByAscending(FriendShip.SELF);
-                query.findInBackground(new FindCallback<AVObject>() {
-                    @Override
-                    public void done(List<AVObject> list, AVException e) {
-                        for (AVObject object:list){
-                            System.out.println(((AVUser)object.get(FriendShip.SELF)).getObjectId()+"-------------friend");
-                        }
-                    }
-                });
+                JurisdictionActivity.actionStart(MainActivity.this);
             }
         });
     }
@@ -401,6 +383,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case MESSAGE_BADGE_CHANGE:
                 initMessageTextBadge();
                 break;
+            case FRIENDSHIP_ALL_CHANGE:
+                initDataFriendShips();
+                break;
         }
     }
+
 }
