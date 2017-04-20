@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#59b4ca"
     android:orientation="vertical">
 
@@ -55,7 +55,7 @@
                 android:layout_height="68dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:text="用户名"
+                android:text="Username"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
@@ -83,7 +83,7 @@
                 android:layout_height="68dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:text="昵称"
+                android:text="Nickname"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
@@ -111,7 +111,7 @@
                 android:layout_height="68dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:text="邮箱地址"
+                android:text="Email"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
@@ -139,7 +139,7 @@
                 android:layout_height="68dp"
                 android:layout_weight="6"
                 android:gravity="center_vertical"
-                android:text="移动电话"
+                android:text="Mobile"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
@@ -152,6 +152,7 @@
                 android:textColor="#666"
                 android:textSize="18sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,11 +162,12 @@
             android:paddingRight="10dp">
 
             <TextView
+                android:id="@+id/textView6"
                 android:layout_width="0dp"
                 android:layout_height="68dp"
                 android:layout_weight="8"
                 android:gravity="center_vertical"
-                android:text="允许他查看我的日程表"
+                android:text="Schedule Available"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
@@ -179,9 +181,10 @@
                 app:si_disabled_alpha=".3"
                 app:si_disabled_color="#48036f"
                 app:si_tint_color="#1d8c00"
-                app:srcCompat="@drawable/switch_schedule"/>
+                app:srcCompat="@drawable/switch_schedule" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -195,7 +198,7 @@
                 android:layout_height="68dp"
                 android:layout_weight="8"
                 android:gravity="center_vertical"
-                android:text="允许他发送代办事项邀请"
+                android:text="Invitation Available"
                 android:textColor="#666"
                 android:textSize="18sp" />
 
@@ -209,7 +212,9 @@
                 app:si_disabled_alpha=".3"
                 app:si_disabled_color="#48036f"
                 app:si_tint_color="#1d8c00"
-                app:srcCompat="@drawable/switch_invitation"/>
+                app:srcCompat="@drawable/switch_invitation" />
         </LinearLayout>
     </LinearLayout>
+
+
 </LinearLayout>

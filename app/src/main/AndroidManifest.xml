@@ -61,7 +61,8 @@
             android:name=".main.self.SecurityActivity"
             android:label="@string/title_activity_security"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".main.self.JurisdictionActivity"></activity>
+        <activity android:name=".main.self.JurisdictionActivity" />
+        <activity android:name=".main.todo.AllScheduleActivity"></activity>
     </application>
 
 </manifest>

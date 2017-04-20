@@ -2,6 +2,7 @@ package com.martsforever.owa.timekeeper.main;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.self.JurisdictionActivity;
 import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
+import com.martsforever.owa.timekeeper.main.todo.AllScheduleActivity;
 import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
 import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
@@ -104,9 +106,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SlideAndDragListView<AVObject> friendListView;
     private ImageView turnToAddFriendBtn;
     /*to do interface element*/
-    private List<AVObject> todos;
-    private TodoAdapter todoAdapter;
-    private SwipeMenuListView todoListView;
+    private ImageView allScheduleImg;
+    private QBadgeView badgeViewAllSchedule;
+    private ImageView todayScheduleImg;
+    private QBadgeView badgeViewTodaySchedule;
+    private ImageView importantScheduleImg;
+    private QBadgeView badgeViewImportantSchedule;
+    private ImageView doingScheduleImg;
+    private QBadgeView badgeViewDoingSchedule;
+    private ImageView completeScheduleImg;
+    private QBadgeView badgeViewCompleteySchedule;
+    private ImageView unfinishedyScheduleImg;
+    private QBadgeView badgeViewUnfinishedSchedule;
+    private ImageView readyScheduleImg;
+    private QBadgeView badgeViewReadySchedule;
     /*toamto interface element*/
     private RippleBackground rippleBackground;
     private TextView tomatoTimeText;
@@ -131,8 +144,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initView() {
         initMainInterface();
         initDataFriendShips();
-        initTodosInterface();
         initTomatoInterface();
+        initTodoInterface();
         initMeInterface();
     }
 
@@ -183,25 +196,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initTodosInterface() {
-        /*todos interface*/
-        todos = getTodosData();
-        final TodoAdapter todoAdapter = new TodoAdapter(this, todos);
-        todoListView = (SwipeMenuListView) todoView.findViewById(R.id.todo_swip_list_view);
-        todoListView.setAdapter(todoAdapter);
-        todoListView.setMenuCreator(TodoMenuCreater.getFriendsMenuCreater(this));
-        todoListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+    private void initTodoInterface() {
+        allScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_all_img);
+        todayScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_today_img);
+        importantScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_important_img);
+        doingScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_doing_img);
+        completeScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_complete_img);
+        unfinishedyScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_unfinished_img);
+        readyScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_ready_img);
+
+        badgeViewAllSchedule = new QBadgeView(this);
+        badgeViewAllSchedule.bindTarget(allScheduleImg);
+        badgeViewAllSchedule.setBadgeTextSize(10, true);
+        badgeViewAllSchedule.setBadgeNumber(20);
+        badgeViewAllSchedule.setBadgeBackgroundColor(Color.parseColor("#c3bed4"));
+        badgeViewTodaySchedule = new QBadgeView(this);
+        badgeViewTodaySchedule.bindTarget(todayScheduleImg);
+        badgeViewTodaySchedule.setBadgeTextSize(10, true);
+        badgeViewTodaySchedule.setBadgeNumber(3);
+        badgeViewTodaySchedule.setBadgeBackgroundColor(Color.parseColor("#7e884f"));
+        badgeViewImportantSchedule = new QBadgeView(this);
+        badgeViewImportantSchedule.bindTarget(importantScheduleImg);
+        badgeViewImportantSchedule.setBadgeTextSize(10, true);
+        badgeViewImportantSchedule.setBadgeNumber(11);
+        badgeViewImportantSchedule.setBadgeBackgroundColor(Color.parseColor("#f17c67"));
+        badgeViewDoingSchedule = new QBadgeView(this);
+        badgeViewDoingSchedule.bindTarget(doingScheduleImg);
+        badgeViewDoingSchedule.setBadgeTextSize(10, true);
+        badgeViewDoingSchedule.setBadgeNumber(10);
+        badgeViewDoingSchedule.setBadgeBackgroundColor(Color.parseColor("#495a80"));
+        badgeViewCompleteySchedule = new QBadgeView(this);
+        badgeViewCompleteySchedule.bindTarget(completeScheduleImg);
+        badgeViewCompleteySchedule.setBadgeTextSize(10, true);
+        badgeViewCompleteySchedule.setBadgeNumber(6);
+        badgeViewCompleteySchedule.setBadgeBackgroundColor(Color.parseColor("#00ff80"));
+        badgeViewUnfinishedSchedule = new QBadgeView(this);
+        badgeViewUnfinishedSchedule.bindTarget(unfinishedyScheduleImg);
+        badgeViewUnfinishedSchedule.setBadgeTextSize(10, true);
+        badgeViewUnfinishedSchedule.setBadgeNumber(333);
+        badgeViewUnfinishedSchedule.setBadgeBackgroundColor(Color.parseColor("#9966cc"));
+        badgeViewReadySchedule = new QBadgeView(this);
+        badgeViewReadySchedule.bindTarget(readyScheduleImg);
+        badgeViewReadySchedule.setBadgeTextSize(10, true);
+        badgeViewReadySchedule.setBadgeNumber(7);
+        badgeViewReadySchedule.setBadgeBackgroundColor(Color.parseColor("#c9cabb"));
+
+        allScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 1:
-                        // delete
-                        todos.remove(position);
-                        todoAdapter.notifyDataSetChanged();
-                        break;
-                }
-                return false;
-            }
+            public void onClick(View v) {AllScheduleActivity.actionStart(MainActivity.this);}
         });
     }
 
@@ -233,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         messageInformImg = (ImageView) meView.findViewById(R.id.me_message_badge);
         messageTextBadge = new QBadgeView(this);
         messageTextBadge.bindTarget(messageInformImg);
-        messageTextBadge.setBadgeTextSize(5, true);
+        messageTextBadge.setBadgeTextSize(10, true);
         messageTextBadge.setGravityOffset(0, 0, true);
         initMessageTextBadge();
         informationText = (TextView) meView.findViewById(R.id.me_information_text);
@@ -314,22 +356,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         labelViewPager.setCurrentItem(index);
     }
 
-    /*get todos data to test*/
-    private List<AVObject> getTodosData() {
-        List<AVObject> todos = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 15; i++) {
-            AVObject todo = new AVObject(Todo.TABLE_TODO);
-            todo.put(Todo.TITLE, "title:" + (i + 1));
-            todo.put(Todo.DESCRIPTION, "this is description:" + (i + 1));
-            todo.put(Todo.END_TIME, DateUtil.getRandomDate());
-//            todo.put(Todo.END_TIME, new Date());
-            todo.put(Todo.STATE, random.nextInt(4) + 1);
-            todo.put(Todo.LEVEL, random.nextInt(4) + 1);
-            todos.add(todo);
-        }
-        return todos;
-    }
 
     /**
      * register the push message receiver
