@@ -20,12 +20,8 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
-import com.martsforever.owa.timekeeper.javabean.Person;
-import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
@@ -35,22 +31,18 @@ import com.martsforever.owa.timekeeper.main.push.MessageReceiver;
 import com.martsforever.owa.timekeeper.main.self.JurisdictionActivity;
 import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
+import com.martsforever.owa.timekeeper.main.todo.AddTodosActivity;
 import com.martsforever.owa.timekeeper.main.todo.AllScheduleActivity;
-import com.martsforever.owa.timekeeper.main.todo.TodoAdapter;
-import com.martsforever.owa.timekeeper.main.todo.TodoMenuCreater;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
-import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
 import com.yydcdut.sdlv.SlideAndDragListView;
 
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.Event;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import q.rorbin.badgeview.QBadgeView;
 
@@ -116,10 +108,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private QBadgeView badgeViewDoingSchedule;
     private ImageView completeScheduleImg;
     private QBadgeView badgeViewCompleteySchedule;
-    private ImageView unfinishedyScheduleImg;
+    private ImageView unfinishedScheduleImg;
     private QBadgeView badgeViewUnfinishedSchedule;
     private ImageView readyScheduleImg;
     private QBadgeView badgeViewReadySchedule;
+    private ImageView addScheduleImg;
     /*toamto interface element*/
     private RippleBackground rippleBackground;
     private TextView tomatoTimeText;
@@ -202,8 +195,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         importantScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_important_img);
         doingScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_doing_img);
         completeScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_complete_img);
-        unfinishedyScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_unfinished_img);
+        unfinishedScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_unfinished_img);
         readyScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_ready_img);
+        addScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_add_img);
 
         badgeViewAllSchedule = new QBadgeView(this);
         badgeViewAllSchedule.bindTarget(allScheduleImg);
@@ -231,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         badgeViewCompleteySchedule.setBadgeNumber(6);
         badgeViewCompleteySchedule.setBadgeBackgroundColor(Color.parseColor("#00ff80"));
         badgeViewUnfinishedSchedule = new QBadgeView(this);
-        badgeViewUnfinishedSchedule.bindTarget(unfinishedyScheduleImg);
+        badgeViewUnfinishedSchedule.bindTarget(unfinishedScheduleImg);
         badgeViewUnfinishedSchedule.setBadgeTextSize(10, true);
         badgeViewUnfinishedSchedule.setBadgeNumber(333);
         badgeViewUnfinishedSchedule.setBadgeBackgroundColor(Color.parseColor("#9966cc"));
@@ -245,6 +239,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {AllScheduleActivity.actionStart(MainActivity.this);}
         });
+        addScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {AddTodosActivity.actionStart(MainActivity.this);}
+        });
+
     }
 
     private void initTomatoInterface() {
