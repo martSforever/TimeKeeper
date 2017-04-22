@@ -85,6 +85,7 @@ public class EmailRegisterActivity extends AppCompatActivity implements View.OnC
         person.setUsername(username);
         person.setEmail(email);
         person.setPassword(password);
+        person.put(Person.NICK_NAME,username);
 
         person.signUpInBackground(new SignUpCallback() {
             @Override

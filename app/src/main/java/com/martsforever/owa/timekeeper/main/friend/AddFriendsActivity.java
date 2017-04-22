@@ -19,6 +19,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @ContentView(R.layout.activity_add_friends)
@@ -86,6 +87,13 @@ public class AddFriendsActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<AVUser>() {
             @Override
             public void done(List<AVUser> list, AVException e) {
+                AVUser currentUser = AVUser.getCurrentUser();
+                Iterator<AVUser> iterator = list.iterator();
+                while (iterator.hasNext()){
+                    AVUser user = iterator.next();
+                    if (user.getObjectId().equals(currentUser.getObjectId())) iterator.remove();
+                }
+
                 if (e == null) {
                     friendAdapter.setPersons(list);
                     friendAdapter.notifyDataSetChanged();

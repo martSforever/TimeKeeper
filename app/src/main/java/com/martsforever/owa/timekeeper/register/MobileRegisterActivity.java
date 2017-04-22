@@ -186,6 +186,7 @@ public class MobileRegisterActivity extends AppCompatActivity implements View.On
                         user.setUsername(usernameEdit.getText().toString().trim());
                         user.setPassword(passwordEdit.getText().toString().trim());
                         user.setMobilePhoneNumber(mobilePhoneEdit.getText().toString().trim());
+                        user.put(Person.NICK_NAME,user.getUsername());
                         user.signUpInBackground(new SignUpCallback() {
                             @Override
                             public void done(AVException e) {

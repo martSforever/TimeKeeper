@@ -59,7 +59,8 @@
                 android:background="#aaffffff">
 
                 <TextView
-                    android:layout_width="34dp"
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -87,7 +88,7 @@
                 android:background="#aaffffff">
 
                 <TextView
-                    android:layout_width="34dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -115,7 +116,7 @@
                 android:background="#aaffffff">
 
                 <TextView
-                    android:layout_width="34dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -124,6 +125,7 @@
                     android:textSize="18sp" />
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+
                     android:id="@+id/todo_add_place_edit"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
