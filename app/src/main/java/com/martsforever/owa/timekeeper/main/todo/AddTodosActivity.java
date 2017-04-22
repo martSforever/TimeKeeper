@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -17,7 +18,10 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Objects;
 
 @ContentView(R.layout.activity_add_todos)
 public class AddTodosActivity extends AppCompatActivity {
@@ -26,6 +30,8 @@ public class AddTodosActivity extends AppCompatActivity {
     MaterialEditText startTimeEdit;
     @ViewInject(R.id.todo_add_end_time_edit)
     MaterialEditText endTimeEdit;
+    @ViewInject(R.id.todo_add_level_edit)
+    MaterialEditText levelEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +61,11 @@ public class AddTodosActivity extends AppCompatActivity {
     }
 
     @Event(R.id.todo_add_select_end_time_btn)
-    private void selectEndTime(View view){
+    private void selectEndTime(View view) {
         selectTime(endTimeEdit);
     }
 
-    private void selectTime(final MaterialEditText edit){
+    private void selectTime(final MaterialEditText edit) {
         final Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 new DatePickerDialog.OnDateSetListener() {
@@ -82,5 +88,40 @@ public class AddTodosActivity extends AppCompatActivity {
         );
         dpd.show(getFragmentManager(), "Datepickerdialog");
         dpd.setAccentColor(Color.parseColor("#41899A"));
+    }
+
+    @Event(R.id.todo_add_level_select_btn)
+    private void selectPeople(View view) {
+        PickDialog pickDialog = new PickDialog(AddTodosActivity.this, getLevelSelectData());
+        pickDialog.setTitle("PICK LEVEL");
+        pickDialog.setOnItemOkListener(new PickDialog.OnItemOkListener() {
+            @Override
+            public void OnOk(Object object, int position) {
+                levelEdit.setText(object.toString());
+                switch (position) {
+                    case 0:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_NONE);
+                        break;
+                    case 1:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_LOW);
+                        break;
+                    case 2:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_MIDDLE);
+                        break;
+                    case 3:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_HEIGHT);
+                        break;
+                }
+            }
+        });
+    }
+
+    private List<Object> getLevelSelectData() {
+        List<Object> data = new ArrayList<>();
+        data.add("Not important");
+        data.add("Not very important");
+        data.add("important");
+        data.add("Very important");
+        return data;
     }
 }
