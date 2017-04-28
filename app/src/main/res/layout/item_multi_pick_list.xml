@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/item_multi_pick_list_string_text"
+        android:layout_width="0dp"
+        android:textSize="32sp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="alice"
+        android:layout_height="64dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/item_multi_pick_list_checked_img"
+        android:padding="20dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/icon_selected" />
+</LinearLayout>

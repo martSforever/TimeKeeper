@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
@@ -72,7 +71,7 @@ public class MessageAdapter extends BaseAdapter {
         AVObject message = messages.get(position);
         viewHolder.titleText.setText(message.get(Message.MESSAGE_TYPE).toString());
         viewHolder.verifyMessageText.setText("Verify message: " + message.get(Message.VERIFY_MESSAGE).toString());
-        viewHolder.timeText.setText(DateUtil.dateToString((Date) (message.get(Message.TIME)), DateUtil.COMPLICATED_DATE));
+        viewHolder.timeText.setText(DateUtil.date2String((Date) (message.get(Message.TIME)), DateUtil.COMPLICATED_DATE));
         viewHolder.iconImg.setImageResource(getIcon(message.getString(Message.MESSAGE_TYPE)));
         int isRead = message.getInt(Message.IS_READ);
         switch (isRead) {

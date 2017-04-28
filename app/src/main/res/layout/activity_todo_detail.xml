@@ -28,15 +28,17 @@
             android:layout_height="match_parent"
             android:layout_weight="8"
             android:gravity="center"
-            android:text="Add Todo"
+            android:text="Todo Detail"
             android:textColor="#b9e8f3"
             android:textSize="24sp" />
 
         <ImageView
+            android:id="@+id/todo_add_save_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:src="@drawable/icon_save" />
     </LinearLayout>
 
     <ScrollView
@@ -67,7 +69,7 @@
                     android:textSize="18sp" />
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/todo_add_title_edit"
+                    android:id="@+id/todo_detail_title_edit"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_marginRight="15dp"
@@ -95,7 +97,7 @@
                     android:textSize="18sp" />
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/todo_add_level_edit"
+                    android:id="@+id/todo_detail_level_edit"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_marginRight="15dp"
@@ -132,16 +134,50 @@
 
                 <com.rengwuxian.materialedittext.MaterialEditText
 
-                    android:id="@+id/todo_add_place_edit"
+                    android:id="@+id/todo_detail_place_edit"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="13"
                     android:gravity="center_vertical"
-                    android:hint="place"
+                    android:text="place"
                     android:textColor="#666"
                     android:textSize="18sp"
                     app:met_hideUnderline="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0.5dp"
+                android:background="#aaffffff">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="People"
+                    android:textSize="18sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/todo_detail_people_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="13"
+                    android:gravity="center_vertical"
+                    android:text="people"
+                    android:textSize="18sp"
+                    app:met_hideUnderline="true" />
+
+                <ImageView
+                    android:id="@+id/todo_add_people_pick_btn"
+                    android:layout_width="64dp"
+                    android:layout_height="match_parent"
+                    android:padding="17dp"
+                    android:src="@drawable/icon_add_people" />
             </LinearLayout>
 
             <LinearLayout
@@ -160,13 +196,12 @@
                     android:textSize="18sp" />
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/todo_start_start_time_edit"
+                    android:id="@+id/todo_detail_start_time_edit"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_weight="13"
-                    android:enabled="false"
                     android:gravity="center_vertical"
-                    android:hint="Start Time"
+                    android:text="start time"
                     android:textColor="#666"
                     android:textSize="18sp"
                     app:met_hideUnderline="true" />
@@ -199,9 +234,8 @@
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_weight="13"
-                    android:enabled="false"
                     android:gravity="center_vertical"
-                    android:hint="End Time"
+                    android:text="end time"
                     android:textColor="#666"
                     android:textSize="18sp"
                     app:met_hideUnderline="true" />
@@ -230,6 +264,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/self_username_edit"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_weight="13" />
@@ -243,28 +278,12 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/todo_add_description_edit"
+                    android:id="@+id/todo_detail_description_edit"
                     android:layout_width="match_parent"
                     android:layout_height="102dp"
                     android:background="#66ffffff"
                     android:gravity="left|top"
                     android:padding="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0.5dp"
-                android:background="#aaffffff">
-
-                <Button
-                    android:id="@+id/todo_add_submit_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="68dp"
-                    android:layout_margin="10dp"
-                    android:background="#59b4ca"
-                    android:text="Submit"
-                    android:textColor="#b9e8f3" />
             </LinearLayout>
         </LinearLayout>
 

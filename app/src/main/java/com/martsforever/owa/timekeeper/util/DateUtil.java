@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +26,7 @@ public class DateUtil {
      * @param DATE_MODE
      * @return
      */
-    public static String dateToString(Date date, int DATE_MODE) {
+    public static String date2String(Date date, int DATE_MODE) {
         switch (DATE_MODE) {
             case COMPLICATED_DATE:
                 return complicatedDate.format(date);
@@ -37,6 +38,34 @@ public class DateUtil {
                 System.out.println("date model is wrong!");
                 return "date model is wrong";
         }
+    }
+
+    /**
+     * converts the date string to date object
+     *
+     * @param string
+     * @return date
+     */
+    public static Date string2Date(String string, int pattern) {
+        SimpleDateFormat format = null;
+        switch (pattern) {
+            case SIMPLE_DATE:
+                format = simpleDate;
+                break;
+            case COMPLICATED_DATE:
+                format = complicatedDate;
+                break;
+            case COMPLICATE_DATE_TWO_LINE:
+                format = complicatedDateTwoLine;
+                break;
+        }
+        Date date = null;
+        try {
+            date = format.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public static Date getRandomDate() {

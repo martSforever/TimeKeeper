@@ -39,8 +39,8 @@
 
     </LinearLayout>
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/todo_swip_list_view"
+    <com.yydcdut.sdlv.SlideAndDragListView
+        android:id="@+id/todo_all_listview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="11"

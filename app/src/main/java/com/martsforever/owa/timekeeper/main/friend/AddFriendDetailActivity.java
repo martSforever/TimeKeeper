@@ -2,7 +2,6 @@ package com.martsforever.owa.timekeeper.main.friend;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
-import com.martsforever.owa.timekeeper.main.message.FriendsInviteMessageDetailActivity;
 import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -46,7 +44,7 @@ public class AddFriendDetailActivity extends AppCompatActivity {
     @ViewInject(R.id.friend_detail_mobile_text)
     TextView mobileText;
 
-    @ViewInject(R.id.friend_detail_verify_message_edit)
+    @ViewInject(R.id.todo_detail_description_edit)
     EditText verifyMessageEdit;
 
     AVUser friend;

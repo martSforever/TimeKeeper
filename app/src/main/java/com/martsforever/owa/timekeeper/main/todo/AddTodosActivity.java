@@ -6,9 +6,18 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
+import com.martsforever.owa.timekeeper.javabean.User2Todo;
+import com.martsforever.owa.timekeeper.util.DateUtil;
+import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -20,18 +29,24 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @ContentView(R.layout.activity_add_todos)
 public class AddTodosActivity extends AppCompatActivity {
 
-    @ViewInject(R.id.todo_add_start_time_edit)
+    @ViewInject(R.id.todo_start_start_time_edit)
     MaterialEditText startTimeEdit;
-    @ViewInject(R.id.todo_add_end_time_edit)
+    @ViewInject(R.id.todo_detail_end_time_edit)
     MaterialEditText endTimeEdit;
     @ViewInject(R.id.todo_add_level_edit)
     MaterialEditText levelEdit;
+    @ViewInject(R.id.todo_add_description_edit)
+    EditText descriptionEdit;
+    @ViewInject(R.id.todo_add_title_edit)
+    MaterialEditText titleEdit;
+    @ViewInject(R.id.todo_add_place_edit)
+    MaterialEditText placeEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +65,51 @@ public class AddTodosActivity extends AppCompatActivity {
         finish();
     }
 
-    @Event(R.id.todo_add_cancel_btn)
-    private void cancel(View view) {
-        finish();
+    @Event(R.id.todo_add_submit_btn)
+    private void submit(View view) {
+        String description = descriptionEdit.getText().toString().trim();
+        String title = titleEdit.getText().toString().trim();
+        String place = placeEdit.getText().toString().trim();
+        Date startTime = DateUtil.string2Date(startTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
+        Date endTime = DateUtil.string2Date(endTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
+        int level = Integer.parseInt(levelEdit.getTag().toString());
+        int state;
+        Date now = new Date();
+        if (now.getTime() < startTime.getTime()) state = Todo.STATUS_NOTSTART;
+        else if (now.getTime() > endTime.getTime()) state = Todo.STATUS_NOTCOMPLETE;
+        else state = Todo.STATUS_DOING;
+        final AVUser user = AVUser.getCurrentUser();
+        final AVObject todo = new AVObject(Todo.TABLE_TODO);
+        todo.put(Todo.TITLE,title);
+        todo.put(Todo.DESCRIPTION,description);
+        todo.put(Todo.PLACE,place);
+        todo.put(Todo.START_TIME,startTime);
+        todo.put(Todo.END_TIME,endTime);
+        todo.put(Todo.LEVEL,level);
+        todo.put(Todo.STATE,state);
+        todo.put(Todo.CREATED_BY,user);
+        todo.put(Todo.CREATED_BY_NICKNAME,user.getString(Person.NICK_NAME));
+        todo.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e==null){
+                    final AVObject user2todo = new AVObject(User2Todo.TABLE_USER_2_TODO);
+                    user2todo.put(User2Todo.USER,user);
+                    user2todo.put(User2Todo.TODO,todo);
+                    user2todo.put(User2Todo.SWITCH,false);
+                    user2todo.put(User2Todo.USER_NICKNAME,user.getString(Person.NICK_NAME));
+                    user2todo.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            AddTodosActivity.this.finish();
+                            TodoDetailActivity.actionStart(AddTodosActivity.this,user2todo);
+                        }
+                    });
+                }else {
+                    ShowMessageUtil.tosatSlow(e.getMessage(),AddTodosActivity.this);
+                }
+            }
+        });
     }
 
     @Event(R.id.todo_add_select_start_time_btn)
@@ -71,7 +128,7 @@ public class AddTodosActivity extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        edit.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                        edit.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                         TimePickerDialog tpd = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
@@ -124,4 +181,5 @@ public class AddTodosActivity extends AppCompatActivity {
         data.add("Very important");
         return data;
     }
+
 }

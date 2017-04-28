@@ -11,7 +11,10 @@ public class Todo {
 
     /*表名*/
     public static final String TABLE_TODO = "TODO";
-
+    /*创建人*/
+    public static final String CREATED_BY = "createdBy";
+    /*创建人昵称*/
+    public static final String CREATED_BY_NICKNAME = "createdByNickname";
     /*开始时间*/
     public static final String START_TIME = "startTime";
     /*结束时间*/
@@ -34,6 +37,11 @@ public class Todo {
     public static final int LEVEL_IMPORTANT_LOW = 0X002;
     public static final int LEVEL_IMPORTANT_MIDDLE = 0X003;
     public static final int LEVEL_IMPORTANT_HEIGHT = 0X004;
+
+    public static final String LEVEL_NOT_IMPORTANT= "Not Important";
+    public static final String LEVEL_NOT_VERY_IMPORTABT = "Not Very Important";
+    public static final String LEVEL_IMPORTANT = "Important";
+    public static final String LEVEL_VERY_IMPORTANT = "Very Important";
 
     /*status*/
     public static final int STATUS_NOTSTART = 0X001;

@@ -168,7 +168,7 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/friend_detail_verify_message_edit"
+                android:id="@+id/todo_detail_description_edit"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
