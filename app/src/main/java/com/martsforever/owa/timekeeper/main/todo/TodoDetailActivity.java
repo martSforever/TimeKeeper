@@ -2,10 +2,12 @@ package com.martsforever.owa.timekeeper.main.todo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
@@ -19,6 +21,8 @@ import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -26,6 +30,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @ContentView(R.layout.activity_todo_detail)
@@ -49,6 +54,19 @@ public class TodoDetailActivity extends AppCompatActivity {
     EditText descriptionEdit;
     @ViewInject(R.id.todo_detail_people_edit)
     MaterialEditText peopleEdit;
+    @ViewInject(R.id.todo_detail_createdby_edit)
+    MaterialEditText createdByEdit;
+
+    @ViewInject(R.id.todo_detail_level_select_btn)
+    ImageView pickLevelImg;
+    @ViewInject(R.id.todo_detail_people_pick_btn)
+    ImageView pickPeopleImg;
+    @ViewInject(R.id.todo_detail_select_start_time_btn)
+    ImageView pickStartTimeImg;
+    @ViewInject(R.id.todo_detail_select_end_time_btn)
+    ImageView pickEndTimeImg;
+    @ViewInject(R.id.todo_detail_save_btn)
+    ImageView editImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +75,7 @@ public class TodoDetailActivity extends AppCompatActivity {
         initData();
         initView();
         initFriendshipsData();
+        setEditable(false);
     }
 
     private void initData() {
@@ -67,7 +86,6 @@ public class TodoDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
     private void initView() {
         AVObject todo = (AVObject) user2todo.get(User2Todo.TODO);
         titleEdit.setText(todo.getString(Todo.TITLE));
@@ -89,8 +107,8 @@ public class TodoDetailActivity extends AppCompatActivity {
         startTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME),DateUtil.COMPLICATED_DATE));
         endTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.END_TIME),DateUtil.COMPLICATED_DATE));
         descriptionEdit.setText(todo.getString(Todo.DESCRIPTION));
+        createdByEdit.setText(user2todo.getString(User2Todo.USER_NICKNAME));
     }
-
     private void initFriendshipsData() {
         AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
         query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
@@ -105,15 +123,13 @@ public class TodoDetailActivity extends AppCompatActivity {
             }
         });
     }
-
     public static void actionStart(Activity activity, AVObject user2todo) {
         Intent intent = new Intent();
         intent.setClass(activity, TodoDetailActivity.class);
         intent.putExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
         activity.startActivity(intent);
     }
-
-    @Event(R.id.todo_add_people_pick_btn)
+    @Event(R.id.todo_detail_people_pick_btn)
     private void multiPickPeople(View view) {
         if (friendships != null) {
             List<String> names = new ArrayList<>();
@@ -136,5 +152,82 @@ public class TodoDetailActivity extends AppCompatActivity {
         } else {
             ShowMessageUtil.tosatSlow("System error!", TodoDetailActivity.this);
         }
+    }
+    @Event(R.id.todo_detail_select_start_time_btn)
+    private void selectStartTime(View view) {
+        selectTime(startTimeEdit);
+    }
+    @Event(R.id.todo_detail_select_end_time_btn)
+    private void selectEndTime(View view) {
+        selectTime(endTimeEdit);
+    }
+    private void selectTime(final MaterialEditText edit) {
+        final Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        edit.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        TimePickerDialog tpd = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+                                edit.setText(edit.getText().toString() + " " + hourOfDay + ":" + minute + ":" + second);
+                            }
+                        }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND), true);
+                        tpd.show(getFragmentManager(), "TimePickerDialog");
+                        tpd.setAccentColor(Color.parseColor("#41899A"));
+                    }
+                },
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.show(getFragmentManager(), "Datepickerdialog");
+        dpd.setAccentColor(Color.parseColor("#41899A"));
+    }
+    @Event(R.id.todo_detail_level_select_btn)
+    private void selectPeople(View view) {
+        PickDialog pickDialog = new PickDialog(TodoDetailActivity.this, Todo.getLevelSelectData());
+        pickDialog.setTitle("PICK LEVEL");
+        pickDialog.setOnItemOkListener(new PickDialog.OnItemOkListener() {
+            @Override
+            public void OnOk(Object object, int position) {
+                levelEdit.setText(object.toString());
+                switch (position) {
+                    case 0:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_NONE);
+                        break;
+                    case 1:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_LOW);
+                        break;
+                    case 2:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_MIDDLE);
+                        break;
+                    case 3:
+                        levelEdit.setTag(Todo.LEVEL_IMPORTANT_HEIGHT);
+                        break;
+                }
+            }
+        });
+    }
+    @Event(R.id.todo_detail_save_btn)
+    private void edit(View view){
+        setEditable(!titleEdit.isEnabled());
+    }
+    private void setEditable(boolean enable){
+        titleEdit.setEnabled(enable);
+        pickLevelImg.setEnabled(enable);
+        placeEdit.setEnabled(enable);
+        pickPeopleImg.setEnabled(enable);
+        pickStartTimeImg.setEnabled(enable);
+        pickEndTimeImg.setEnabled(enable);
+        descriptionEdit.setEnabled(enable);
+        if (enable){
+            editImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
+        }else editImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_edit));
+    }
+    @Event(R.id.todo_detail_back_btn)
+    private void back(View view){
+        finish();
     }
 }

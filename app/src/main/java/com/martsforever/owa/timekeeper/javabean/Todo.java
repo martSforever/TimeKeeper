@@ -3,6 +3,9 @@ package com.martsforever.owa.timekeeper.javabean;
 
 import com.martsforever.owa.timekeeper.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by owa on 2017/1/11.
  */
@@ -92,6 +95,15 @@ public class Todo {
             default:
                 return R.drawable.status_notstart;
         }
+    }
+
+    public static List<Object> getLevelSelectData() {
+        List<Object> data = new ArrayList<>();
+        data.add("Not important");
+        data.add("Not very important");
+        data.add("important");
+        data.add("Very important");
+        return data;
     }
 
 }

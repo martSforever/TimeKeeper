@@ -149,7 +149,7 @@ public class AddTodosActivity extends AppCompatActivity {
 
     @Event(R.id.todo_add_level_select_btn)
     private void selectPeople(View view) {
-        PickDialog pickDialog = new PickDialog(AddTodosActivity.this, getLevelSelectData());
+        PickDialog pickDialog = new PickDialog(AddTodosActivity.this, Todo.getLevelSelectData());
         pickDialog.setTitle("PICK LEVEL");
         pickDialog.setOnItemOkListener(new PickDialog.OnItemOkListener() {
             @Override
@@ -173,13 +173,6 @@ public class AddTodosActivity extends AppCompatActivity {
         });
     }
 
-    private List<Object> getLevelSelectData() {
-        List<Object> data = new ArrayList<>();
-        data.add("Not important");
-        data.add("Not very important");
-        data.add("important");
-        data.add("Very important");
-        return data;
-    }
+
 
 }

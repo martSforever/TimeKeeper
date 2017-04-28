@@ -2,21 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:background="#aaffffff"
     android:orientation="horizontal"
     android:padding="5dp">
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="8"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -24,7 +23,7 @@
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:padding="3dp"
-                android:src="@drawable/important_height" />
+                android:src="@drawable/important_middle" />
 
             <ImageView
                 android:id="@+id/item_todo_status_img"
@@ -69,11 +68,12 @@
 
     <com.github.zagum.switchicon.SwitchIconView
         android:id="@+id/item_todo_switch"
-        android:layout_width="wrap_content"
-        android:padding="10dp"
-        app:si_disabled_color="#48036f"
-        app:si_tint_color="#1d8c00"
-        android:layout_height="wrap_content"
+        android:layout_width="68dp"
+        android:padding="13dp"
+        android:layout_height="68dp"
+        android:layout_gravity="center_vertical"
+        app:si_disabled_color="#bbA1436F"
+        app:si_tint_color="#bb429E5A"
         app:srcCompat="@drawable/icon_clock" />
 
 

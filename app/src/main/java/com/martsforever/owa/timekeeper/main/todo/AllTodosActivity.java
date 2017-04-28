@@ -13,19 +13,10 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.Message;
-import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
-import com.martsforever.owa.timekeeper.main.message.MessageActivity;
-import com.martsforever.owa.timekeeper.main.message.MessageAdapter;
-import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.util.DataUtils;
-import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.yydcdut.sdlv.Menu;
 import com.yydcdut.sdlv.MenuItem;
@@ -40,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@ContentView(R.layout.activity_all_schedule)
-public class AllScheduleActivity extends AppCompatActivity implements SlideAndDragListView.OnListItemClickListener, SlideAndDragListView.OnMenuItemClickListener, SlideAndDragListView.OnItemDeleteListener {
+@ContentView(R.layout.activity_all_todo)
+public class AllTodosActivity extends AppCompatActivity implements SlideAndDragListView.OnListItemClickListener, SlideAndDragListView.OnMenuItemClickListener, SlideAndDragListView.OnItemDeleteListener {
 
     List<AVObject> user2todos;
     Menu listViewMenu;
@@ -53,7 +44,7 @@ public class AllScheduleActivity extends AppCompatActivity implements SlideAndDr
         @Override
         public void handleMessage(android.os.Message msg) {
             user2todos = (List<AVObject>) msg.obj;
-            todoAdapter = new TodoAdapter(AllScheduleActivity.this,user2todos);
+            todoAdapter = new TodoAdapter(AllTodosActivity.this,user2todos);
             initUiAndListener();
             super.handleMessage(msg);
         }
@@ -79,14 +70,14 @@ public class AllScheduleActivity extends AppCompatActivity implements SlideAndDr
                     message.obj = list;
                     handler.sendMessage(message);
                 } else {
-                    ShowMessageUtil.tosatFast(e.getMessage(), AllScheduleActivity.this);
+                    ShowMessageUtil.tosatFast(e.getMessage(), AllTodosActivity.this);
                 }
             }
         });
     }
     public void initMenu() {
         listViewMenu = new Menu(false, false);
-        listViewMenu.addItem(new MenuItem.Builder().setWidth(DataUtils.dp2px(90, AllScheduleActivity.this))
+        listViewMenu.addItem(new MenuItem.Builder().setWidth(DataUtils.dp2px(90, AllTodosActivity.this))
                 .setBackground((new ColorDrawable(Color.argb(0xdd, 222, 140, 104))))
                 .setDirection(MenuItem.DIRECTION_RIGHT)
                 .setIcon(getResources().getDrawable(R.drawable.icon_delete))
@@ -102,27 +93,9 @@ public class AllScheduleActivity extends AppCompatActivity implements SlideAndDr
         todoListview.setOnItemDeleteListener(this);
     }
 
-
-    /*get todos data to test*/
-    private List<AVObject> getTodosData() {
-        List<AVObject> todos = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 15; i++) {
-            AVObject todo = new AVObject(Todo.TABLE_TODO);
-            todo.put(Todo.TITLE, "title:" + (i + 1));
-            todo.put(Todo.DESCRIPTION, "this is description:" + (i + 1));
-            todo.put(Todo.END_TIME, DateUtil.getRandomDate());
-//            todo.put(Todo.END_TIME, new Date());
-            todo.put(Todo.STATE, random.nextInt(4) + 1);
-            todo.put(Todo.LEVEL, random.nextInt(4) + 1);
-            todos.add(todo);
-        }
-        return todos;
-    }
-
     public static void actionStart(Activity activity) {
         Intent intent = new Intent();
-        intent.setClass(activity, AllScheduleActivity.class);
+        intent.setClass(activity, AllTodosActivity.class);
         activity.startActivityForResult(intent, 0);
     }
 
@@ -133,7 +106,7 @@ public class AllScheduleActivity extends AppCompatActivity implements SlideAndDr
 
     @Override
     public void onListItemClick(View v, int position) {
-        ShowMessageUtil.tosatFast("item click",this);
+        TodoDetailActivity.actionStart(AllTodosActivity.this,user2todos.get(position));
     }
 
     @Override

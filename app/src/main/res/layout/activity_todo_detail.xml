@@ -8,21 +8,18 @@
     android:background="#59b4ca"
     android:orientation="vertical"
     tools:context="com.martsforever.owa.timekeeper.main.self.PersonInfoActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:padding="5dp">
-
         <ImageView
-            android:id="@+id/todo_add_back_btn"
+            android:id="@+id/todo_detail_back_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/icon_back" />
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -31,14 +28,13 @@
             android:text="Todo Detail"
             android:textColor="#b9e8f3"
             android:textSize="24sp" />
-
         <ImageView
-            android:id="@+id/todo_add_save_btn"
+            android:id="@+id/todo_detail_save_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="5dp"
-            android:src="@drawable/icon_save" />
+            android:src="@drawable/icon_edit" />
     </LinearLayout>
 
     <ScrollView
@@ -59,7 +55,34 @@
                 android:background="#aaffffff">
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="CreatedBy"
+                    android:textSize="18sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/todo_detail_createdby_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="13"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:textColor="#666"
+                    android:textSize="18sp"
+                    app:met_hideUnderline="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0.5dp"
+                android:background="#aaffffff">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     android:layout_gravity="center_vertical"
@@ -110,7 +133,7 @@
                     app:met_hideUnderline="true" />
 
                 <ImageView
-                    android:id="@+id/todo_add_level_select_btn"
+                    android:id="@+id/todo_detail_level_select_btn"
                     android:layout_width="64dp"
                     android:layout_height="match_parent"
                     android:padding="17dp"
@@ -133,7 +156,6 @@
                     android:textSize="18sp" />
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-
                     android:id="@+id/todo_detail_place_edit"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
@@ -166,6 +188,7 @@
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_marginRight="15dp"
+                    android:enabled="false"
                     android:layout_weight="13"
                     android:gravity="center_vertical"
                     android:text="people"
@@ -173,7 +196,7 @@
                     app:met_hideUnderline="true" />
 
                 <ImageView
-                    android:id="@+id/todo_add_people_pick_btn"
+                    android:id="@+id/todo_detail_people_pick_btn"
                     android:layout_width="64dp"
                     android:layout_height="match_parent"
                     android:padding="17dp"
@@ -201,13 +224,14 @@
                     android:layout_height="68dp"
                     android:layout_weight="13"
                     android:gravity="center_vertical"
+                    android:enabled="false"
                     android:text="start time"
                     android:textColor="#666"
                     android:textSize="18sp"
                     app:met_hideUnderline="true" />
 
                 <ImageView
-                    android:id="@+id/todo_add_select_start_time_btn"
+                    android:id="@+id/todo_detail_select_start_time_btn"
                     android:layout_width="64dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -236,12 +260,13 @@
                     android:layout_weight="13"
                     android:gravity="center_vertical"
                     android:text="end time"
+                    android:enabled="false"
                     android:textColor="#666"
                     android:textSize="18sp"
                     app:met_hideUnderline="true" />
 
                 <ImageView
-                    android:id="@+id/todo_add_select_end_time_btn"
+                    android:id="@+id/todo_detail_select_end_time_btn"
                     android:layout_width="64dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"

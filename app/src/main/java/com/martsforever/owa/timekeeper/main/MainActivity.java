@@ -32,7 +32,7 @@ import com.martsforever.owa.timekeeper.main.self.JurisdictionActivity;
 import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.AddTodosActivity;
-import com.martsforever.owa.timekeeper.main.todo.AllScheduleActivity;
+import com.martsforever.owa.timekeeper.main.todo.AllTodosActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
@@ -237,7 +237,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         allScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {AllScheduleActivity.actionStart(MainActivity.this);}
+            public void onClick(View v) {
+                AllTodosActivity.actionStart(MainActivity.this);}
         });
         addScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
