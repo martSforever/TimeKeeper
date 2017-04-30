@@ -19,6 +19,8 @@ public interface MessageHandler {
     public static final String MESSAGE_HANDLE_CLASS = "message handle class";
     public static final String MESSAGE_ADD_NEW_FRIEND = "should add new friend";
     public static final String MESSAGE_FRIENDSHIP_ID = "friendship's id";
+    public static final String MESSAGE_ADD_NEW_TODO = "should add new todo";
+    public static final String MESSAGE_USER2TODO_ID = "user2todo's id";
 
     public JSONObject getNotificationMessage(JSONObject jsonObject);
 

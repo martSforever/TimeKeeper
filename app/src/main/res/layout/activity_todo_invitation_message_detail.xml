@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_message_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#59b4ca"
+    android:orientation="vertical"
+    tools:context="com.martsforever.owa.timekeeper.main.message.FriendsInviteMessageDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/message_detail_back_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/icon_back" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:text="Message Detail"
+            android:textColor="#b9e8f3"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0.5dp"
+            android:background="#aaffffff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/message_detail_vertify_message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#66ffffff"
+            android:gravity="left|top"
+            android:padding="10dp"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#66ffffff"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/message_detail_view_todo_btn"
+                android:layout_width="102dp"
+                android:layout_height="102dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_todo_detail_finish_btn"
+                android:text="View todo"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_gravity="bottom"
+            android:background="#aaffffff">
+
+            <Button
+                android:id="@+id/message_detail_accept_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="0.25dp"
+                android:layout_weight="1"
+                android:background="#59b4ca"
+                android:text="ACCEPT"
+                android:textColor="#b9e8f3" />
+
+            <Button
+                android:id="@+id/message_detail_reject_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0.25dp"
+                android:layout_weight="1"
+                android:background="#59b4ca"
+                android:text="REJECT"
+                android:textColor="#b9e8f3" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

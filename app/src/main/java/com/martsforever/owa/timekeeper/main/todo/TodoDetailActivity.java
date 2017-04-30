@@ -91,6 +91,7 @@ public class TodoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
         initData();
+        peopleInit();
         initView();
         initFriendshipsData();
         setEditable(false);
@@ -334,6 +335,25 @@ public class TodoDetailActivity extends AppCompatActivity {
         message.put(Message.VERIFY_MESSAGE, AVUser.getCurrentUser().getString(Person.NICK_NAME) + " invited " + friendsString + " to join his todo.");
         message.put(Message.USER2TODO, user2todo);
         message.saveInBackground();
+    }
+
+    private void peopleInit() {
+        AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
+        query.whereEqualTo(User2Todo.TODO, user2todo.getAVObject(User2Todo.TODO));
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> user2todoList, AVException e) {
+                if (e != null) {
+                    ShowMessageUtil.tosatSlow(e.getMessage(), TodoDetailActivity.this);
+                } else {
+                    String people = "";
+                    for (AVObject user2todo : user2todoList) {
+                        people += user2todo.getString(User2Todo.USER_NICKNAME)+",";
+                    }
+                    peopleEdit.setText(people.substring(0,people.length()-1));
+                }
+            }
+        });
     }
 
 }
