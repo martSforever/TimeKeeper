@@ -36,4 +36,6 @@ public class Message {
     /*handle class name*/
     public static final String HANDLE_CLASS_NAME = "handleClassName";
 
+    public static final String USER2TODO = "user2todo";
+
 }

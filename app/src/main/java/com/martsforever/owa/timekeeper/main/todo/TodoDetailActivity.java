@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
@@ -19,9 +20,16 @@ import com.avos.avoscloud.SaveCallback;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
+import com.martsforever.owa.timekeeper.javabean.Message;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
+import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
+import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
+import com.martsforever.owa.timekeeper.main.push.MessageHandler;
+import com.martsforever.owa.timekeeper.main.push.TodosInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.util.DateUtil;
+import com.martsforever.owa.timekeeper.util.InformDialog;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -34,6 +42,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @ContentView(R.layout.activity_todo_detail)
@@ -129,6 +138,7 @@ public class TodoDetailActivity extends AppCompatActivity {
     private void initFriendshipsData() {
         AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
         query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+        query.include(FriendShip.FRIEND);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -166,7 +176,11 @@ public class TodoDetailActivity extends AppCompatActivity {
                             peopleNames += friendships.get(position).getString(FriendShip.FRIEND_NAME);
                             peopleNames += ",";
                         }
-                    peopleEdit.setText(peopleNames.substring(0, peopleNames.length() - 1));
+                    for (int position = 0; position < isCheckedList.size(); position++)
+                        if (isCheckedList.get(position)) {
+                            pushTodosInviteMessage(friendships.get(position).getAVUser(FriendShip.FRIEND), peopleNames.substring(0, peopleNames.length() - 1), user2todo);
+                        }
+                    InformDialog.inform(TodoDetailActivity.this, null, "System Message", "Send message to " + peopleNames.substring(0, peopleNames.length() - 1) + " successful!");
                 }
             });
         } else {
@@ -210,7 +224,7 @@ public class TodoDetailActivity extends AppCompatActivity {
     }
 
     @Event(R.id.todo_detail_level_select_btn)
-    private void selectPeople(View view) {
+    private void selectLevel(View view) {
         PickDialog pickDialog = new PickDialog(TodoDetailActivity.this, Todo.getLevelSelectData());
         pickDialog.setTitle("PICK LEVEL");
         pickDialog.setOnItemOkListener(new PickDialog.OnItemOkListener() {
@@ -301,4 +315,25 @@ public class TodoDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void pushTodosInviteMessage(AVUser friend, String friendsString, AVObject user2todo) {
+        String installationId = friend.get(Person.INSTALLATION_ID).toString();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, AVUser.getCurrentUser().getString(Person.NICK_NAME) + " invited " + friendsString + " to join his todo.");
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, AVUser.getCurrentUser().get(Person.NICK_NAME).toString());
+        jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, TodosInvitationMessageHandler.class.getName());
+        LeanCloudUtil.pushMessage(installationId, jsonObject, this);
+
+        AVObject message = new AVObject(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
+        message.put(Message.MESSAGE_TYPE, Message.MESSAGE_TYPE_TODOS_INVITATION);
+        message.put(Message.SENDER, AVUser.getCurrentUser());
+        message.put(Message.RECEIVER, friend);
+        message.put(Message.IS_READ, Message.UNREAD);
+        message.put(Message.TIME, new Date());
+        message.put(Message.HANDLE_CLASS_NAME, TodosInvitationMessageHandler.class.getName());
+        message.put(Message.VERIFY_MESSAGE, AVUser.getCurrentUser().getString(Person.NICK_NAME) + " invited " + friendsString + " to join his todo.");
+        message.put(Message.USER2TODO, user2todo);
+        message.saveInBackground();
+    }
+
 }
