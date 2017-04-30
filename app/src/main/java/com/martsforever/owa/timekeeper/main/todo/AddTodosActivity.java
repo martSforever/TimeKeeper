@@ -52,6 +52,7 @@ public class AddTodosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+        levelEdit.setTag(Todo.LEVEL_IMPORTANT_NONE);
     }
 
     public static void actionStart(Activity activity) {
@@ -102,7 +103,7 @@ public class AddTodosActivity extends AppCompatActivity {
                         @Override
                         public void done(AVException e) {
                             AddTodosActivity.this.finish();
-                            TodoDetailActivity.actionStart(AddTodosActivity.this,user2todo);
+                            TodoDetailActivity.actionStart(AddTodosActivity.this,user2todo,0);
                         }
                     });
                 }else {
@@ -148,7 +149,7 @@ public class AddTodosActivity extends AppCompatActivity {
     }
 
     @Event(R.id.todo_add_level_select_btn)
-    private void selectPeople(View view) {
+    private void selectLevel(View view) {
         PickDialog pickDialog = new PickDialog(AddTodosActivity.this, Todo.getLevelSelectData());
         pickDialog.setTitle("PICK LEVEL");
         pickDialog.setOnItemOkListener(new PickDialog.OnItemOkListener() {

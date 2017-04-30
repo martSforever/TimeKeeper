@@ -77,11 +77,12 @@ public class TodoAdapter extends BaseAdapter {
         viewHolder.titleText.setText(todo.getString(Todo.TITLE));
         viewHolder.descriptionText.setText(todo.getString(Todo.DESCRIPTION));
         System.out.println(todo.getDate(Todo.START_TIME).toString());
-        viewHolder.timeText.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME),DateUtil.COMPLICATED_DATE)+" - "+DateUtil.date2String(todo.getDate(Todo.END_TIME),DateUtil.COMPLICATED_DATE));
+        viewHolder.timeText.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME), DateUtil.COMPLICATED_DATE) + " - " + DateUtil.date2String(todo.getDate(Todo.END_TIME), DateUtil.COMPLICATED_DATE));
         viewHolder.levelImg.setImageResource(Todo.getLevelImage(todo.getInt(Todo.LEVEL)));
         viewHolder.statusImg.setImageResource(Todo.getStatusImage(todo.getInt(Todo.STATE)));
 
         viewHolder.switchIconView.setTag(position);
+        viewHolder.switchIconView.setIconEnabled(user2todo.getBoolean(User2Todo.SWITCH));
         viewHolder.switchIconView.setOnClickListener(mOnClickListener);
         return convertView;
     }
@@ -101,6 +102,8 @@ public class TodoAdapter extends BaseAdapter {
             Integer position = (Integer) v.getTag();
             SwitchIconView switchIconView = (SwitchIconView) v;
             switchIconView.switchState();
+            user2todos.get(position).put(User2Todo.SWITCH, switchIconView.isIconEnabled());
+            user2todos.get(position).saveInBackground();
         }
     };
 

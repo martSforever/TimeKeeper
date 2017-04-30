@@ -8,18 +8,21 @@
     android:background="#59b4ca"
     android:orientation="vertical"
     tools:context="com.martsforever.owa.timekeeper.main.self.PersonInfoActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:padding="5dp">
+
         <ImageView
             android:id="@+id/todo_detail_back_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/icon_back" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -28,6 +31,7 @@
             android:text="Todo Detail"
             android:textColor="#b9e8f3"
             android:textSize="24sp" />
+
         <ImageView
             android:id="@+id/todo_detail_save_btn"
             android:layout_width="0dp"
@@ -188,8 +192,8 @@
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_marginRight="15dp"
-                    android:enabled="false"
                     android:layout_weight="13"
+                    android:enabled="false"
                     android:gravity="center_vertical"
                     android:text="people"
                     android:textSize="18sp"
@@ -223,8 +227,8 @@
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_weight="13"
-                    android:gravity="center_vertical"
                     android:enabled="false"
+                    android:gravity="center_vertical"
                     android:text="start time"
                     android:textColor="#666"
                     android:textSize="18sp"
@@ -258,9 +262,9 @@
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:layout_weight="13"
+                    android:enabled="false"
                     android:gravity="center_vertical"
                     android:text="end time"
-                    android:enabled="false"
                     android:textColor="#666"
                     android:textSize="18sp"
                     app:met_hideUnderline="true" />
@@ -271,6 +275,43 @@
                     android:layout_height="match_parent"
                     android:padding="15dp"
                     android:src="@drawable/icon_select" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0.5dp"
+                android:background="#aaffffff">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="State"
+                    android:textSize="18sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/todo_detail_state_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_weight="13"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:text="state"
+                    android:textColor="#666"
+                    android:textSize="18sp"
+                    app:met_hideUnderline="true" />
+
+                <com.github.zagum.switchicon.SwitchIconView
+                    android:id="@+id/todo_detail_switch_btn"
+                    android:layout_width="64dp"
+                    android:layout_height="match_parent"
+                    android:padding="15dp"
+                    app:si_disabled_color="#bbA1436F"
+                    app:si_tint_color="#bb429E5A"
+                    app:srcCompat="@drawable/icon_clock" />
             </LinearLayout>
 
             <LinearLayout
@@ -309,6 +350,24 @@
                     android:background="#66ffffff"
                     android:gravity="left|top"
                     android:padding="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0.5dp"
+                android:background="#aaffffff"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/todo_detail_finish_btn"
+                    android:layout_width="102dp"
+                    android:layout_height="102dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_todo_detail_finish_btn"
+                    android:text="FINISHED"
+                    android:textColor="#fff" />
             </LinearLayout>
         </LinearLayout>
 

@@ -41,7 +41,7 @@ public class Todo {
     public static final int LEVEL_IMPORTANT_MIDDLE = 0X003;
     public static final int LEVEL_IMPORTANT_HEIGHT = 0X004;
 
-    public static final String LEVEL_NOT_IMPORTANT= "Not Important";
+    public static final String LEVEL_NOT_IMPORTANT = "Not Important";
     public static final String LEVEL_NOT_VERY_IMPORTABT = "Not Very Important";
     public static final String LEVEL_IMPORTANT = "Important";
     public static final String LEVEL_VERY_IMPORTANT = "Very Important";
@@ -51,6 +51,21 @@ public class Todo {
     public static final int STATUS_DOING = 0X002;
     public static final int STATUS_COMPLETE = 0X003;
     public static final int STATUS_NOTCOMPLETE = 0X004;
+
+    public static String getStateString(int state) {
+        switch (state) {
+            case STATUS_NOTSTART:
+                return "Not Start";
+            case STATUS_DOING:
+                return "Doing";
+            case STATUS_NOTCOMPLETE:
+                return "Not Finished";
+            case STATUS_COMPLETE:
+                return "Complete";
+            default:
+                return "Complete";
+        }
+    }
 
 
     /**

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -14,6 +15,8 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.SaveCallback;
+import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Todo;
@@ -56,7 +59,8 @@ public class TodoDetailActivity extends AppCompatActivity {
     MaterialEditText peopleEdit;
     @ViewInject(R.id.todo_detail_createdby_edit)
     MaterialEditText createdByEdit;
-
+    @ViewInject(R.id.todo_detail_state_edit)
+    MaterialEditText stateEdit;
     @ViewInject(R.id.todo_detail_level_select_btn)
     ImageView pickLevelImg;
     @ViewInject(R.id.todo_detail_people_pick_btn)
@@ -67,6 +71,11 @@ public class TodoDetailActivity extends AppCompatActivity {
     ImageView pickEndTimeImg;
     @ViewInject(R.id.todo_detail_save_btn)
     ImageView editImg;
+    @ViewInject(R.id.todo_detail_switch_btn)
+    SwitchIconView switchIconView;
+    @ViewInject(R.id.todo_detail_finish_btn)
+    Button finishedBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +95,7 @@ public class TodoDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void initView() {
         AVObject todo = (AVObject) user2todo.get(User2Todo.TODO);
         titleEdit.setText(todo.getString(Todo.TITLE));
@@ -104,11 +114,18 @@ public class TodoDetailActivity extends AppCompatActivity {
                 break;
         }
         placeEdit.setText(todo.getString(Todo.PLACE));
-        startTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME),DateUtil.COMPLICATED_DATE));
-        endTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.END_TIME),DateUtil.COMPLICATED_DATE));
+        startTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME), DateUtil.COMPLICATED_DATE));
+        endTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.END_TIME), DateUtil.COMPLICATED_DATE));
         descriptionEdit.setText(todo.getString(Todo.DESCRIPTION));
         createdByEdit.setText(user2todo.getString(User2Todo.USER_NICKNAME));
+        stateEdit.setText(Todo.getStateString(todo.getInt(Todo.STATE)));
+        switchIconView.setIconEnabled(user2todo.getBoolean(User2Todo.SWITCH));
+        if (todo.getInt(Todo.STATE) == Todo.STATUS_COMPLETE) {
+            finishedBtn.setEnabled(false);
+            finishedBtn.setBackgroundResource(R.drawable.bg_todo_detail_finish_btn_disable);
+        }
     }
+
     private void initFriendshipsData() {
         AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
         query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
@@ -123,12 +140,15 @@ public class TodoDetailActivity extends AppCompatActivity {
             }
         });
     }
-    public static void actionStart(Activity activity, AVObject user2todo) {
+
+    public static void actionStart(Activity activity, AVObject user2todo, int position) {
         Intent intent = new Intent();
         intent.setClass(activity, TodoDetailActivity.class);
+        intent.putExtra(AllTodosActivity.INTENT_PARAMETER_POSITION, position);
         intent.putExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, 0);
     }
+
     @Event(R.id.todo_detail_people_pick_btn)
     private void multiPickPeople(View view) {
         if (friendships != null) {
@@ -153,14 +173,17 @@ public class TodoDetailActivity extends AppCompatActivity {
             ShowMessageUtil.tosatSlow("System error!", TodoDetailActivity.this);
         }
     }
+
     @Event(R.id.todo_detail_select_start_time_btn)
     private void selectStartTime(View view) {
         selectTime(startTimeEdit);
     }
+
     @Event(R.id.todo_detail_select_end_time_btn)
     private void selectEndTime(View view) {
         selectTime(endTimeEdit);
     }
+
     private void selectTime(final MaterialEditText edit) {
         final Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
@@ -185,6 +208,7 @@ public class TodoDetailActivity extends AppCompatActivity {
         dpd.show(getFragmentManager(), "Datepickerdialog");
         dpd.setAccentColor(Color.parseColor("#41899A"));
     }
+
     @Event(R.id.todo_detail_level_select_btn)
     private void selectPeople(View view) {
         PickDialog pickDialog = new PickDialog(TodoDetailActivity.this, Todo.getLevelSelectData());
@@ -210,11 +234,13 @@ public class TodoDetailActivity extends AppCompatActivity {
             }
         });
     }
+
     @Event(R.id.todo_detail_save_btn)
-    private void edit(View view){
+    private void edit(View view) {
         setEditable(!titleEdit.isEnabled());
     }
-    private void setEditable(boolean enable){
+
+    private void setEditable(boolean enable) {
         titleEdit.setEnabled(enable);
         pickLevelImg.setEnabled(enable);
         placeEdit.setEnabled(enable);
@@ -222,12 +248,57 @@ public class TodoDetailActivity extends AppCompatActivity {
         pickStartTimeImg.setEnabled(enable);
         pickEndTimeImg.setEnabled(enable);
         descriptionEdit.setEnabled(enable);
-        if (enable){
+        switchIconView.setEnabled(enable);
+        if (enable) {
             editImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
-        }else editImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_edit));
+            pickPeopleImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_add_people));
+            pickLevelImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_arrow_down));
+            pickStartTimeImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_select));
+            pickEndTimeImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_select));
+        } else {
+            editImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_edit));
+            pickPeopleImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_add_people_disable));
+            pickLevelImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_arrow_down_disable));
+            pickStartTimeImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_select_disable));
+            pickEndTimeImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_select_disable));
+        }
     }
+
     @Event(R.id.todo_detail_back_btn)
-    private void back(View view){
+    private void back(View view) {
+        backToAllTodoActivity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backToAllTodoActivity();
+    }
+
+    @Event(R.id.todo_detail_switch_btn)
+    private void switchTodoAvailable(View view) {
+        switchIconView.switchState();
+        user2todo.put(User2Todo.SWITCH, switchIconView.isIconEnabled());
+        user2todo.saveInBackground();
+    }
+
+    private void backToAllTodoActivity() {
+        Intent intent = getIntent();
+        intent.putExtra(AllTodosActivity.INTENT_PARAMETER_USER2TODO, user2todo.toString());
+        setResult(AllTodosActivity.TODO_CHANGE, intent);
         finish();
+    }
+
+    @Event(R.id.todo_detail_finish_btn)
+    private void finishedTodo(View view) {
+        AVObject todo = (AVObject) user2todo.get(User2Todo.TODO);
+        todo.put(Todo.STATE, Todo.STATUS_COMPLETE);
+        todo.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null)
+                    backToAllTodoActivity();
+                else ShowMessageUtil.tosatSlow(e.getMessage(), TodoDetailActivity.this);
+            }
+        });
     }
 }

@@ -27,12 +27,15 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @ContentView(R.layout.activity_all_todo)
 public class AllTodosActivity extends AppCompatActivity implements SlideAndDragListView.OnListItemClickListener, SlideAndDragListView.OnMenuItemClickListener, SlideAndDragListView.OnItemDeleteListener {
+
+    public static final int TODO_CHANGE = 0x001;
+
+    public static final String INTENT_PARAMETER_USER2TODO = "user2todo";
+    public static final String INTENT_PARAMETER_POSITION = "position";
 
     List<AVObject> user2todos;
     Menu listViewMenu;
@@ -106,7 +109,7 @@ public class AllTodosActivity extends AppCompatActivity implements SlideAndDragL
 
     @Override
     public void onListItemClick(View v, int position) {
-        TodoDetailActivity.actionStart(AllTodosActivity.this,user2todos.get(position));
+        TodoDetailActivity.actionStart(AllTodosActivity.this,user2todos.get(position),position);
     }
 
     @Override
@@ -126,5 +129,22 @@ public class AllTodosActivity extends AppCompatActivity implements SlideAndDragL
                 }
         }
         return Menu.ITEM_NOTHING;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode){
+            case TODO_CHANGE:
+                String user2todoString = data.getStringExtra(INTENT_PARAMETER_USER2TODO);
+                try {
+                    AVObject user2todo = AVObject.parseAVObject(user2todoString);
+                    int position = data.getIntExtra(INTENT_PARAMETER_POSITION,0);
+                    user2todos.remove(position);
+                    user2todos.add(position,user2todo);
+                    todoAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }
     }
 }
