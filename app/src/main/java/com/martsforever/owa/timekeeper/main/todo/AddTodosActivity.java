@@ -98,7 +98,6 @@ public class AddTodosActivity extends AppCompatActivity {
                     user2todo.put(User2Todo.USER,user);
                     user2todo.put(User2Todo.TODO,todo);
                     user2todo.put(User2Todo.SWITCH,false);
-                    user2todo.put(User2Todo.USER_NICKNAME,user.getString(Person.NICK_NAME));
                     user2todo.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {

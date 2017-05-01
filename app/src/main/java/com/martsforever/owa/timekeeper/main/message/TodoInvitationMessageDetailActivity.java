@@ -179,7 +179,6 @@ public class TodoInvitationMessageDetailActivity extends AppCompatActivity {
         user2todo.put(User2Todo.USER, currentUser);
         user2todo.put(User2Todo.TODO, message.getAVObject(Message.USER2TODO).getAVObject(User2Todo.TODO));
         user2todo.put(User2Todo.SWITCH, false);
-        user2todo.put(User2Todo.USER_NICKNAME, currentUser.getString(Person.NICK_NAME));
         user2todo.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {

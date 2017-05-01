@@ -12,6 +12,7 @@ import com.avos.avoscloud.AVObject;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
+import com.martsforever.owa.timekeeper.javabean.Person;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class JurisdictionAdapter extends BaseAdapter implements View.OnClickList
         AVObject selfFriendship = selfFriendShips.get(position);
         AVObject friendFriendship = friendFriendships.get(position);
 
-        viewHolder.friendName.setText(selfFriendship.getString(FriendShip.FRIEND_NAME));
+        viewHolder.friendName.setText(selfFriendship.getAVUser(FriendShip.FRIEND).getString(Person.NICK_NAME));
         viewHolder.friendScheduleAvailable.setIconEnabled(friendFriendship.getBoolean(FriendShip.SCHEDULE_AVAILABLE));
         viewHolder.friendInvitationAvailable.setIconEnabled(friendFriendship.getBoolean(FriendShip.INVITATION_AVAILABLE));
         viewHolder.selfScheduleAvailable.setIconEnabled(selfFriendship.getBoolean(FriendShip.SCHEDULE_AVAILABLE));

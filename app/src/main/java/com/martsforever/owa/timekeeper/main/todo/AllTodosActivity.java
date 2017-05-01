@@ -15,6 +15,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -64,6 +65,7 @@ public class AllTodosActivity extends AppCompatActivity implements SlideAndDragL
         AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
         query.whereEqualTo(User2Todo.USER, currentUser);
         query.include(User2Todo.TODO);
+        query.include(User2Todo.USER+"."+ Person.NICK_NAME);
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<AVObject>() {
             @Override

@@ -22,6 +22,7 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
@@ -306,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initDataFriendShips() {
         AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
         query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+        query.include(FriendShip.FRIEND+"."+ Person.NICK_NAME);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -389,14 +391,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Boolean addNewTodo = jsonObject.getBoolean(MessageHandler.MESSAGE_ADD_NEW_TODO);
                 if (addNewTodo != null && addNewTodo) {
                     badgeViewAllSchedule.setBadgeNumber(badgeViewAllSchedule.getBadgeNumber()+1);
-                    String user2todoId = jsonObject.getString(MessageHandler.MESSAGE_USER2TODO_ID);
+                    /*String user2todoId = jsonObject.getString(MessageHandler.MESSAGE_USER2TODO_ID);
                     AVQuery<AVObject> query = new AVQuery<AVObject>(User2Todo.TABLE_USER_2_TODO);
                     query.getInBackground(user2todoId, new GetCallback<AVObject>() {
                         @Override
                         public void done(AVObject avObject, AVException e) {
                             System.out.println(avObject.toString());
                         }
-                    });
+                    });*/
                 }
 
             }

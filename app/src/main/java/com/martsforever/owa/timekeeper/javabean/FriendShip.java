@@ -11,7 +11,6 @@ public class FriendShip {
     public static final String SELF = "self";
     public static final String FRIEND = "friend";
 
-    public static final String FRIEND_NAME = "friendName";
     public static final String SCHEDULE_AVAILABLE = "scheduleAvailable";
     public static final String INVITATION_AVAILABLE = "invitationAvailable";
 }

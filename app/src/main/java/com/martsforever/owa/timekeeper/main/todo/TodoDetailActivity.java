@@ -127,7 +127,7 @@ public class TodoDetailActivity extends AppCompatActivity {
         startTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME), DateUtil.COMPLICATED_DATE));
         endTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.END_TIME), DateUtil.COMPLICATED_DATE));
         descriptionEdit.setText(todo.getString(Todo.DESCRIPTION));
-        createdByEdit.setText(user2todo.getString(User2Todo.USER_NICKNAME));
+        createdByEdit.setText(user2todo.getAVUser(User2Todo.USER).getString(Person.NICK_NAME));
         stateEdit.setText(Todo.getStateString(todo.getInt(Todo.STATE)));
         switchIconView.setIconEnabled(user2todo.getBoolean(User2Todo.SWITCH));
         if (todo.getInt(Todo.STATE) == Todo.STATUS_COMPLETE) {
@@ -138,6 +138,7 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     private void initFriendshipsData() {
         AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
+        query.include(FriendShip.FRIEND + "." + Person.NICK_NAME);
         query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
         query.include(FriendShip.FRIEND);
         query.findInBackground(new FindCallback<AVObject>() {
@@ -165,7 +166,7 @@ public class TodoDetailActivity extends AppCompatActivity {
         if (friendships != null) {
             List<String> names = new ArrayList<>();
             for (AVObject avObject : friendships)
-                names.add(avObject.getString(FriendShip.FRIEND_NAME));
+                names.add(avObject.getAVUser(FriendShip.FRIEND).getString(Person.NICK_NAME));
             MultiPickDialog dialog = new MultiPickDialog(this, names);
             dialog.setTitle("Pick Friends");
             dialog.setOnItemOkListener(new MultiPickDialog.OnItemOkListener() {
@@ -174,7 +175,7 @@ public class TodoDetailActivity extends AppCompatActivity {
                     String peopleNames = "";
                     for (int position = 0; position < isCheckedList.size(); position++)
                         if (isCheckedList.get(position)) {
-                            peopleNames += friendships.get(position).getString(FriendShip.FRIEND_NAME);
+                            peopleNames += friendships.get(position).getAVUser(FriendShip.FRIEND).getString(Person.NICK_NAME);
                             peopleNames += ",";
                         }
                     for (int position = 0; position < isCheckedList.size(); position++)
@@ -340,6 +341,7 @@ public class TodoDetailActivity extends AppCompatActivity {
     private void peopleInit() {
         AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
         query.whereEqualTo(User2Todo.TODO, user2todo.getAVObject(User2Todo.TODO));
+        query.include(User2Todo.USER + "." + Person.NICK_NAME);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> user2todoList, AVException e) {
@@ -348,9 +350,9 @@ public class TodoDetailActivity extends AppCompatActivity {
                 } else {
                     String people = "";
                     for (AVObject user2todo : user2todoList) {
-                        people += user2todo.getString(User2Todo.USER_NICKNAME)+",";
+                        people += user2todo.getAVUser(User2Todo.USER).getString(Person.NICK_NAME)+",";
                     }
-                    peopleEdit.setText(people.substring(0,people.length()-1));
+                    peopleEdit.setText(people.substring(0, people.length() - 1));
                 }
             }
         });

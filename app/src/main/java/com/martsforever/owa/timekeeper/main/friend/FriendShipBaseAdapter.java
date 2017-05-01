@@ -72,7 +72,7 @@ public class FriendShipBaseAdapter extends BaseAdapter implements SlideAndDragLi
         }
 
         final AVObject friendship = friendships.get(position);
-        viewHolder.usernameText.setText((String) friendship.get(FriendShip.FRIEND_NAME));
+        viewHolder.usernameText.setText(friendship.getAVUser(FriendShip.FRIEND).getString(Person.NICK_NAME));
         return convertView;
     }
 
@@ -87,7 +87,7 @@ public class FriendShipBaseAdapter extends BaseAdapter implements SlideAndDragLi
     @Override
     public void onListItemClick(View v, int position) {
         AVObject friendShip = friendships.get(position);
-        FriendDetailActivity.actionStart(activity, friendShip.toString(),position);
+        FriendDetailActivity.actionStart(activity, friendShip.toString(), position);
     }
 
     @Override

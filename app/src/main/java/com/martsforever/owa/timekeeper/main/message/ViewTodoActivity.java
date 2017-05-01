@@ -15,6 +15,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.main.todo.AllTodosActivity;
@@ -96,7 +97,7 @@ public class ViewTodoActivity extends AppCompatActivity {
         startTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME), DateUtil.COMPLICATED_DATE));
         endTimeEdit.setText(DateUtil.date2String(todo.getDate(Todo.END_TIME), DateUtil.COMPLICATED_DATE));
         descriptionEdit.setText(todo.getString(Todo.DESCRIPTION));
-        createdByEdit.setText(user2todo.getString(User2Todo.USER_NICKNAME));
+        createdByEdit.setText(user2todo.getAVUser(User2Todo.USER).getString(Person.NICK_NAME));
     }
 
     private void setEditable(boolean enable) {
@@ -120,6 +121,7 @@ public class ViewTodoActivity extends AppCompatActivity {
     private void peopleInit() {
         AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
         query.whereEqualTo(User2Todo.TODO, user2todo.getAVObject(User2Todo.TODO));
+        query.include(User2Todo.USER+"."+ Person.NICK_NAME);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> user2todoList, AVException e) {
@@ -128,7 +130,7 @@ public class ViewTodoActivity extends AppCompatActivity {
                 } else {
                     String people = "";
                     for (AVObject user2todo : user2todoList) {
-                        people += user2todo.getString(User2Todo.USER_NICKNAME)+",";
+                        people += user2todo.getAVUser(User2Todo.USER).getString(Person.NICK_NAME)+",";
                     }
                     peopleEdit.setText(people.substring(0,people.length()-1));
                 }

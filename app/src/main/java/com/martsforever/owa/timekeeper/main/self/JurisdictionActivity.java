@@ -18,6 +18,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
+import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.util.DataUtils;
@@ -80,6 +81,7 @@ public class JurisdictionActivity extends AppCompatActivity {
     private void initSelfFriendship() {
         AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
         query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+        query.include(FriendShip.FRIEND+"."+ Person.NICK_NAME);
         query.orderByAscending(FriendShip.FRIEND);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override

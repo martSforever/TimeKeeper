@@ -6,11 +6,9 @@ package com.martsforever.owa.timekeeper.javabean;
 
 public class User2Todo {
     public static final String TABLE_USER_2_TODO = "user2todo";
-
     public static final String USER = "user";
     public static final String TODO = "todo";
     public static final String SWITCH = "switch";
-    public static final String USER_NICKNAME = "userNickname";
 }
 
 
