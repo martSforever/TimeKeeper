@@ -23,6 +23,7 @@ import com.avos.avoscloud.GetCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
@@ -36,6 +37,7 @@ import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.AddTodosActivity;
 import com.martsforever.owa.timekeeper.main.todo.AllTodosActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
+import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
 import com.yydcdut.sdlv.SlideAndDragListView;
@@ -44,6 +46,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import q.rorbin.badgeview.QBadgeView;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int FRIENDSHIP_CHANGE = 0x002;
     public static final int MESSAGE_BADGE_CHANGE = 0x003;
     public static final int FRIENDSHIP_ALL_CHANGE = 0x004;
+    public static final int INIT_TODO = 0x004;
 
     private Handler handler = new Handler() {
         @Override
@@ -64,6 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case INIT_FRIENDSHIPS:
                     friendShips = (List<AVObject>) msg.obj;
                     initFriendInterface();
+                    break;
+                case INIT_TODO:
+                    allUser2todoList = (List<AVObject>) msg.obj;
+                    for (AVObject user2todo : allUser2todoList)
+                        categoryUser2todo(user2todo);
+                    initTodoInterface();
                     break;
             }
         }
@@ -100,6 +110,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SlideAndDragListView<AVObject> friendListView;
     private ImageView turnToAddFriendBtn;
     /*to do interface element*/
+    private List<AVObject> allUser2todoList;
+    private List<AVObject> todayUser2todoList = new ArrayList<>();
+    private List<AVObject> importantUser2todoList = new ArrayList<>();
+    private List<AVObject> doingUser2todoList = new ArrayList<>();
+    private List<AVObject> completeUser2todoList = new ArrayList<>();
+    private List<AVObject> unfinishedUser2todoList = new ArrayList<>();
+    private List<AVObject> readyUser2todoList = new ArrayList<>();
+
+
     private ImageView allScheduleImg;
     private QBadgeView badgeViewAllSchedule;
     private ImageView todayScheduleImg;
@@ -140,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initMainInterface();
         initDataFriendShips();
         initTomatoInterface();
-        initTodoInterface();
         initMeInterface();
+        initTodoListData();
     }
 
     private void initMainInterface() {
@@ -204,47 +223,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         badgeViewAllSchedule = new QBadgeView(this);
         badgeViewAllSchedule.bindTarget(allScheduleImg);
         badgeViewAllSchedule.setBadgeTextSize(10, true);
-        badgeViewAllSchedule.setBadgeNumber(20);
+        badgeViewAllSchedule.setBadgeNumber(allUser2todoList.size());
         badgeViewAllSchedule.setBadgeBackgroundColor(Color.parseColor("#c3bed4"));
         badgeViewTodaySchedule = new QBadgeView(this);
         badgeViewTodaySchedule.bindTarget(todayScheduleImg);
         badgeViewTodaySchedule.setBadgeTextSize(10, true);
-        badgeViewTodaySchedule.setBadgeNumber(3);
+        badgeViewTodaySchedule.setBadgeNumber(todayUser2todoList.size());
         badgeViewTodaySchedule.setBadgeBackgroundColor(Color.parseColor("#7e884f"));
         badgeViewImportantSchedule = new QBadgeView(this);
         badgeViewImportantSchedule.bindTarget(importantScheduleImg);
         badgeViewImportantSchedule.setBadgeTextSize(10, true);
-        badgeViewImportantSchedule.setBadgeNumber(11);
+        badgeViewImportantSchedule.setBadgeNumber(importantUser2todoList.size());
         badgeViewImportantSchedule.setBadgeBackgroundColor(Color.parseColor("#f17c67"));
         badgeViewDoingSchedule = new QBadgeView(this);
         badgeViewDoingSchedule.bindTarget(doingScheduleImg);
         badgeViewDoingSchedule.setBadgeTextSize(10, true);
-        badgeViewDoingSchedule.setBadgeNumber(10);
+        badgeViewDoingSchedule.setBadgeNumber(doingUser2todoList.size());
         badgeViewDoingSchedule.setBadgeBackgroundColor(Color.parseColor("#495a80"));
         badgeViewCompleteySchedule = new QBadgeView(this);
         badgeViewCompleteySchedule.bindTarget(completeScheduleImg);
         badgeViewCompleteySchedule.setBadgeTextSize(10, true);
-        badgeViewCompleteySchedule.setBadgeNumber(6);
+        badgeViewCompleteySchedule.setBadgeNumber(completeUser2todoList.size());
         badgeViewCompleteySchedule.setBadgeBackgroundColor(Color.parseColor("#00ff80"));
         badgeViewUnfinishedSchedule = new QBadgeView(this);
         badgeViewUnfinishedSchedule.bindTarget(unfinishedScheduleImg);
         badgeViewUnfinishedSchedule.setBadgeTextSize(10, true);
-        badgeViewUnfinishedSchedule.setBadgeNumber(333);
+        badgeViewUnfinishedSchedule.setBadgeNumber(unfinishedUser2todoList.size());
         badgeViewUnfinishedSchedule.setBadgeBackgroundColor(Color.parseColor("#9966cc"));
         badgeViewReadySchedule = new QBadgeView(this);
         badgeViewReadySchedule.bindTarget(readyScheduleImg);
         badgeViewReadySchedule.setBadgeTextSize(10, true);
-        badgeViewReadySchedule.setBadgeNumber(7);
+        badgeViewReadySchedule.setBadgeNumber(readyUser2todoList.size());
         badgeViewReadySchedule.setBadgeBackgroundColor(Color.parseColor("#c9cabb"));
 
         allScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AllTodosActivity.actionStart(MainActivity.this);}
+                AllTodosActivity.actionStart(MainActivity.this);
+            }
         });
         addScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {AddTodosActivity.actionStart(MainActivity.this);}
+            public void onClick(View v) {
+                AddTodosActivity.actionStart(MainActivity.this);
+            }
         });
 
     }
@@ -307,13 +329,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initDataFriendShips() {
         AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
         query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
-        query.include(FriendShip.FRIEND+"."+ Person.NICK_NAME);
+        query.include(FriendShip.FRIEND + "." + Person.NICK_NAME);
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
                 if (e == null) {
                     Message message = new Message();
                     message.what = INIT_FRIENDSHIPS;
+                    message.obj = list;
+                    handler.sendMessage(message);
+                } else {
+                    ShowMessageUtil.tosatFast(e.getMessage(), MainActivity.this);
+                }
+            }
+        });
+    }
+
+    private void initTodoListData() {
+        AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
+        query.whereEqualTo(User2Todo.USER, AVUser.getCurrentUser());
+        query.include(User2Todo.TODO);
+        query.include(User2Todo.USER + "." + Person.NICK_NAME);
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                if (e == null) {
+                    Message message = new Message();
+                    message.what = INIT_TODO;
                     message.obj = list;
                     handler.sendMessage(message);
                 } else {
@@ -390,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 Boolean addNewTodo = jsonObject.getBoolean(MessageHandler.MESSAGE_ADD_NEW_TODO);
                 if (addNewTodo != null && addNewTodo) {
-                    badgeViewAllSchedule.setBadgeNumber(badgeViewAllSchedule.getBadgeNumber()+1);
+                    badgeViewAllSchedule.setBadgeNumber(badgeViewAllSchedule.getBadgeNumber() + 1);
                     /*String user2todoId = jsonObject.getString(MessageHandler.MESSAGE_USER2TODO_ID);
                     AVQuery<AVObject> query = new AVQuery<AVObject>(User2Todo.TABLE_USER_2_TODO);
                     query.getInBackground(user2todoId, new GetCallback<AVObject>() {
@@ -430,5 +472,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+    private void categoryUser2todo(AVObject user2todo) {
+        AVObject todo = user2todo.getAVObject(User2Todo.TODO);
+        Date startTime = todo.getDate(Todo.START_TIME);
+        Date endTime = todo.getDate(Todo.END_TIME);
+        Date todayTime = new Date();
+        if (todayTime.getDay() == startTime.getDay()) todayUser2todoList.add(user2todo);
+        if (todo.getInt(Todo.LEVEL) == Todo.LEVEL_IMPORTANT_HEIGHT)
+            importantUser2todoList.add(user2todo);
+        if (todo.getInt(Todo.STATE) == Todo.STATUS_DOING) doingUser2todoList.add(user2todo);
+        else if (todo.getInt(Todo.STATE) == Todo.STATUS_NOTCOMPLETE)
+            unfinishedUser2todoList.add(user2todo);
+        else if (todo.getInt(Todo.STATE) == Todo.STATUS_COMPLETE)
+            completeUser2todoList.add(user2todo);
+        if (startTime.getTime() > todayTime.getTime()) readyUser2todoList.add(user2todo);
+    }
+
 
 }
