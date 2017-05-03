@@ -24,14 +24,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".main.MainActivity" />
-        <activity android:name=".launch.LogoActivity" />
-        <activity android:name=".launch.LaunchActivity" />
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".launch.LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".launch.LaunchActivity" />
+        <activity android:name=".login.LoginActivity">
+
         </activity>
         <activity android:name=".register.EmailRegisterActivity" />
         <activity android:name=".register.MobileRegisterActivity" />

@@ -235,6 +235,24 @@
                 app:si_disabled_color="#48036f"
                 app:si_tint_color="#1d8c00" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0.5dp"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/self_logout_btn"
+                android:layout_width="51dp"
+                android:layout_height="51dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/icon_logout"
+                android:padding="10dp"
+                android:background="@drawable/bg_todo_detail_finish_btn"
+                android:textColor="#fff" />
+        </LinearLayout>
     </LinearLayout>
 
 

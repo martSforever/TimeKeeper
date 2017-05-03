@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.main.self;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -12,6 +13,8 @@ import com.avos.avoscloud.AVUser;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.login.LoginActivity;
+import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.xutils.view.annotation.ContentView;
@@ -92,9 +95,18 @@ public class PersonInfoActivity extends AppCompatActivity {
         switchInvitationBtn.setIconEnabled(user.getBoolean(Person.RECEIVE_INVITATION));
     }
 
-    public static void actionStart(Context context) {
+    public static void actionStart(Activity activity) {
         Intent intent = new Intent();
-        intent.setClass(context, PersonInfoActivity.class);
-        context.startActivity(intent);
+        intent.setClass(activity, PersonInfoActivity.class);
+        activity.startActivity(intent);
+        ActivityManager.addDestoryActivity(activity,activity.getClass().getName());
+    }
+
+    @Event(R.id.self_logout_btn)
+    private void logout(View view){
+        AVUser.logOut();
+        LoginActivity.actionStart(this);
+        finish();
+        ActivityManager.destroyAllActivity();
     }
 }

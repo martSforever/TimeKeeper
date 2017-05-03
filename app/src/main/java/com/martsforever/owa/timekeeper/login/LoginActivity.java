@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
+    }
+
+    public static void actionStart(Activity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, LoginActivity.class);
+        activity.startActivity(intent);
     }
 
     private void initView() {
@@ -131,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (e == null) {
             /*sign in successful, bind the installation id of the device */
             String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-            avUser.put(Person.INSTALLATION_ID,installationId);
+            avUser.put(Person.INSTALLATION_ID, installationId);
             avUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {

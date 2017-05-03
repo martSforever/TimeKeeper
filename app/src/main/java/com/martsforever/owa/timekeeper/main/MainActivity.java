@@ -155,6 +155,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerReceiver();
     }
 
+
+
     private void initView() {
         initMainInterface();
         initDataFriendShips();
