@@ -21,6 +21,10 @@ import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.dbbean.DBFriendShip;
+import com.martsforever.owa.timekeeper.dbbean.DBMessage;
+import com.martsforever.owa.timekeeper.dbbean.DBUser2Todo;
+import com.martsforever.owa.timekeeper.dbbean.DBUtils;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
@@ -38,15 +42,18 @@ import com.martsforever.owa.timekeeper.main.todo.AddTodosActivity;
 import com.martsforever.owa.timekeeper.main.todo.AllTodosActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.DateUtil;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
 import com.yydcdut.sdlv.SlideAndDragListView;
 
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import q.rorbin.badgeview.QBadgeView;
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int MESSAGE_BADGE_CHANGE = 0x003;
     public static final int FRIENDSHIP_ALL_CHANGE = 0x004;
     public static final int INIT_TODO = 0x004;
+    public static final int INIT_MESSAGE = 0x005;
 
     private Handler handler = new Handler() {
         @Override
@@ -75,6 +83,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         categoryUser2todo(user2todo);
                     initTodoInterface();
                     break;
+                case INIT_MESSAGE:
+                    List<AVObject> list = (List<AVObject>) msg.obj;
+                    int unReadNumberOfMessage = 0;
+                    for (AVObject message : list) {
+                        if (message.getInt(com.martsforever.owa.timekeeper.javabean.Message.IS_READ) == com.martsforever.owa.timekeeper.javabean.Message.UNREAD)
+                            unReadNumberOfMessage++;
+                    }
+                    messageTextBadge.setBadgeNumber(unReadNumberOfMessage);
             }
         }
     };
@@ -156,13 +172,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     private void initView() {
+        checkNetworkIsAvailable();
         initMainInterface();
         initDataFriendShips();
         initTomatoInterface();
         initMeInterface();
         initTodoListData();
+    }
+
+    private void checkNetworkIsAvailable() {
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+            try {
+                List<DBMessage> dbMessageList = DBUtils.getDbManager().selector(DBMessage.class)
+                        .findAll();
+                if (dbMessageList != null)
+                    for (DBMessage dbMessage : dbMessageList)
+                        DBMessage.delete(dbMessage);
+
+                List<DBUser2Todo> user2TodoList = DBUtils.getDbManager().selector(DBUser2Todo.class)
+                        .findAll();
+                if (user2TodoList != null)
+                    for (DBUser2Todo dbUser2Todo : user2TodoList)
+                        DBUser2Todo.delete(dbUser2Todo);
+                List<DBFriendShip> dbFriendShipList = DBUtils.getDbManager().selector(DBFriendShip.class)
+                        .findAll();
+                if (dbFriendShipList != null)
+                    for (DBFriendShip dbFriendShip : dbFriendShipList)
+                        DBFriendShip.delete(dbFriendShip);
+
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initMainInterface() {
@@ -329,58 +371,169 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initDataFriendShips() {
-        AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
-        query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
-        query.include(FriendShip.FRIEND + "." + Person.NICK_NAME);
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                if (e == null) {
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+            System.out.println("query friendship from network");
+            AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
+            query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+            query.include(FriendShip.FRIEND + "." + Person.NICK_NAME);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (e == null) {
+                        for (AVObject object : list)
+                            DBFriendShip.save(object);
+                        Message message = new Message();
+                        message.what = INIT_FRIENDSHIPS;
+                        message.obj = list;
+                        handler.sendMessage(message);
+                    } else {
+                        ShowMessageUtil.tosatFast(e.getMessage(), MainActivity.this);
+                    }
+                }
+            });
+        } else {
+            System.out.println("query friendship from database");
+            try {
+                List<DBFriendShip> dbFriendShipList = DBUtils.getDbManager().selector(DBFriendShip.class).findAll();
+
+                if (dbFriendShipList == null || dbFriendShipList.size() == 0) {
+                    System.out.println("dbFriendShipList empty");
+                    return;
+                } else {
+                    List<AVObject> user2todoList = new ArrayList<>();
+                    for (DBFriendShip dbFriendShip : dbFriendShipList)
+                        user2todoList.add(DBFriendShip.getFriendship(dbFriendShip));
                     Message message = new Message();
                     message.what = INIT_FRIENDSHIPS;
-                    message.obj = list;
+                    message.obj = user2todoList;
                     handler.sendMessage(message);
-                } else {
-                    ShowMessageUtil.tosatFast(e.getMessage(), MainActivity.this);
                 }
+            } catch (DbException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     private void initTodoListData() {
-        AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
-        query.whereEqualTo(User2Todo.USER, AVUser.getCurrentUser());
-        query.include(User2Todo.TODO);
-        query.include(User2Todo.USER + "." + Person.NICK_NAME);
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                if (e == null) {
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+            System.out.println("query user2todo from network");
+            AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
+            query.whereEqualTo(User2Todo.USER, AVUser.getCurrentUser());
+            query.include(User2Todo.TODO);
+            query.include(User2Todo.USER + "." + Person.NICK_NAME);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (e == null) {
+                        for (AVObject object : list)
+                            DBUser2Todo.save(object);
+                        Message message = new Message();
+                        message.what = INIT_TODO;
+                        message.obj = list;
+                        handler.sendMessage(message);
+                    } else {
+                        ShowMessageUtil.tosatFast(e.getMessage(), MainActivity.this);
+                    }
+                }
+            });
+        } else {
+            System.out.println("query user2todo from database");
+            try {
+                List<DBMessage> dbMessageList = DBUtils.getDbManager().selector(DBMessage.class).findAll();
+                List<DBUser2Todo> dbUser2TodoList = DBUtils.getDbManager().selector(DBUser2Todo.class).findAll();
+                Iterator<DBUser2Todo> iterator = dbUser2TodoList.iterator();
+                if (dbMessageList != null)
+                    while (iterator.hasNext()) {
+                        DBUser2Todo dbUser2Todo = iterator.next();
+                        for (DBMessage dbMessage : dbMessageList) {
+                            if (dbMessage.getUser2todoId() == dbUser2Todo.getId()) {
+                                iterator.remove();
+                                break;
+                            }
+                        }
+                    }
+                if (dbUser2TodoList == null || dbUser2TodoList.size() == 0) {
+                    System.out.println("dbUser2TodoList empty");
+                    return;
+                } else {
+                    List<AVObject> user2todoList = new ArrayList<>();
+                    for (DBUser2Todo dbUser2Todo : dbUser2TodoList)
+                        user2todoList.add(DBUser2Todo.getUser2todo(dbUser2Todo));
                     Message message = new Message();
                     message.what = INIT_TODO;
-                    message.obj = list;
+                    message.obj = user2todoList;
                     handler.sendMessage(message);
-                } else {
-                    ShowMessageUtil.tosatFast(e.getMessage(), MainActivity.this);
                 }
+            } catch (DbException e) {
+                e.printStackTrace();
             }
-        });
+        }
+
     }
 
     private void initMessageTextBadge() {
-        AVQuery<AVObject> query = new AVQuery<>(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
-        query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER, AVUser.getCurrentUser());
-        query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.IS_READ, com.martsforever.owa.timekeeper.javabean.Message.UNREAD);
-        query.countInBackground(new CountCallback() {
-            @Override
-            public void done(int i, AVException e) {
-                if (e == null) {
-                    messageTextBadge.setBadgeNumber(i);
-                } else {
-                    ShowMessageUtil.tosatSlow(e.getMessage(), MainActivity.this);
+
+            /*       AVQuery<AVObject> query = new AVQuery<>(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
+            query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER, AVUser.getCurrentUser());
+            query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.IS_READ, com.martsforever.owa.timekeeper.javabean.Message.UNREAD);
+            query.countInBackground(new CountCallback() {
+                @Override
+                public void done(int i, AVException e) {
+                    if (e == null) {
+                        messageTextBadge.setBadgeNumber(i);
+                    } else {
+                        ShowMessageUtil.tosatSlow(e.getMessage(), MainActivity.this);
+                    }
                 }
+            });*/
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+            System.out.println("query message from network");
+            AVQuery<AVObject> query = new AVQuery<>(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
+            query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER, AVUser.getCurrentUser());
+            query.include(com.martsforever.owa.timekeeper.javabean.Message.SENDER);
+            query.include(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER);
+            query.include(com.martsforever.owa.timekeeper.javabean.Message.USER2TODO);
+            query.include(com.martsforever.owa.timekeeper.javabean.Message.USER2TODO + "." + User2Todo.TODO);
+            query.include(com.martsforever.owa.timekeeper.javabean.Message.USER2TODO + "." + User2Todo.TODO + "." + Todo.CREATED_BY + "." + Person.NICK_NAME);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (e == null) {
+                        for (AVObject message : list)
+                            DBMessage.save(message);
+                        Message message = new Message();
+                        message.what = INIT_MESSAGE;
+                        message.obj = list;
+                        handler.sendMessage(message);
+                    } else {
+                        ShowMessageUtil.tosatSlow(e.getMessage(), MainActivity.this);
+                    }
+
+                }
+            });
+        } else {
+            System.out.println("query message from database");
+            try {
+                List<DBMessage> dbMessageList = DBUtils.getDbManager().selector(DBMessage.class).findAll();
+
+                if (dbMessageList == null || dbMessageList.size() == 0) {
+                    System.out.println("dbMessageList empty");
+                    return;
+                } else {
+                    List<AVObject> user2todoList = new ArrayList<>();
+                    for (DBMessage dbMessage : dbMessageList)
+                        user2todoList.add(DBMessage.getMessage(dbMessage));
+                    Message message = new Message();
+                    message.what = INIT_MESSAGE;
+                    message.obj = user2todoList;
+                    handler.sendMessage(message);
+                }
+            } catch (DbException e) {
+                e.printStackTrace();
             }
-        });
+        }
+
+
     }
 
     @Override
@@ -480,7 +633,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Date startTime = todo.getDate(Todo.START_TIME);
         Date endTime = todo.getDate(Todo.END_TIME);
         Date todayTime = new Date();
-        if (todayTime.getDay() == startTime.getDay()) todayUser2todoList.add(user2todo);
+        if (todayTime.getDate() == startTime.getDate()) todayUser2todoList.add(user2todo);
         if (todo.getInt(Todo.LEVEL) == Todo.LEVEL_IMPORTANT_HEIGHT)
             importantUser2todoList.add(user2todo);
         if (todo.getInt(Todo.STATE) == Todo.STATUS_DOING) doingUser2todoList.add(user2todo);
