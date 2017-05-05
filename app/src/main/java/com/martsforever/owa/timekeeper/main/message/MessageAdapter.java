@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper.main.message;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.util.DateUtil;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import java.util.Date;
@@ -28,12 +30,12 @@ public class MessageAdapter extends BaseAdapter {
 
     List<AVObject> messages;
     LayoutInflater layoutInflater;
-    Context context;
+    Activity activity;
 
-    public MessageAdapter(List<AVObject> messages, Context context) {
+    public MessageAdapter(List<AVObject> messages, Activity activity) {
         this.messages = messages;
-        this.context = context;
-        layoutInflater = LayoutInflater.from(context);
+        this.activity = activity;
+        layoutInflater = LayoutInflater.from(activity);
     }
 
     @Override
@@ -116,6 +118,12 @@ public class MessageAdapter extends BaseAdapter {
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
+
+            if (!NetWorkUtils.isNetworkAvailable(activity)) {
+                NetWorkUtils.showNetworkNotAvailable(activity);
+                return;
+            }
+
             final Object o = v.getTag();
             if (o instanceof Integer) {
                 AVObject message = messages.get((Integer) o);
@@ -128,7 +136,7 @@ public class MessageAdapter extends BaseAdapter {
                             ((TextView) v).setTextColor(0xff376956);
                             ((TextView) v).setText("READ");
                         } else {
-                            ShowMessageUtil.tosatFast(e.getMessage(), context);
+                            ShowMessageUtil.tosatFast(e.getMessage(), activity);
                         }
                     }
                 });

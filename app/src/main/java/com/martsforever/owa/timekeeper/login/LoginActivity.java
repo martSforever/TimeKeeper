@@ -21,6 +21,7 @@ import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.register.RetrivePasswordActivity;
 import com.martsforever.owa.timekeeper.register.SelectRegisterActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -86,12 +87,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * login by username or mobile
      */
     private void login() {
-
+        if (!NetWorkUtils.isNetworkAvailable(LoginActivity.this)) {
+            NetWorkUtils.showNetworkNotAvailable(LoginActivity.this);
+            return;
+        }
         String account = emailOrMobileEdit.getText().toString().trim();
         String password = passwordEdit.getText().toString().trim();
         System.out.println("account=" + account + ", password=" + password);
-
-
         /*if the character length of the account is greater than 10, this is mobile login process, otherwise this is the username login process*/
         if (account.length() > 10) loginByMobile(account, password);
         else loginByUsername(account, password);

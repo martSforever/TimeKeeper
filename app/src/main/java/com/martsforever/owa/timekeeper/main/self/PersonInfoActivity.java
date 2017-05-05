@@ -15,6 +15,8 @@ import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.login.LoginActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
+import com.martsforever.owa.timekeeper.util.InformDialog;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.xutils.view.annotation.ContentView;
@@ -49,12 +51,16 @@ public class PersonInfoActivity extends AppCompatActivity {
 
     @Event(R.id.self_edit_save_btn)
     private void editUsername(View view) {
+        if (!NetWorkUtils.isNetworkAvailable(this)) {
+            NetWorkUtils.showNetworkNotAvailable(this);
+            return;
+        }
         if (nicknameEdit.isEnabled()) {
             /*保存操作*/
             nicknameEdit.setEnabled(false);
             nicknameEdit.setHideUnderline(true);
             ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.icon_edit));
-            user.put(Person.NICK_NAME,nicknameEdit.getText().toString().trim());
+            user.put(Person.NICK_NAME, nicknameEdit.getText().toString().trim());
             user.saveInBackground();
         } else {
             /*编辑操作*/
@@ -64,24 +70,33 @@ public class PersonInfoActivity extends AppCompatActivity {
         }
 
     }
+
     @Event(R.id.self_back_btn)
-    private void back(View view){
+    private void back(View view) {
         this.finish();
     }
 
     @Event(R.id.self_switch_schedule_btn)
-    private void switchSchedule(View view){
+    private void switchSchedule(View view) {
+        if (!NetWorkUtils.isNetworkAvailable(this)) {
+            NetWorkUtils.showNetworkNotAvailable(this);
+            return;
+        }
         SwitchIconView switchIconView = (SwitchIconView) view;
         switchIconView.switchState();
-        user.put(Person.SCHEDULE_AVAILABLE,switchScheduleBtn.isIconEnabled());
+        user.put(Person.SCHEDULE_AVAILABLE, switchScheduleBtn.isIconEnabled());
         user.saveInBackground();
     }
 
     @Event(R.id.self_switch_invitation_btn)
-    private void switchInvitation(View view){
+    private void switchInvitation(View view) {
+        if (!NetWorkUtils.isNetworkAvailable(this)) {
+            NetWorkUtils.showNetworkNotAvailable(this);
+            return;
+        }
         SwitchIconView switchIconView = (SwitchIconView) view;
         switchIconView.switchState();
-        user.put(Person.RECEIVE_INVITATION,switchScheduleBtn.isIconEnabled());
+        user.put(Person.RECEIVE_INVITATION, switchScheduleBtn.isIconEnabled());
         user.saveInBackground();
     }
 
@@ -99,11 +114,11 @@ public class PersonInfoActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(activity, PersonInfoActivity.class);
         activity.startActivity(intent);
-        ActivityManager.addDestoryActivity(activity,activity.getClass().getName());
+        ActivityManager.addDestoryActivity(activity, activity.getClass().getName());
     }
 
     @Event(R.id.self_logout_btn)
-    private void logout(View view){
+    private void logout(View view) {
         AVUser.logOut();
         LoginActivity.actionStart(this);
         finish();

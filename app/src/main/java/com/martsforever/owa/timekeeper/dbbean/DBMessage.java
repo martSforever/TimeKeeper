@@ -203,7 +203,7 @@ public class DBMessage {
         DBMessage dbMessage = new DBMessage();
         dbMessage.setHandleClassName(message.getString(Message.HANDLE_CLASS_NAME));
         dbMessage.setIsRead(message.getInt(Message.IS_READ));
-        dbMessage.setMessageType(message.getString(Message.HANDLE_CLASS_NAME));
+        dbMessage.setMessageType(message.getString(Message.MESSAGE_TYPE));
         dbMessage.setTime(message.getDate(Message.TIME));
         dbMessage.setVerifiedMessage(message.getString(Message.VERIFY_MESSAGE));
         dbMessage.setObjectId(message.getObjectId());

@@ -247,6 +247,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         turnToAddFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetWorkUtils.isNetworkAvailable(MainActivity.this)) {
+                    NetWorkUtils.showNetworkNotAvailable(MainActivity.this);
+                    return;
+                }
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, AddFriendsActivity.class);
                 startActivity(intent);
@@ -357,6 +361,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         securityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetWorkUtils.isNetworkAvailable(MainActivity.this)) {
+                    NetWorkUtils.showNetworkNotAvailable(MainActivity.this);
+                    return;
+                }
                 SecurityActivity.actionStart(MainActivity.this);
                 ActivityManager.addDestoryActivity(MainActivity.this, MainActivity.class.getName());
             }
@@ -372,10 +380,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initDataFriendShips() {
         if (NetWorkUtils.isNetworkAvailable(this)) {
+            List<DBFriendShip> dbFriendShipList = null;
+            try {
+                dbFriendShipList = DBUtils.getDbManager().selector(DBFriendShip.class)
+                        .findAll();
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+            if (dbFriendShipList != null)
+                for (DBFriendShip dbFriendShip : dbFriendShipList)
+                    DBFriendShip.delete(dbFriendShip);
+
             System.out.println("query friendship from network");
             AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
             query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
-            query.include(FriendShip.FRIEND + "." + Person.NICK_NAME);
+            query.include(FriendShip.FRIEND);
+            query.orderByAscending(FriendShip.FRIEND);
             query.findInBackground(new FindCallback<AVObject>() {
                 @Override
                 public void done(List<AVObject> list, AVException e) {
@@ -391,11 +411,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             });
+            query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
+            query.whereEqualTo(FriendShip.FRIEND, AVUser.getCurrentUser());
+            query.orderByAscending(FriendShip.SELF);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (e == null) {
+                        for (AVObject object : list)
+                            DBFriendShip.save(object);
+                    } else {
+                        ShowMessageUtil.tosatFast(e.getMessage(), MainActivity.this);
+                    }
+                }
+            });
+
+
         } else {
             System.out.println("query friendship from database");
             try {
-                List<DBFriendShip> dbFriendShipList = DBUtils.getDbManager().selector(DBFriendShip.class).findAll();
-
+                List<DBFriendShip> dbFriendShipList = DBUtils.getDbManager().selector(DBFriendShip.class).where("selfObjectId", "=", AVUser.getCurrentUser().getObjectId()).findAll();
                 if (dbFriendShipList == null || dbFriendShipList.size() == 0) {
                     System.out.println("dbFriendShipList empty");
                     return;
@@ -490,6 +525,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("query message from network");
             AVQuery<AVObject> query = new AVQuery<>(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
             query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER, AVUser.getCurrentUser());
+            query.orderByDescending("updatedAt");
             query.include(com.martsforever.owa.timekeeper.javabean.Message.SENDER);
             query.include(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER);
             query.include(com.martsforever.owa.timekeeper.javabean.Message.USER2TODO);
@@ -520,12 +556,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     System.out.println("dbMessageList empty");
                     return;
                 } else {
-                    List<AVObject> user2todoList = new ArrayList<>();
+                    List<AVObject> messageList = new ArrayList<>();
                     for (DBMessage dbMessage : dbMessageList)
-                        user2todoList.add(DBMessage.getMessage(dbMessage));
+                        messageList.add(DBMessage.getMessage(dbMessage));
                     Message message = new Message();
                     message.what = INIT_MESSAGE;
-                    message.obj = user2todoList;
+                    message.obj = messageList;
                     handler.sendMessage(message);
                 }
             } catch (DbException e) {

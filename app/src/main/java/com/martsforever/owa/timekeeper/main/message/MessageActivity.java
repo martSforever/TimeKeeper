@@ -19,20 +19,25 @@ import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.dbbean.DBMessage;
+import com.martsforever.owa.timekeeper.dbbean.DBUtils;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.util.DataUtils;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.yydcdut.sdlv.Menu;
 import com.yydcdut.sdlv.MenuItem;
 import com.yydcdut.sdlv.SlideAndDragListView;
 
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ContentView(R.layout.activity_message)
@@ -66,23 +71,43 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
     }
 
     private void initData() {
-        AVUser currentUser = AVUser.getCurrentUser();
-        AVQuery<AVObject> query = new AVQuery<>(Message.TABLE_MESSAGE);
-        query.whereEqualTo(Message.RECEIVER, currentUser);
-        query.orderByDescending("updatedAt");
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                if (e == null) {
-                    android.os.Message message = new android.os.Message();
-                    message.obj = list;
-                    handler.sendMessage(message);
-                } else {
-                    ShowMessageUtil.tosatFast(e.getMessage(), MessageActivity.this);
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+            System.out.println("query message from network");
+            AVUser currentUser = AVUser.getCurrentUser();
+            AVQuery<AVObject> query = new AVQuery<>(Message.TABLE_MESSAGE);
+            query.whereEqualTo(Message.RECEIVER, currentUser);
+            query.orderByDescending("updatedAt");
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (e == null) {
+                        android.os.Message message = new android.os.Message();
+                        message.obj = list;
+                        handler.sendMessage(message);
+                    } else {
+                        ShowMessageUtil.tosatFast(e.getMessage(), MessageActivity.this);
+                    }
                 }
-
+            });
+        } else {
+            System.out.println("query message from database");
+            try {
+                List<DBMessage> dbMessageList = DBUtils.getDbManager().selector(DBMessage.class).orderBy("time",true).findAll();
+                if (dbMessageList == null || dbMessageList.size() == 0) {
+                    System.out.println("dbMessageList empty");
+                    return;
+                } else {
+                    List<AVObject> messageList = new ArrayList<>();
+                    for (DBMessage dbMessage : dbMessageList)
+                        messageList.add(DBMessage.getMessage(dbMessage));
+                    android.os.Message message = new android.os.Message();
+                    message.obj = messageList;
+                    handler.sendMessage(message);
+                }
+            } catch (DbException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     public void initMenu() {
@@ -105,11 +130,17 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
     public static void actionStart(Activity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, MessageActivity.class);
-        activity.startActivityForResult(intent,0);
+        activity.startActivityForResult(intent, 0);
     }
 
     @Override
     public void onListItemClick(View v, int position) {
+
+        if (!NetWorkUtils.isNetworkAvailable(this)) {
+            NetWorkUtils.showNetworkNotAvailable(this);
+            return;
+        }
+
         AVObject message = messages.get(position);
         MessageHandler messageHandler = null;
         try {
@@ -133,6 +164,10 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
 
     @Override
     public int onMenuItemClick(View v, int itemPosition, int buttonPosition, int direction) {
+        if (!NetWorkUtils.isNetworkAvailable(this)) {
+            NetWorkUtils.showNetworkNotAvailable(this);
+            return 0;
+        }
         switch (direction) {
             case MenuItem.DIRECTION_RIGHT:
                 switch (buttonPosition) {
@@ -163,7 +198,7 @@ public class MessageActivity extends AppCompatActivity implements SlideAndDragLi
         backToMainAcitivty();
     }
 
-    private void backToMainAcitivty(){
+    private void backToMainAcitivty() {
         setResult(MainActivity.MESSAGE_BADGE_CHANGE);
         this.finish();
     }

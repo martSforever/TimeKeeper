@@ -19,6 +19,7 @@ import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.main.MainActivity;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
 import org.xutils.view.annotation.ContentView;
@@ -48,15 +49,6 @@ public class FriendDetailActivity extends AppCompatActivity {
     private AVObject friendShip;
     private AVUser friend;
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            friend = (AVUser) msg.obj;
-            initView();
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,20 +59,8 @@ public class FriendDetailActivity extends AppCompatActivity {
     private void initData() {
         try {
             friendShip = AVObject.parseAVObject(getIntent().getStringExtra(SERIALIZE_FRIENDSHIP));
-            AVQuery<AVUser> query = new AVQuery<>(Person.TABLE_PERSON);
-            query.getInBackground(((AVUser) friendShip.get(FriendShip.FRIEND)).getObjectId(), new GetCallback<AVUser>() {
-                @Override
-                public void done(AVUser user, AVException e) {
-                    if (e == null) {
-                        Message message = new Message();
-                        message.obj = user;
-                        handler.sendMessage(message);
-                    } else {
-                        ShowMessageUtil.tosatSlow(e.getMessage(), FriendDetailActivity.this);
-                    }
-                }
-            });
-
+            friend = friendShip.getAVUser(FriendShip.FRIEND);
+            initView();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,6 +77,10 @@ public class FriendDetailActivity extends AppCompatActivity {
 
     @Event(R.id.friend_detail_switch_schedule_btn)
     private void switchSchedule(View view) {
+        if (!NetWorkUtils.isNetworkAvailable(FriendDetailActivity.this)) {
+            NetWorkUtils.showNetworkNotAvailable(FriendDetailActivity.this);
+            return;
+        }
         SwitchIconView switchIconView = (SwitchIconView) view;
         switchIconView.switchState();
         friendShip.put(FriendShip.SCHEDULE_AVAILABLE, switchIconView.isIconEnabled());
@@ -105,6 +89,10 @@ public class FriendDetailActivity extends AppCompatActivity {
 
     @Event(R.id.friend_detail_switch_invitation_btn)
     private void switchInvitation(View view) {
+        if (!NetWorkUtils.isNetworkAvailable(FriendDetailActivity.this)) {
+            NetWorkUtils.showNetworkNotAvailable(FriendDetailActivity.this);
+            return;
+        }
         SwitchIconView switchIconView = (SwitchIconView) view;
         switchIconView.switchState();
         friendShip.put(FriendShip.INVITATION_AVAILABLE, switchIconView.isIconEnabled());

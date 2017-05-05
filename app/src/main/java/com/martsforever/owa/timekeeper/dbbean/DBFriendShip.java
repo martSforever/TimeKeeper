@@ -28,6 +28,10 @@ public class DBFriendShip {
     private boolean invitationAvailable;
     @Column(name = "objectId")
     private String objectId;
+    @Column(name = "selfObjectId")
+    private String selfObjectId;
+    @Column(name = "friendObjectId")
+    private String friendObjectId;
 
     DBUser self;
     DBUser friend;
@@ -66,6 +70,11 @@ public class DBFriendShip {
                 ", friendId=" + friendId +
                 ", scheduleAvailable=" + scheduleAvailable +
                 ", invitationAvailable=" + invitationAvailable +
+                ", objectId='" + objectId + '\'' +
+                ", selfObjectId='" + selfObjectId + '\'' +
+                ", friendObjectId='" + friendObjectId + '\'' +
+                ", self=" + self +
+                ", friend=" + friend +
                 '}';
     }
 
@@ -127,6 +136,22 @@ public class DBFriendShip {
         this.objectId = objectId;
     }
 
+    public String getSelfObjectId() {
+        return selfObjectId;
+    }
+
+    public void setSelfObjectId(String selfObjectId) {
+        this.selfObjectId = selfObjectId;
+    }
+
+    public String getFriendObjectId() {
+        return friendObjectId;
+    }
+
+    public void setFriendObjectId(String friendObjectId) {
+        this.friendObjectId = friendObjectId;
+    }
+
     public static int save(AVObject friendship) {
         DBFriendShip dbFriendShip = new DBFriendShip();
         dbFriendShip.setFriendId(DBUser.save(friendship.getAVUser(FriendShip.FRIEND)));
@@ -134,6 +159,8 @@ public class DBFriendShip {
         dbFriendShip.setInvitationAvailable(friendship.getBoolean(FriendShip.INVITATION_AVAILABLE));
         dbFriendShip.setScheduleAvailable(friendship.getBoolean(FriendShip.SCHEDULE_AVAILABLE));
         dbFriendShip.setObjectId(friendship.getObjectId());
+        dbFriendShip.setSelfObjectId(friendship.getAVUser(FriendShip.SELF).getObjectId());
+        dbFriendShip.setFriendObjectId(friendship.getAVUser(FriendShip.FRIEND).getObjectId());
         try {
             if (DBUtils.getDbManager().saveBindingId(dbFriendShip)) {
                 return dbFriendShip.getId();

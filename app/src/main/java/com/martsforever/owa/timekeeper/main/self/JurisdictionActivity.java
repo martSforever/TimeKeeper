@@ -17,20 +17,25 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.dbbean.DBFriendShip;
+import com.martsforever.owa.timekeeper.dbbean.DBUtils;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.main.message.MessageActivity;
 import com.martsforever.owa.timekeeper.util.DataUtils;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.yydcdut.sdlv.Menu;
 import com.yydcdut.sdlv.MenuItem;
 import com.yydcdut.sdlv.SlideAndDragListView;
 
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ContentView(R.layout.activity_jurisdiction)
@@ -75,38 +80,83 @@ public class JurisdictionActivity extends AppCompatActivity {
     public static void actionStart(Activity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, JurisdictionActivity.class);
-        activity.startActivityForResult(intent,0);
+        activity.startActivityForResult(intent, 0);
     }
 
     private void initSelfFriendship() {
-        AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
-        query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
-        query.include(FriendShip.FRIEND+"."+ Person.NICK_NAME);
-        query.orderByAscending(FriendShip.FRIEND);
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                Message msg = new Message();
-                msg.what = INIT_SELF_FRIENDSHIP;
-                msg.obj = list;
-                handler.sendMessage(msg);
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+            AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
+            query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
+            query.include(FriendShip.FRIEND + "." + Person.NICK_NAME);
+            query.orderByAscending(FriendShip.FRIEND);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    Message msg = new Message();
+                    msg.what = INIT_SELF_FRIENDSHIP;
+                    msg.obj = list;
+                    handler.sendMessage(msg);
+                }
+            });
+        } else {
+            System.out.println("query friendship from database");
+            try {
+                List<DBFriendShip> dbFriendShipList = DBUtils.getDbManager().selector(DBFriendShip.class).where("selfObjectId", "=", AVUser.getCurrentUser().getObjectId()).findAll();
+
+                if (dbFriendShipList == null || dbFriendShipList.size() == 0) {
+                    System.out.println("dbFriendShipList empty");
+                    return;
+                } else {
+                    List<AVObject> friendshipList = new ArrayList<>();
+                    for (DBFriendShip dbFriendShip : dbFriendShipList)
+                        friendshipList.add(DBFriendShip.getFriendship(dbFriendShip));
+                    Message message = new Message();
+                    message.what = INIT_SELF_FRIENDSHIP;
+                    message.obj = friendshipList;
+                    handler.sendMessage(message);
+                }
+            } catch (DbException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     private void initFriendFriendship() {
-        AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
-        query.whereEqualTo(FriendShip.FRIEND, AVUser.getCurrentUser());
-        query.orderByAscending(FriendShip.SELF);
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                Message msg = new Message();
-                msg.what = INIT_FRIEND_FRIENDSHIP;
-                msg.obj = list;
-                handler.sendMessage(msg);
+        if (NetWorkUtils.isNetworkAvailable(this)) {
+
+            AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
+            query.whereEqualTo(FriendShip.FRIEND, AVUser.getCurrentUser());
+            query.orderByAscending(FriendShip.SELF);
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    Message msg = new Message();
+                    msg.what = INIT_FRIEND_FRIENDSHIP;
+                    msg.obj = list;
+                    handler.sendMessage(msg);
+                }
+            });
+        } else {
+            System.out.println("query friendship from database");
+            try {
+                List<DBFriendShip> dbFriendShipList = DBUtils.getDbManager().selector(DBFriendShip.class).where("friendObjectId", "=", AVUser.getCurrentUser().getObjectId()).findAll();
+
+                if (dbFriendShipList == null || dbFriendShipList.size() == 0) {
+                    System.out.println("dbFriendShipList empty");
+                    return;
+                } else {
+                    List<AVObject> friendshipList = new ArrayList<>();
+                    for (DBFriendShip dbFriendShip : dbFriendShipList)
+                        friendshipList.add(DBFriendShip.getFriendship(dbFriendShip));
+                    Message message = new Message();
+                    message.what = INIT_FRIEND_FRIENDSHIP;
+                    message.obj = friendshipList;
+                    handler.sendMessage(message);
+                }
+            } catch (DbException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     public void initUiAndListener() {
@@ -123,11 +173,10 @@ public class JurisdictionActivity extends AppCompatActivity {
         back();
     }
 
-    private void back(){
+    private void back() {
         setResult(MainActivity.FRIENDSHIP_ALL_CHANGE);
         finish();
     }
-
 
 
 }
