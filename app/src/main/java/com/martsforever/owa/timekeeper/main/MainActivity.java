@@ -1,5 +1,7 @@
 package com.martsforever.owa.timekeeper.main;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -17,7 +19,6 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.martsforever.owa.timekeeper.R;
@@ -40,8 +41,8 @@ import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.AddTodosActivity;
 import com.martsforever.owa.timekeeper.main.todo.AllTodosActivity;
+import com.martsforever.owa.timekeeper.main.todo.CategoryTodoActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
-import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.skyfishjy.library.RippleBackground;
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         x.view().inject(this);
         System.out.println("init");
         initView();
-        registerReceiver();
+        registerPushReceiver();
     }
 
 
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTomatoInterface();
         initMeInterface();
         initTodoListData();
+        registerAddTodoReceiver();
     }
 
     private void checkNetworkIsAvailable() {
@@ -271,43 +273,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         badgeViewAllSchedule = new QBadgeView(this);
         badgeViewAllSchedule.bindTarget(allScheduleImg);
         badgeViewAllSchedule.setBadgeTextSize(10, true);
-        badgeViewAllSchedule.setBadgeNumber(allUser2todoList.size());
         badgeViewAllSchedule.setBadgeBackgroundColor(Color.parseColor("#c3bed4"));
         badgeViewTodaySchedule = new QBadgeView(this);
         badgeViewTodaySchedule.bindTarget(todayScheduleImg);
         badgeViewTodaySchedule.setBadgeTextSize(10, true);
-        badgeViewTodaySchedule.setBadgeNumber(todayUser2todoList.size());
         badgeViewTodaySchedule.setBadgeBackgroundColor(Color.parseColor("#7e884f"));
         badgeViewImportantSchedule = new QBadgeView(this);
         badgeViewImportantSchedule.bindTarget(importantScheduleImg);
         badgeViewImportantSchedule.setBadgeTextSize(10, true);
-        badgeViewImportantSchedule.setBadgeNumber(importantUser2todoList.size());
         badgeViewImportantSchedule.setBadgeBackgroundColor(Color.parseColor("#f17c67"));
         badgeViewDoingSchedule = new QBadgeView(this);
         badgeViewDoingSchedule.bindTarget(doingScheduleImg);
         badgeViewDoingSchedule.setBadgeTextSize(10, true);
-        badgeViewDoingSchedule.setBadgeNumber(doingUser2todoList.size());
         badgeViewDoingSchedule.setBadgeBackgroundColor(Color.parseColor("#495a80"));
         badgeViewCompleteySchedule = new QBadgeView(this);
         badgeViewCompleteySchedule.bindTarget(completeScheduleImg);
         badgeViewCompleteySchedule.setBadgeTextSize(10, true);
-        badgeViewCompleteySchedule.setBadgeNumber(completeUser2todoList.size());
         badgeViewCompleteySchedule.setBadgeBackgroundColor(Color.parseColor("#00ff80"));
         badgeViewUnfinishedSchedule = new QBadgeView(this);
         badgeViewUnfinishedSchedule.bindTarget(unfinishedScheduleImg);
         badgeViewUnfinishedSchedule.setBadgeTextSize(10, true);
-        badgeViewUnfinishedSchedule.setBadgeNumber(unfinishedUser2todoList.size());
         badgeViewUnfinishedSchedule.setBadgeBackgroundColor(Color.parseColor("#9966cc"));
         badgeViewReadySchedule = new QBadgeView(this);
         badgeViewReadySchedule.bindTarget(readyScheduleImg);
         badgeViewReadySchedule.setBadgeTextSize(10, true);
-        badgeViewReadySchedule.setBadgeNumber(readyUser2todoList.size());
         badgeViewReadySchedule.setBadgeBackgroundColor(Color.parseColor("#c9cabb"));
-
+        flashScheduleBadge();
         allScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AllTodosActivity.actionStart(MainActivity.this);
+                AllTodosActivity.actionStart(MainActivity.this, allUser2todoList);
             }
         });
         addScheduleImg.setOnClickListener(new View.OnClickListener() {
@@ -316,7 +311,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 AddTodosActivity.actionStart(MainActivity.this);
             }
         });
+        todayScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CategoryTodoActivity.actionStart(MainActivity.this, todayUser2todoList, "Today");
+            }
+        });
+        importantScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CategoryTodoActivity.actionStart(MainActivity.this, importantUser2todoList, "Very Important");
+            }
+        });
+        doingScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CategoryTodoActivity.actionStart(MainActivity.this, doingUser2todoList, "Very Important");
+            }
+        });
+        completeScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CategoryTodoActivity.actionStart(MainActivity.this, completeUser2todoList, "Complete");
+            }
+        });
+        unfinishedScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CategoryTodoActivity.actionStart(MainActivity.this, unfinishedUser2todoList, "Complete");
+            }
+        });
+        readyScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CategoryTodoActivity.actionStart(MainActivity.this, readyUser2todoList, "Complete");
+            }
+        });
 
+    }
+
+    private void flashScheduleBadge(){
+        badgeViewAllSchedule.setBadgeNumber(allUser2todoList.size());
+        badgeViewTodaySchedule.setBadgeNumber(todayUser2todoList.size());
+        badgeViewImportantSchedule.setBadgeNumber(importantUser2todoList.size());
+        badgeViewDoingSchedule.setBadgeNumber(doingUser2todoList.size());
+        badgeViewCompleteySchedule.setBadgeNumber(completeUser2todoList.size());
+        badgeViewUnfinishedSchedule.setBadgeNumber(unfinishedUser2todoList.size());
+        badgeViewReadySchedule.setBadgeNumber(readyUser2todoList.size());
     }
 
     private void initTomatoInterface() {
@@ -454,6 +495,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("query user2todo from network");
             AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
             query.whereEqualTo(User2Todo.USER, AVUser.getCurrentUser());
+            query.orderByDescending("createdAt");
             query.include(User2Todo.TODO);
             query.include(User2Todo.USER + "." + Person.NICK_NAME);
             query.findInBackground(new FindCallback<AVObject>() {
@@ -596,7 +638,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * register the push message receiver
      */
-    private void registerReceiver() {
+    private void registerPushReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.BOOT_COMPLETED");
         intentFilter.addAction("android.intent.action.USER_PRESENT");
@@ -624,19 +666,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Boolean addNewTodo = jsonObject.getBoolean(MessageHandler.MESSAGE_ADD_NEW_TODO);
                 if (addNewTodo != null && addNewTodo) {
                     badgeViewAllSchedule.setBadgeNumber(badgeViewAllSchedule.getBadgeNumber() + 1);
-                    /*String user2todoId = jsonObject.getString(MessageHandler.MESSAGE_USER2TODO_ID);
-                    AVQuery<AVObject> query = new AVQuery<AVObject>(User2Todo.TABLE_USER_2_TODO);
-                    query.getInBackground(user2todoId, new GetCallback<AVObject>() {
-                        @Override
-                        public void done(AVObject avObject, AVException e) {
-                            System.out.println(avObject.toString());
-                        }
-                    });*/
+                    try {
+                        AVObject user2todo = AVObject.parseAVObject(jsonObject.getString(MessageHandler.MESSAGE_USER2TODO));
+                        allUser2todoList.add(0,user2todo);
+                        categoryUser2todo(user2todo);
+                        flashScheduleBadge();
+                        DBUser2Todo.save(user2todo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
         });
         registerReceiver(myCustomReceiver, intentFilter);
+    }
+
+    private void registerAddTodoReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.martsforever.owa.ADD_NEW_TODO");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                badgeViewAllSchedule.setBadgeNumber(badgeViewAllSchedule.getBadgeNumber() + 1);
+                try {
+                    AVObject user2todo = AVObject.parseAVObject(intent.getStringExtra("com.martsforever.owa.ADD_NEW_TODO"));
+                    allUser2todoList.add(0,user2todo);
+                    categoryUser2todo(user2todo);
+                    flashScheduleBadge();
+                    DBUser2Todo.save(user2todo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, intentFilter);
     }
 
     @Override

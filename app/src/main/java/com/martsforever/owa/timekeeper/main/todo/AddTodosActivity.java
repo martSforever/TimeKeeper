@@ -102,6 +102,9 @@ public class AddTodosActivity extends AppCompatActivity {
                         @Override
                         public void done(AVException e) {
                             AddTodosActivity.this.finish();
+                            Intent intent = new Intent("com.martsforever.owa.ADD_NEW_TODO");
+                            intent.putExtra("com.martsforever.owa.ADD_NEW_TODO",user2todo.toString());
+                            sendBroadcast(intent);
                             TodoDetailActivity.actionStart(AddTodosActivity.this,user2todo,0);
                         }
                     });
@@ -172,7 +175,6 @@ public class AddTodosActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

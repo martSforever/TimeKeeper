@@ -32,9 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".launch.LaunchActivity" />
-        <activity android:name=".login.LoginActivity">
-
-        </activity>
+        <activity android:name=".login.LoginActivity"></activity>
         <activity android:name=".register.EmailRegisterActivity" />
         <activity android:name=".register.MobileRegisterActivity" />
         <activity android:name=".register.SelectRegisterActivity" />
@@ -68,7 +66,8 @@
         <activity android:name=".main.todo.AddTodosActivity" />
         <activity android:name=".main.todo.TodoDetailActivity" />
         <activity android:name=".main.message.TodoInvitationMessageDetailActivity" />
-        <activity android:name=".main.message.ViewTodoActivity"></activity>
+        <activity android:name=".main.message.ViewTodoActivity" />
+        <activity android:name=".main.todo.CategoryTodoActivity"></activity>
     </application>
 
 </manifest>

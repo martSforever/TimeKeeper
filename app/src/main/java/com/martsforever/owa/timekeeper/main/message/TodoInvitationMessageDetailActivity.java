@@ -18,7 +18,6 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
-import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
@@ -26,7 +25,6 @@ import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.SystemMessageHandler;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
-import com.tencent.qc.stat.common.User;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -183,8 +181,8 @@ public class TodoInvitationMessageDetailActivity extends AppCompatActivity {
             @Override
             public void done(AVException e) {
                 if (e == null) {
-                    pushAcceptMessageToCurrentUser(user2todo.getObjectId());
-                    pushAcceptMessageToFriend(user2todo.getObjectId());
+                    pushAcceptMessageToCurrentUser(user2todo);
+                    pushAcceptMessageToFriend(user2todo);
                 } else {
                     ShowMessageUtil.tosatFast(e.getMessage(), TodoInvitationMessageDetailActivity.this);
                 }
@@ -192,7 +190,7 @@ public class TodoInvitationMessageDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void pushAcceptMessageToFriend(String user2todoId) {
+    private void pushAcceptMessageToFriend(AVObject user2todo) {
 
           /*add new Message*/
         AVObject avMessage = new AVObject(Message.TABLE_MESSAGE);
@@ -214,14 +212,14 @@ public class TodoInvitationMessageDetailActivity extends AppCompatActivity {
         LeanCloudUtil.pushMessage(installationId, jsonObject, this);
     }
 
-    private void pushAcceptMessageToCurrentUser(String user2todoId) {
+    private void pushAcceptMessageToCurrentUser(AVObject user2todo) {
         /*push message to currentuser*/
         String installationId = currentUser.get(Person.INSTALLATION_ID).toString();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, "You have a new todo!");
         jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
         jsonObject.put(MessageHandler.MESSAGE_ADD_NEW_TODO, true);
-        jsonObject.put(MessageHandler.MESSAGE_USER2TODO_ID, user2todoId);
+        jsonObject.put(MessageHandler.MESSAGE_USER2TODO, user2todo.toString());
         LeanCloudUtil.pushMessage(installationId, jsonObject, this);
     }
 

@@ -25,11 +25,13 @@ import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
+import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.TodosInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.InformDialog;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -253,6 +255,10 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     @Event(R.id.todo_detail_save_btn)
     private void edit(View view) {
+        if (!NetWorkUtils.isNetworkAvailable(TodoDetailActivity.this)) {
+            NetWorkUtils.showNetworkNotAvailable(TodoDetailActivity.this);
+            return;
+        }
         setEditable(!titleEdit.isEnabled());
     }
 
@@ -306,6 +312,10 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     @Event(R.id.todo_detail_finish_btn)
     private void finishedTodo(View view) {
+        if (!NetWorkUtils.isNetworkAvailable(TodoDetailActivity.this)) {
+            NetWorkUtils.showNetworkNotAvailable(TodoDetailActivity.this);
+            return;
+        }
         AVObject todo = (AVObject) user2todo.get(User2Todo.TODO);
         todo.put(Todo.STATE, Todo.STATUS_COMPLETE);
         todo.saveInBackground(new SaveCallback() {
