@@ -19,14 +19,14 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.dbbean.DBOfflineUser2Todo;
+import com.martsforever.owa.timekeeper.dbbean.DBUtils;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
-import com.martsforever.owa.timekeeper.main.MainActivity;
-import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
 import com.martsforever.owa.timekeeper.main.push.TodosInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.util.DateUtil;
@@ -34,7 +34,6 @@ import com.martsforever.owa.timekeeper.util.InformDialog;
 import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.tencent.qc.stat.common.User;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -47,13 +46,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+@ContentView(R.layout.activity_offline_todo_detail)
+public class OfflineTodoDetailActivity extends AppCompatActivity {
 
-@ContentView(R.layout.activity_todo_detail)
-public class TodoDetailActivity extends AppCompatActivity {
     /*data*/
     public static final String ACTION_START_PARAMETER_USER2TODO = "todo";
-    private List<AVObject> friendships;
     private AVObject user2todo;
+    private DBOfflineUser2Todo dbOfflineUser2Todo;
     /*view*/
     @ViewInject(R.id.todo_detail_title_edit)
     MaterialEditText titleEdit;
@@ -94,9 +93,7 @@ public class TodoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
         initData();
-        peopleInit();
         initView();
-        initFriendshipsData();
         setEditable(false);
     }
 
@@ -104,6 +101,8 @@ public class TodoDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         try {
             user2todo = AVObject.parseAVObject(intent.getStringExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO));
+            dbOfflineUser2Todo = DBUtils.getDbManager().selector(DBOfflineUser2Todo.class).where("id","=",user2todo.get("id")).findFirst();
+            System.out.println(dbOfflineUser2Todo.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,65 +132,22 @@ public class TodoDetailActivity extends AppCompatActivity {
         createdByEdit.setText(user2todo.getAVUser(User2Todo.USER).getString(Person.NICK_NAME));
         stateEdit.setText(Todo.getStateString(todo.getInt(Todo.STATE)));
         switchIconView.setIconEnabled(user2todo.getBoolean(User2Todo.SWITCH));
-        levelEdit.setTag(Todo.LEVEL_IMPORTANT_NONE);
         if (todo.getInt(Todo.STATE) == Todo.STATUS_COMPLETE) {
             finishedBtn.setEnabled(false);
             finishedBtn.setBackgroundResource(R.drawable.bg_todo_detail_finish_btn_disable);
         }
     }
-
-    private void initFriendshipsData() {
-        AVQuery<AVObject> query = new AVQuery<>(FriendShip.TABLE_FRIENDSHIP);
-        query.include(FriendShip.FRIEND + "." + Person.NICK_NAME);
-        query.whereEqualTo(FriendShip.SELF, AVUser.getCurrentUser());
-        query.include(FriendShip.FRIEND);
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                if (e == null)
-                    friendships = list;
-                else {
-                    ShowMessageUtil.tosatSlow(e.getMessage(), TodoDetailActivity.this);
-                }
-            }
-        });
-    }
-
     public static void actionStart(Activity activity, AVObject user2todo, int position) {
         Intent intent = new Intent();
-        intent.setClass(activity, TodoDetailActivity.class);
+        intent.setClass(activity, OfflineTodoDetailActivity.class);
         intent.putExtra(AllTodosActivity.INTENT_PARAMETER_POSITION, position);
-        intent.putExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
+        intent.putExtra(OfflineTodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
         activity.startActivityForResult(intent, 0);
     }
 
     @Event(R.id.todo_detail_people_pick_btn)
     private void multiPickPeople(View view) {
-        if (friendships != null) {
-            List<String> names = new ArrayList<>();
-            for (AVObject avObject : friendships)
-                names.add(avObject.getAVUser(FriendShip.FRIEND).getString(Person.NICK_NAME));
-            MultiPickDialog dialog = new MultiPickDialog(this, names);
-            dialog.setTitle("Pick Friends");
-            dialog.setOnItemOkListener(new MultiPickDialog.OnItemOkListener() {
-                @Override
-                public void OnOk(List<Boolean> isCheckedList) {
-                    String peopleNames = "";
-                    for (int position = 0; position < isCheckedList.size(); position++)
-                        if (isCheckedList.get(position)) {
-                            peopleNames += friendships.get(position).getAVUser(FriendShip.FRIEND).getString(Person.NICK_NAME);
-                            peopleNames += ",";
-                        }
-                    for (int position = 0; position < isCheckedList.size(); position++)
-                        if (isCheckedList.get(position)) {
-                            pushTodosInviteMessage(friendships.get(position).getAVUser(FriendShip.FRIEND), peopleNames.substring(0, peopleNames.length() - 1), user2todo);
-                        }
-                    InformDialog.inform(TodoDetailActivity.this, null, "System Message", "Send message to " + peopleNames.substring(0, peopleNames.length() - 1) + " successful!");
-                }
-            });
-        } else {
-            ShowMessageUtil.tosatSlow("System error!", TodoDetailActivity.this);
-        }
+        InformDialog.inform(OfflineTodoDetailActivity.this, null, "System Message", "Brfore you invite your friends to join in this todo, you have to convert this is todo to online todo!");
     }
 
     @Event(R.id.todo_detail_select_start_time_btn)
@@ -231,7 +187,7 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     @Event(R.id.todo_detail_level_select_btn)
     private void selectLevel(View view) {
-        PickDialog pickDialog = new PickDialog(TodoDetailActivity.this, Todo.getLevelSelectData());
+        PickDialog pickDialog = new PickDialog(OfflineTodoDetailActivity.this, Todo.getLevelSelectData());
         pickDialog.setTitle("PICK LEVEL");
         pickDialog.setOnItemOkListener(new PickDialog.OnItemOkListener() {
             @Override
@@ -257,11 +213,10 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     @Event(R.id.todo_detail_save_btn)
     private void edit(View view) {
-        if (!NetWorkUtils.isNetworkAvailable(TodoDetailActivity.this)) {
-            NetWorkUtils.showNetworkNotAvailable(TodoDetailActivity.this);
+        if (!NetWorkUtils.isNetworkAvailable(OfflineTodoDetailActivity.this)) {
+            NetWorkUtils.showNetworkNotAvailable(OfflineTodoDetailActivity.this);
             return;
         }
-        modifiedTodoOnline(titleEdit.isEnabled());
         setEditable(!titleEdit.isEnabled());
     }
 
@@ -315,8 +270,8 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     @Event(R.id.todo_detail_finish_btn)
     private void finishedTodo(View view) {
-        if (!NetWorkUtils.isNetworkAvailable(TodoDetailActivity.this)) {
-            NetWorkUtils.showNetworkNotAvailable(TodoDetailActivity.this);
+        if (!NetWorkUtils.isNetworkAvailable(OfflineTodoDetailActivity.this)) {
+            NetWorkUtils.showNetworkNotAvailable(OfflineTodoDetailActivity.this);
             return;
         }
         AVObject todo = (AVObject) user2todo.get(User2Todo.TODO);
@@ -326,79 +281,13 @@ public class TodoDetailActivity extends AppCompatActivity {
             public void done(AVException e) {
                 if (e == null)
                     backToAllTodoActivity();
-                else ShowMessageUtil.tosatSlow(e.getMessage(), TodoDetailActivity.this);
+                else ShowMessageUtil.tosatSlow(e.getMessage(), OfflineTodoDetailActivity.this);
             }
         });
     }
 
-    private void pushTodosInviteMessage(AVUser friend, String friendsString, AVObject user2todo) {
-        String installationId = friend.get(Person.INSTALLATION_ID).toString();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, AVUser.getCurrentUser().getString(Person.NICK_NAME) + " invited " + friendsString + " to join his todo.");
-        jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, AVUser.getCurrentUser().get(Person.NICK_NAME).toString());
-        jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, TodosInvitationMessageHandler.class.getName());
-        LeanCloudUtil.pushMessage(installationId, jsonObject, this);
+    @Event(R.id.todo_detail_convert_btn)
+    private void convertToOnline(View view){
 
-        AVObject message = new AVObject(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
-        message.put(Message.MESSAGE_TYPE, Message.MESSAGE_TYPE_TODOS_INVITATION);
-        message.put(Message.SENDER, AVUser.getCurrentUser());
-        message.put(Message.RECEIVER, friend);
-        message.put(Message.IS_READ, Message.UNREAD);
-        message.put(Message.TIME, new Date());
-        message.put(Message.HANDLE_CLASS_NAME, TodosInvitationMessageHandler.class.getName());
-        message.put(Message.VERIFY_MESSAGE, AVUser.getCurrentUser().getString(Person.NICK_NAME) + " invited " + friendsString + " to join his todo.");
-        message.put(Message.USER2TODO, user2todo);
-        message.saveInBackground();
-    }
-
-    private void peopleInit() {
-        AVQuery<AVObject> query = new AVQuery<>(User2Todo.TABLE_USER_2_TODO);
-        query.whereEqualTo(User2Todo.TODO, user2todo.getAVObject(User2Todo.TODO));
-        query.include(User2Todo.USER + "." + Person.NICK_NAME);
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> user2todoList, AVException e) {
-                if (e != null) {
-                    ShowMessageUtil.tosatSlow(e.getMessage(), TodoDetailActivity.this);
-                } else {
-                    String people = "";
-                    for (AVObject user2todo : user2todoList) {
-                        people += user2todo.getAVUser(User2Todo.USER).getString(Person.NICK_NAME) + ",";
-                    }
-                    peopleEdit.setText(people.substring(0, people.length() - 1));
-                }
-            }
-        });
-    }
-
-    private void modifiedTodoOnline(boolean isEnable) {
-        if (isEnable) {
-            String description = descriptionEdit.getText().toString().trim();
-            String title = titleEdit.getText().toString().trim();
-            String place = placeEdit.getText().toString().trim();
-            Date startTime = DateUtil.string2Date(startTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
-            Date endTime = DateUtil.string2Date(endTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
-            int level = Integer.parseInt(levelEdit.getTag().toString());
-            int state;
-            Date now = new Date();
-            if (now.getTime() < startTime.getTime()) state = Todo.STATUS_NOTSTART;
-            else if (now.getTime() > endTime.getTime()) state = Todo.STATUS_NOTCOMPLETE;
-            else state = Todo.STATUS_DOING;
-            final AVObject todo = user2todo.getAVObject(User2Todo.TODO);
-            todo.put(Todo.TITLE, title);
-            todo.put(Todo.DESCRIPTION, description);
-            todo.put(Todo.PLACE, place);
-            todo.put(Todo.START_TIME, startTime);
-            todo.put(Todo.END_TIME, endTime);
-            todo.put(Todo.LEVEL, level);
-            todo.put(Todo.STATE, state);
-            user2todo.put(User2Todo.SWITCH, switchIconView.isIconEnabled());
-            user2todo.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(AVException e) {
-                    InformDialog.inform(TodoDetailActivity.this, null, "System Message", "modified successful!");
-                }
-            });
-        }
     }
 }

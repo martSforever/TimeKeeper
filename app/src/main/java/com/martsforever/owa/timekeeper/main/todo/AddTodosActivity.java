@@ -13,10 +13,12 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.dbbean.DBOfflineUser2Todo;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.util.DateUtil;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -34,6 +36,9 @@ import java.util.List;
 
 @ContentView(R.layout.activity_add_todos)
 public class AddTodosActivity extends AppCompatActivity {
+
+    public static final String ADD_NEW_ONLINE_TODO = "com.martsforever.owa.ADD_NEW_ONLINE_TODO";
+    public static final String ADD_NEW_OFFLINE_TODO = "com.martsforever.owa.ADD_NEW_OFFLINE_TODO";
 
     @ViewInject(R.id.todo_start_start_time_edit)
     MaterialEditText startTimeEdit;
@@ -81,38 +86,58 @@ public class AddTodosActivity extends AppCompatActivity {
         else state = Todo.STATUS_DOING;
         final AVUser user = AVUser.getCurrentUser();
         final AVObject todo = new AVObject(Todo.TABLE_TODO);
-        todo.put(Todo.TITLE,title);
-        todo.put(Todo.DESCRIPTION,description);
-        todo.put(Todo.PLACE,place);
-        todo.put(Todo.START_TIME,startTime);
-        todo.put(Todo.END_TIME,endTime);
-        todo.put(Todo.LEVEL,level);
-        todo.put(Todo.STATE,state);
-        todo.put(Todo.CREATED_BY,user);
-        todo.put(Todo.CREATED_BY_NICKNAME,user.getString(Person.NICK_NAME));
+        todo.put(Todo.TITLE, title);
+        todo.put(Todo.DESCRIPTION, description);
+        todo.put(Todo.PLACE, place);
+        todo.put(Todo.START_TIME, startTime);
+        todo.put(Todo.END_TIME, endTime);
+        todo.put(Todo.LEVEL, level);
+        todo.put(Todo.STATE, state);
+        todo.put(Todo.CREATED_BY, user);
+        todo.put(Todo.CREATED_BY_NICKNAME, user.getString(Person.NICK_NAME));
+        if (NetWorkUtils.isNetworkAvailable(this)) saveUser2todoOnline(todo);
+        else
+            saveUser2todoOffline(todo);
+    }
+
+    private void saveUser2todoOnline(final AVObject todo) {
+        System.out.println("saveUser2todoOnline");
         todo.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                if (e==null){
+                if (e == null) {
                     final AVObject user2todo = new AVObject(User2Todo.TABLE_USER_2_TODO);
-                    user2todo.put(User2Todo.USER,user);
-                    user2todo.put(User2Todo.TODO,todo);
-                    user2todo.put(User2Todo.SWITCH,false);
+                    user2todo.put(User2Todo.USER, AVUser.getCurrentUser());
+                    user2todo.put(User2Todo.TODO, todo);
+                    user2todo.put(User2Todo.SWITCH, false);
                     user2todo.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
                             AddTodosActivity.this.finish();
-                            Intent intent = new Intent("com.martsforever.owa.ADD_NEW_TODO");
-                            intent.putExtra("com.martsforever.owa.ADD_NEW_TODO",user2todo.toString());
+                            Intent intent = new Intent(ADD_NEW_ONLINE_TODO);
+                            intent.putExtra(ADD_NEW_ONLINE_TODO, user2todo.toString());
                             sendBroadcast(intent);
-                            TodoDetailActivity.actionStart(AddTodosActivity.this,user2todo,0);
+                            TodoDetailActivity.actionStart(AddTodosActivity.this, user2todo, 0);
                         }
                     });
-                }else {
-                    ShowMessageUtil.tosatSlow(e.getMessage(),AddTodosActivity.this);
+                } else {
+                    ShowMessageUtil.tosatSlow(e.getMessage(), AddTodosActivity.this);
                 }
             }
         });
+    }
+
+    private void saveUser2todoOffline(AVObject todo) {
+        System.out.println("saveUser2todoOffline");
+        AVObject user2todo = new AVObject(User2Todo.TABLE_USER_2_TODO);
+        user2todo.put(User2Todo.USER, AVUser.getCurrentUser());
+        user2todo.put(User2Todo.TODO, todo);
+        user2todo.put(User2Todo.SWITCH, false);
+        DBOfflineUser2Todo.save(user2todo);
+
+        Intent intent = new Intent(ADD_NEW_OFFLINE_TODO);
+        intent.putExtra(ADD_NEW_OFFLINE_TODO, user2todo.toString());
+        sendBroadcast(intent);
     }
 
     @Event(R.id.todo_add_select_start_time_btn)
