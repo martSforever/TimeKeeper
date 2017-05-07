@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.AVObject;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
+import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.yydcdut.sdlv.Menu;
@@ -64,17 +66,8 @@ public class CategoryTodoActivity extends AppCompatActivity implements SlideAndD
     private void initData() {
         Bundle bundle = getIntent().getExtras();
         titleText.setText(bundle.getCharSequence(INTENT_PARAMETER_TITLE));
-        ArrayList<CharSequence> charSequences = bundle.getCharSequenceArrayList(INTENT_PARAMETER_CATEGORY_USER2TODO);
-        List<AVObject> allUser2todo = new ArrayList<>();
-        for (CharSequence charSequence : charSequences) {
-            try {
-                allUser2todo.add(AVObject.parseAVObject(charSequence.toString()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         android.os.Message message = new android.os.Message();
-        message.obj = allUser2todo;
+        message.obj = ((TimeKeeperApplication) getApplicationContext()).getCategoryUser2todoList();
         handler.sendMessage(message);
     }
 
@@ -97,13 +90,10 @@ public class CategoryTodoActivity extends AppCompatActivity implements SlideAndD
     }
 
     public static void actionStart(Activity activity, List<AVObject> categoryUser2todo, String title) {
+        ((TimeKeeperApplication) activity.getApplicationContext()).setCategoryUser2todoList(categoryUser2todo);
         Intent intent = new Intent();
         intent.setClass(activity, CategoryTodoActivity.class);
         Bundle bundle = new Bundle();
-        ArrayList<CharSequence> charSequences = new ArrayList<>();
-        for (AVObject user2todo : categoryUser2todo)
-            charSequences.add(user2todo.toString());
-        bundle.putCharSequenceArrayList(INTENT_PARAMETER_CATEGORY_USER2TODO, charSequences);
         bundle.putCharSequence(INTENT_PARAMETER_TITLE, title);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, 0);
@@ -111,6 +101,16 @@ public class CategoryTodoActivity extends AppCompatActivity implements SlideAndD
 
     @Event(R.id.category_schedule_back_img)
     private void back(View view) {
+        backToMainActivity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backToMainActivity();
+    }
+
+    private void backToMainActivity() {
+        setResult(MainActivity.USER2TODO_CHANGE, getIntent());
         finish();
     }
 
@@ -142,16 +142,8 @@ public class CategoryTodoActivity extends AppCompatActivity implements SlideAndD
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case TODO_CHANGE:
-                String user2todoString = data.getStringExtra(INTENT_PARAMETER_USER2TODO);
-                try {
-                    AVObject user2todo = AVObject.parseAVObject(user2todoString);
-                    int position = data.getIntExtra(INTENT_PARAMETER_POSITION, 0);
-                    user2todos.remove(position);
-                    user2todos.add(position, user2todo);
-                    todoAdapter.notifyDataSetChanged();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                todoAdapter.notifyDataSetChanged();
+                break;
         }
     }
 }

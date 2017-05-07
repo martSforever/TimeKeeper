@@ -42,10 +42,8 @@ import com.martsforever.owa.timekeeper.main.self.JurisdictionActivity;
 import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.AddTodosActivity;
-import com.martsforever.owa.timekeeper.main.todo.AllTodosActivity;
 import com.martsforever.owa.timekeeper.main.todo.CategoryTodoActivity;
 import com.martsforever.owa.timekeeper.main.todo.OfflineTodoActivity;
-import com.martsforever.owa.timekeeper.main.todo.OfflineTodoDetailActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -86,11 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case INIT_TODO:
                     allUser2todoList = (List<AVObject>) msg.obj;
-
-                    for (AVObject user2todo : allUser2todoList) {
-                        System.out.println(user2todo.getInt("id"));
-                    }
-
                     application.setAllUser2todoList(allUser2todoList);
                     for (AVObject user2todo : allUser2todoList)
                         categoryUser2todo(user2todo);
@@ -329,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         allScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AllTodosActivity.actionStart(MainActivity.this, allUser2todoList);
+                CategoryTodoActivity.actionStart(MainActivity.this, allUser2todoList, "All");
             }
         });
         addScheduleImg.setOnClickListener(new View.OnClickListener() {
@@ -353,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         doingScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryTodoActivity.actionStart(MainActivity.this, doingUser2todoList, "Very Important");
+                CategoryTodoActivity.actionStart(MainActivity.this, doingUser2todoList, "Doing");
             }
         });
         completeScheduleImg.setOnClickListener(new View.OnClickListener() {

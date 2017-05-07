@@ -5,20 +5,17 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
-import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
-import com.martsforever.owa.timekeeper.main.todo.AllTodosActivity;
+import com.martsforever.owa.timekeeper.main.todo.CategoryTodoActivity;
 import com.martsforever.owa.timekeeper.main.todo.TodoDetailActivity;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -109,7 +106,7 @@ public class ViewTodoActivity extends AppCompatActivity {
     public static void actionStart(Activity activity, AVObject user2todo, int position) {
         Intent intent = new Intent();
         intent.setClass(activity, ViewTodoActivity.class);
-        intent.putExtra(AllTodosActivity.INTENT_PARAMETER_POSITION, position);
+        intent.putExtra(CategoryTodoActivity.INTENT_PARAMETER_POSITION, position);
         intent.putExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
         activity.startActivityForResult(intent, 0);
     }

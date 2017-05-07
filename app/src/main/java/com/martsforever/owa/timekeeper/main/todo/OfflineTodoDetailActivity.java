@@ -140,7 +140,7 @@ public class OfflineTodoDetailActivity extends AppCompatActivity {
     public static void actionStart(Activity activity, AVObject user2todo, int position) {
         Intent intent = new Intent();
         intent.setClass(activity, OfflineTodoDetailActivity.class);
-        intent.putExtra(AllTodosActivity.INTENT_PARAMETER_POSITION, position);
+        intent.putExtra(CategoryTodoActivity.INTENT_PARAMETER_POSITION, position);
         intent.putExtra(OfflineTodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
         activity.startActivityForResult(intent, 0);
     }
@@ -263,8 +263,8 @@ public class OfflineTodoDetailActivity extends AppCompatActivity {
 
     private void backToAllTodoActivity() {
         Intent intent = getIntent();
-        intent.putExtra(AllTodosActivity.INTENT_PARAMETER_USER2TODO, user2todo.toString());
-        setResult(AllTodosActivity.TODO_CHANGE, intent);
+        intent.putExtra(CategoryTodoActivity.INTENT_PARAMETER_USER2TODO, user2todo.toString());
+        setResult(CategoryTodoActivity.TODO_CHANGE, intent);
         finish();
     }
 

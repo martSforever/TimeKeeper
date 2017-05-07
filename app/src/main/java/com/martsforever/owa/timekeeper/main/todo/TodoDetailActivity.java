@@ -19,6 +19,8 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.dbbean.DBUser2Todo;
+import com.martsforever.owa.timekeeper.dbbean.DBUtils;
 import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
@@ -39,6 +41,7 @@ import com.tencent.qc.stat.common.User;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -103,7 +106,7 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        user2todo = ((TimeKeeperApplication) getApplicationContext()).getAllUser2todoList().get(intent.getIntExtra(AllTodosActivity.INTENT_PARAMETER_POSITION, 0));
+        user2todo = ((TimeKeeperApplication) getApplicationContext()).getCategoryUser2todoList().get(intent.getIntExtra(CategoryTodoActivity.INTENT_PARAMETER_POSITION, 0));
     }
 
     private void initView() {
@@ -157,7 +160,7 @@ public class TodoDetailActivity extends AppCompatActivity {
     public static void actionStart(Activity activity, AVObject user2todo, int position) {
         Intent intent = new Intent();
         intent.setClass(activity, TodoDetailActivity.class);
-        intent.putExtra(AllTodosActivity.INTENT_PARAMETER_POSITION, position);
+        intent.putExtra(CategoryTodoActivity.INTENT_PARAMETER_POSITION, position);
         intent.putExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
         activity.startActivityForResult(intent, 0);
     }
@@ -305,8 +308,8 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     private void backToAllTodoActivity() {
         Intent intent = getIntent();
-        intent.putExtra(AllTodosActivity.INTENT_PARAMETER_USER2TODO, user2todo.toString());
-        setResult(AllTodosActivity.TODO_CHANGE, intent);
+        intent.putExtra(CategoryTodoActivity.INTENT_PARAMETER_USER2TODO, user2todo.toString());
+        setResult(CategoryTodoActivity.TODO_CHANGE, intent);
         finish();
     }
 
@@ -393,6 +396,13 @@ public class TodoDetailActivity extends AppCompatActivity {
             user2todo.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {
+                    try {
+                        DBUser2Todo dbUser2Todo = DBUtils.getDbManager().findById(DBUser2Todo.class,user2todo.getInt("id"));
+                        DBUser2Todo.delete(dbUser2Todo);
+                        user2todo.put("id",DBUser2Todo.save(user2todo));
+                    } catch (DbException e1) {
+                        e1.printStackTrace();
+                    }
                     InformDialog.inform(TodoDetailActivity.this, null, "System Message", "modified successful!");
                 }
             });
