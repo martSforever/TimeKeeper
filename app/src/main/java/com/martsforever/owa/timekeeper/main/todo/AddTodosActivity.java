@@ -17,6 +17,7 @@ import com.martsforever.owa.timekeeper.dbbean.DBOfflineUser2Todo;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
+import com.martsforever.owa.timekeeper.util.ConfirmDialog;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -96,8 +97,16 @@ public class AddTodosActivity extends AppCompatActivity {
         todo.put(Todo.CREATED_BY, user);
         todo.put(Todo.CREATED_BY_NICKNAME, user.getString(Person.NICK_NAME));
         if (NetWorkUtils.isNetworkAvailable(this)) saveUser2todoOnline(todo);
-        else
-            saveUser2todoOffline(todo);
+        else {
+            ConfirmDialog.inform(this, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveUser2todoOffline(todo);
+                    ConfirmDialog.dissmiss();
+                    AddTodosActivity.this.finish();
+                }
+            }, null, "Confirm", "Network is not available, do you want do save this todo offline? you can check it on the offline todos");
+        }
     }
 
     private void saveUser2todoOnline(final AVObject todo) {

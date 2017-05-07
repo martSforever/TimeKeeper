@@ -553,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("query user2todo from database");
             try {
                 List<DBMessage> dbMessageList = DBUtils.getDbManager().selector(DBMessage.class).findAll();
-                List<DBUser2Todo> dbUser2TodoList = DBUtils.getDbManager().selector(DBUser2Todo.class).findAll();
+                List<DBUser2Todo> dbUser2TodoList = DBUtils.getDbManager().selector(DBUser2Todo.class).orderBy("createdAt",true).findAll();
                 Iterator<DBUser2Todo> iterator = dbUser2TodoList.iterator();
                 if (dbMessageList != null)
                     while (iterator.hasNext()) {

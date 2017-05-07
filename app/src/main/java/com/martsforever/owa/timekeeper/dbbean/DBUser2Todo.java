@@ -8,6 +8,8 @@ import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 import org.xutils.ex.DbException;
 
+import java.util.Date;
+
 /**
  * Created by OWA on 2017/5/2.
  */
@@ -24,6 +26,8 @@ public class DBUser2Todo {
     private int todoId;
     @Column(name = "switch")
     private boolean swt;
+    @Column(name = "createdAt")
+    private Date createdAt;
 
     DBUser user;
     DBTodo todo;
@@ -89,6 +93,14 @@ public class DBUser2Todo {
         this.swt = swt;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public DBUser getUser() {
         try {
             return DBUtils.getDbManager().findById(DBUser.class, userId);
@@ -123,9 +135,10 @@ public class DBUser2Todo {
         AVObject todo = user2todo.getAVObject(User2Todo.TODO);
         dbUser2Todo.setUserId(DBUser.save(user));
         dbUser2Todo.setTodoId(DBTodo.save(todo));
+        dbUser2Todo.setCreatedAt(user2todo.getCreatedAt());
         try {
             if (DBUtils.getDbManager().saveBindingId(dbUser2Todo)) {
-                user2todo.put("id",dbUser2Todo.getId());
+                user2todo.put("id", dbUser2Todo.getId());
                 return dbUser2Todo.getId();
             }
         } catch (DbException e) {
@@ -140,7 +153,7 @@ public class DBUser2Todo {
         user2todo.put(User2Todo.SWITCH, dbUser2Todo.isSwt());
         user2todo.put(User2Todo.USER, DBUser.getAVUser(dbUser2Todo.getUser()));
         user2todo.put(User2Todo.TODO, DBTodo.getTodo(dbUser2Todo.getTodo()));
-        user2todo.put("id",dbUser2Todo.getId());
+        user2todo.put("id", dbUser2Todo.getId());
         return user2todo;
     }
 
