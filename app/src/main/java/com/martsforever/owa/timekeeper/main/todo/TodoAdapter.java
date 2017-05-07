@@ -76,7 +76,6 @@ public class TodoAdapter extends BaseAdapter {
 
         viewHolder.titleText.setText(todo.getString(Todo.TITLE));
         viewHolder.descriptionText.setText(todo.getString(Todo.DESCRIPTION));
-        System.out.println(todo.getDate(Todo.START_TIME).toString());
         viewHolder.timeText.setText(DateUtil.date2String(todo.getDate(Todo.START_TIME), DateUtil.COMPLICATED_DATE) + " - " + DateUtil.date2String(todo.getDate(Todo.END_TIME), DateUtil.COMPLICATED_DATE));
         viewHolder.levelImg.setImageResource(Todo.getLevelImage(todo.getInt(Todo.LEVEL)));
         viewHolder.statusImg.setImageResource(Todo.getStatusImage(todo.getInt(Todo.STATE)));

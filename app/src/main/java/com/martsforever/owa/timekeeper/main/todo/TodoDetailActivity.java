@@ -25,6 +25,7 @@ import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
+import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.main.push.FriendsInvitationMessageHandler;
 import com.martsforever.owa.timekeeper.main.push.MessageHandler;
@@ -102,11 +103,7 @@ public class TodoDetailActivity extends AppCompatActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        try {
-            user2todo = AVObject.parseAVObject(intent.getStringExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        user2todo = ((TimeKeeperApplication) getApplicationContext()).getAllUser2todoList().get(intent.getIntExtra(AllTodosActivity.INTENT_PARAMETER_POSITION, 0));
     }
 
     private void initView() {
@@ -401,4 +398,5 @@ public class TodoDetailActivity extends AppCompatActivity {
             });
         }
     }
+
 }

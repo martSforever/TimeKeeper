@@ -125,6 +125,7 @@ public class DBUser2Todo {
         dbUser2Todo.setTodoId(DBTodo.save(todo));
         try {
             if (DBUtils.getDbManager().saveBindingId(dbUser2Todo)) {
+                user2todo.put("id",dbUser2Todo.getId());
                 return dbUser2Todo.getId();
             }
         } catch (DbException e) {
@@ -139,6 +140,7 @@ public class DBUser2Todo {
         user2todo.put(User2Todo.SWITCH, dbUser2Todo.isSwt());
         user2todo.put(User2Todo.USER, DBUser.getAVUser(dbUser2Todo.getUser()));
         user2todo.put(User2Todo.TODO, DBTodo.getTodo(dbUser2Todo.getTodo()));
+        user2todo.put("id",dbUser2Todo.getId());
         return user2todo;
     }
 

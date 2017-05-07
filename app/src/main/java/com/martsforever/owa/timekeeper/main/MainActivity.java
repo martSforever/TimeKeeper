@@ -31,6 +31,7 @@ import com.martsforever.owa.timekeeper.javabean.FriendShip;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
+import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
@@ -69,8 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int FRIENDSHIP_CHANGE = 0x002;
     public static final int MESSAGE_BADGE_CHANGE = 0x003;
     public static final int FRIENDSHIP_ALL_CHANGE = 0x004;
-    public static final int INIT_TODO = 0x004;
-    public static final int INIT_MESSAGE = 0x005;
+    public static final int USER2TODO_CHANGE = 0X005;
+    public static final int INIT_TODO = 0x006;
+    public static final int INIT_MESSAGE = 0x007;
+
 
     private Handler handler = new Handler() {
         @Override
@@ -83,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case INIT_TODO:
                     allUser2todoList = (List<AVObject>) msg.obj;
+
+                    for (AVObject user2todo : allUser2todoList) {
+                        System.out.println(user2todo.getInt("id"));
+                    }
+
+                    application.setAllUser2todoList(allUser2todoList);
                     for (AVObject user2todo : allUser2todoList)
                         categoryUser2todo(user2todo);
                     initTodoInterface();
@@ -98,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
+
+    TimeKeeperApplication application;
 
     /*main interface element*/
     private NoScrollViewPager labelViewPager;
@@ -131,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView turnToAddFriendBtn;
     /*to do interface element*/
     private List<AVObject> allUser2todoList;
-    private List<AVObject> todayUser2todoList = new ArrayList<>();
-    private List<AVObject> importantUser2todoList = new ArrayList<>();
-    private List<AVObject> doingUser2todoList = new ArrayList<>();
-    private List<AVObject> completeUser2todoList = new ArrayList<>();
-    private List<AVObject> unfinishedUser2todoList = new ArrayList<>();
-    private List<AVObject> readyUser2todoList = new ArrayList<>();
-    private List<AVObject> offlineUser2todoList = new ArrayList<>();
+    private List<AVObject> todayUser2todoList;
+    private List<AVObject> importantUser2todoList;
+    private List<AVObject> doingUser2todoList;
+    private List<AVObject> completeUser2todoList;
+    private List<AVObject> unfinishedUser2todoList;
+    private List<AVObject> readyUser2todoList;
+    private List<AVObject> offlineUser2todoList;
 
     private ImageView allScheduleImg;
     private QBadgeView badgeViewAllSchedule;
@@ -175,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("init");
         initView();
         registerPushReceiver();
+        application = (TimeKeeperApplication) getApplicationContext();
     }
 
 
@@ -185,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTomatoInterface();
         initMeInterface();
         initOfflineTodoData();
+        initCategoryTodo();
         initTodoListData();
         registerAddOnlineTodoReceiver();
         registerAddOfflineTodoReceiver();
@@ -352,13 +365,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         unfinishedScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryTodoActivity.actionStart(MainActivity.this, unfinishedUser2todoList, "Complete");
+                CategoryTodoActivity.actionStart(MainActivity.this, unfinishedUser2todoList, "Unfinished");
             }
         });
         readyScheduleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryTodoActivity.actionStart(MainActivity.this, readyUser2todoList, "Complete");
+                CategoryTodoActivity.actionStart(MainActivity.this, readyUser2todoList, "Ready");
             }
         });
         offlineScheduleImg.setOnClickListener(new View.OnClickListener() {
@@ -511,6 +524,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void initCategoryTodo() {
+        todayUser2todoList = new ArrayList<>();
+        importantUser2todoList = new ArrayList<>();
+        doingUser2todoList = new ArrayList<>();
+        completeUser2todoList = new ArrayList<>();
+        unfinishedUser2todoList = new ArrayList<>();
+        readyUser2todoList = new ArrayList<>();
+    }
+
     private void initTodoListData() {
         if (NetWorkUtils.isNetworkAvailable(this)) {
             System.out.println("query user2todo from network");
@@ -572,16 +594,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initOfflineTodoData() {
         try {
             List<DBOfflineUser2Todo> dBOfflineUser2TodoList = DBUtils.getDbManager().selector(DBOfflineUser2Todo.class).findAll();
+            List<AVObject> user2todoList = new ArrayList<>();
             if (dBOfflineUser2TodoList == null || dBOfflineUser2TodoList.size() == 0) {
                 System.out.println("dbUser2TodoList empty");
+                offlineUser2todoList = user2todoList;
                 return;
             } else {
-                List<AVObject> user2todoList = new ArrayList<>();
                 for (DBOfflineUser2Todo dBOfflineUser2Todo : dBOfflineUser2TodoList)
                     user2todoList.add(DBOfflineUser2Todo.getUser2todo(dBOfflineUser2Todo));
-                offlineUser2todoList = user2todoList;
             }
-
+            offlineUser2todoList = user2todoList;
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -779,6 +801,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case FRIENDSHIP_ALL_CHANGE:
                 initDataFriendShips();
+                break;
+            case USER2TODO_CHANGE:
+//                allUser2todoList = application.getAllUser2todoList();
+                initCategoryTodo();
+                for (AVObject user2todo : allUser2todoList)
+                    categoryUser2todo(user2todo);
+                flashScheduleBadge();
                 break;
         }
     }
