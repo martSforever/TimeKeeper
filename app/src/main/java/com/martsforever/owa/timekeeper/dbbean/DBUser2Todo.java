@@ -163,4 +163,16 @@ public class DBUser2Todo {
         DBUtils.deleteById(DBUser2Todo.class, dbUser2Todo.getId());
     }
 
+    public static DBUser2Todo getById(int id) {
+        try {
+            DBUser2Todo dbUser2Todo = DBUtils.getDbManager().selector(DBUser2Todo.class).where("id", "=", id).findFirst();
+            dbUser2Todo.setUser(DBUser.getById(dbUser2Todo.getUserId()));
+            dbUser2Todo.setTodo(DBTodo.getById(dbUser2Todo.getTodoId()));
+            return dbUser2Todo;
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

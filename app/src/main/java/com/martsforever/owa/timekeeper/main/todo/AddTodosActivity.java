@@ -17,6 +17,7 @@ import com.martsforever.owa.timekeeper.dbbean.DBOfflineUser2Todo;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
+import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
 import com.martsforever.owa.timekeeper.util.ConfirmDialog;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.NetWorkUtils;
@@ -40,6 +41,7 @@ public class AddTodosActivity extends AppCompatActivity {
 
     public static final String ADD_NEW_ONLINE_TODO = "com.martsforever.owa.ADD_NEW_ONLINE_TODO";
     public static final String ADD_NEW_OFFLINE_TODO = "com.martsforever.owa.ADD_NEW_OFFLINE_TODO";
+    public static final String ADD_CONVERT_TODO = "com.martsforever.owa.ADD_CONVERT_TODO";
 
     @ViewInject(R.id.todo_start_start_time_edit)
     MaterialEditText startTimeEdit;
@@ -126,7 +128,7 @@ public class AddTodosActivity extends AppCompatActivity {
                             Intent intent = new Intent(ADD_NEW_ONLINE_TODO);
                             intent.putExtra(ADD_NEW_ONLINE_TODO, user2todo.toString());
                             sendBroadcast(intent);
-                            TodoDetailActivity.actionStart(AddTodosActivity.this, user2todo, 0);
+                            AddTodosActivity.this.finish();
                         }
                     });
                 } else {
@@ -142,10 +144,11 @@ public class AddTodosActivity extends AppCompatActivity {
         user2todo.put(User2Todo.USER, AVUser.getCurrentUser());
         user2todo.put(User2Todo.TODO, todo);
         user2todo.put(User2Todo.SWITCH, false);
-        DBOfflineUser2Todo.save(user2todo);
+        user2todo.put("id",DBOfflineUser2Todo.save(user2todo));
 
+        System.out.println("offlineUser2todo is null:"+(((TimeKeeperApplication)getApplicationContext()).getOfflineUser2todoList() == null));
+        ((TimeKeeperApplication)getApplicationContext()).getOfflineUser2todoList().add(0,user2todo);
         Intent intent = new Intent(ADD_NEW_OFFLINE_TODO);
-        intent.putExtra(ADD_NEW_OFFLINE_TODO, user2todo.toString());
         sendBroadcast(intent);
     }
 

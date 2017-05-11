@@ -24,15 +24,16 @@ public class TimeKeeperApplication extends Application{
         x.Ext.init(this);
     }
 
-    private List<AVObject> allUser2todoList;
     private List<AVObject> categoryUser2todoList;
+    private List<AVObject> offlineUser2todoList;
+    private List<AVObject> allUser2todoList;
 
-    public List<AVObject> getAllUser2todoList() {
-        return allUser2todoList;
+    public List<AVObject> getOfflineUser2todoList() {
+        return offlineUser2todoList;
     }
 
-    public void setAllUser2todoList(List<AVObject> allUser2todoList) {
-        this.allUser2todoList = allUser2todoList;
+    public void setOfflineUser2todoList(List<AVObject> offlineUser2todoList) {
+        this.offlineUser2todoList = offlineUser2todoList;
     }
 
     public List<AVObject> getCategoryUser2todoList() {
@@ -41,5 +42,13 @@ public class TimeKeeperApplication extends Application{
 
     public void setCategoryUser2todoList(List<AVObject> categoryUser2todoList) {
         this.categoryUser2todoList = categoryUser2todoList;
+    }
+
+    public List<AVObject> getAllUser2todoList() {
+        return allUser2todoList;
+    }
+
+    public void setAllUser2todoList(List<AVObject> allUser2todoList) {
+        this.allUser2todoList = allUser2todoList;
     }
 }

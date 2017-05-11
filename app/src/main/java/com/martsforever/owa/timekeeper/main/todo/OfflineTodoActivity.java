@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.AVObject;
 import com.martsforever.owa.timekeeper.R;
+import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
 import com.martsforever.owa.timekeeper.util.DataUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.yydcdut.sdlv.Menu;
@@ -31,6 +32,8 @@ public class OfflineTodoActivity extends AppCompatActivity implements SlideAndDr
 
 
     public static final int TODO_CHANGE = 0x001;
+    public static final int TODO_DELETE = 0x002;
+
     public static final String INTENT_PARAMETER_USER2TODO = "user2todo";
     public static final String INTENT_PARAMETER_POSITION = "position";
     public static final String INTENT_PARAMETER_CATEGORY_USER2TODO = "category user2todo";
@@ -44,16 +47,6 @@ public class OfflineTodoActivity extends AppCompatActivity implements SlideAndDr
     @ViewInject(R.id.category_schedule_title_text)
     TextView titleText;
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(android.os.Message msg) {
-            user2todos = (List<AVObject>) msg.obj;
-            todoAdapter = new TodoAdapter(OfflineTodoActivity.this, user2todos);
-            initUiAndListener();
-            super.handleMessage(msg);
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,18 +57,9 @@ public class OfflineTodoActivity extends AppCompatActivity implements SlideAndDr
     private void initData() {
         Bundle bundle = getIntent().getExtras();
         titleText.setText(bundle.getCharSequence(INTENT_PARAMETER_TITLE));
-        ArrayList<CharSequence> charSequences = bundle.getCharSequenceArrayList(INTENT_PARAMETER_CATEGORY_USER2TODO);
-        List<AVObject> allUser2todo = new ArrayList<>();
-        for (CharSequence charSequence : charSequences) {
-            try {
-                allUser2todo.add(AVObject.parseAVObject(charSequence.toString()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        android.os.Message message = new android.os.Message();
-        message.obj = allUser2todo;
-        handler.sendMessage(message);
+        user2todos = ((TimeKeeperApplication) getApplicationContext()).getOfflineUser2todoList();
+        todoAdapter = new TodoAdapter(OfflineTodoActivity.this, user2todos);
+        initUiAndListener();
     }
 
     public void initMenu() {
@@ -152,6 +136,15 @@ public class OfflineTodoActivity extends AppCompatActivity implements SlideAndDr
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                break;
+            case TODO_DELETE:
+                int position = data.getIntExtra(INTENT_PARAMETER_POSITION, 0);
+                user2todos.remove(position);
+                todoAdapter.notifyDataSetChanged();
+
+                Intent intent = new Intent(AddTodosActivity.ADD_CONVERT_TODO);
+                sendBroadcast(intent);
+                break;
         }
     }
 }

@@ -43,6 +43,7 @@ import com.martsforever.owa.timekeeper.main.self.PersonInfoActivity;
 import com.martsforever.owa.timekeeper.main.self.SecurityActivity;
 import com.martsforever.owa.timekeeper.main.todo.AddTodosActivity;
 import com.martsforever.owa.timekeeper.main.todo.CategoryTodoActivity;
+import com.martsforever.owa.timekeeper.main.todo.FestivalTodoActivity;
 import com.martsforever.owa.timekeeper.main.todo.OfflineTodoActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.NetWorkUtils;
@@ -160,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView addScheduleImg;
     private QBadgeView badgeViewOfflineSchedule;
     private ImageView offlineScheduleImg;
+
+    private ImageView festivalScheduleImg;
     /*toamto interface element*/
     private RippleBackground rippleBackground;
     private TextView tomatoTimeText;
@@ -194,6 +197,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTodoListData();
         registerAddOnlineTodoReceiver();
         registerAddOfflineTodoReceiver();
+        registerTodoDeleteReceiver();
+        registerAddConvertTodoReceiver();
     }
 
     private void checkNetworkIsAvailable() {
@@ -283,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         readyScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_ready_img);
         addScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_add_img);
         offlineScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_offine_img);
+        festivalScheduleImg = (ImageView) todoView.findViewById(R.id.me_schedule_festival_img);
 
         badgeViewAllSchedule = new QBadgeView(this);
         badgeViewAllSchedule.bindTarget(allScheduleImg);
@@ -371,6 +377,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 OfflineTodoActivity.actionStart(MainActivity.this, offlineUser2todoList, "Offline");
+            }
+        });
+        festivalScheduleImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FestivalTodoActivity.actionStart(MainActivity.this);
             }
         });
 
@@ -553,7 +565,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("query user2todo from database");
             try {
                 List<DBMessage> dbMessageList = DBUtils.getDbManager().selector(DBMessage.class).findAll();
-                List<DBUser2Todo> dbUser2TodoList = DBUtils.getDbManager().selector(DBUser2Todo.class).orderBy("createdAt",true).findAll();
+                List<DBUser2Todo> dbUser2TodoList = DBUtils.getDbManager().selector(DBUser2Todo.class).orderBy("createdAt", true).findAll();
                 Iterator<DBUser2Todo> iterator = dbUser2TodoList.iterator();
                 if (dbMessageList != null)
                     while (iterator.hasNext()) {
@@ -590,13 +602,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             List<AVObject> user2todoList = new ArrayList<>();
             if (dBOfflineUser2TodoList == null || dBOfflineUser2TodoList.size() == 0) {
                 System.out.println("dbUser2TodoList empty");
-                offlineUser2todoList = user2todoList;
-                return;
             } else {
                 for (DBOfflineUser2Todo dBOfflineUser2Todo : dBOfflineUser2TodoList)
                     user2todoList.add(DBOfflineUser2Todo.getUser2todo(dBOfflineUser2Todo));
+                for (AVObject user2todo : user2todoList) {
+                    System.out.println("didididiidididid" + user2todo.getInt("id"));
+                }
             }
             offlineUser2todoList = user2todoList;
+            ((TimeKeeperApplication) getApplicationContext()).setOfflineUser2todoList(offlineUser2todoList);
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -762,13 +776,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                try {
-                    AVObject user2todo = AVObject.parseAVObject(intent.getStringExtra(AddTodosActivity.ADD_NEW_OFFLINE_TODO));
-                    offlineUser2todoList.add(0, user2todo);
-                    flashScheduleBadge();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                flashScheduleBadge();
+            }
+        }, intentFilter);
+    }
+
+    private void registerAddConvertTodoReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AddTodosActivity.ADD_CONVERT_TODO);
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                flashScheduleBadge();
+            }
+        }, intentFilter);
+    }
+
+    private void registerTodoDeleteReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(CategoryTodoActivity.USER2TODO_CHANGE);
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String objectId = intent.getStringExtra("objectId");
+                Iterator<AVObject> iterator = allUser2todoList.iterator();
+                while (iterator.hasNext()) {
+                    AVObject user2todo = iterator.next();
+                    if (user2todo.getObjectId().equals(objectId)) {
+                        System.out.println("remove");
+                        DBUser2Todo.delete(DBUser2Todo.getById(user2todo.getInt("id")));
+                        iterator.remove();
+                        break;
+                    }
                 }
+                initCategoryTodo();
+                for (AVObject user2todo : allUser2todoList)
+                    categoryUser2todo(user2todo);
+                flashScheduleBadge();
             }
         }, intentFilter);
     }

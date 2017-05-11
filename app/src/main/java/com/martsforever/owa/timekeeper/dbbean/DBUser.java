@@ -213,4 +213,13 @@ public class DBUser {
     public static void delete(DBUser dbUser) {
         DBUtils.deleteById(DBUser.class, dbUser.getId());
     }
+
+    public static DBUser getById(int id) {
+        try {
+            return DBUtils.getDbManager().selector(DBUser.class).where("id", "=", id).findFirst();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

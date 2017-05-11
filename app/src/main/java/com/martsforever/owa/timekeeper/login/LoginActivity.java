@@ -16,7 +16,6 @@ import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
-import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.register.RetrivePasswordActivity;
 import com.martsforever.owa.timekeeper.register.SelectRegisterActivity;
@@ -31,7 +30,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText emailOrMobileEdit;
     EditText passwordEdit;
     Button loginBtn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +54,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgetPasswordText.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -98,7 +95,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (account.length() > 10) loginByMobile(account, password);
         else loginByUsername(account, password);
     }
-
 
     /**
      * login by username and password
@@ -148,10 +144,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     ActivityManager.entryMainActivity(LoginActivity.this, MainActivity.class);
                 }
             });
-
         } else {
             ShowMessageUtil.tosatSlow("login failure! " + e.getMessage(), LoginActivity.this);
         }
     }
-
 }

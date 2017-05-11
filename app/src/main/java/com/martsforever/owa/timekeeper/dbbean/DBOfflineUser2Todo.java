@@ -149,4 +149,16 @@ public class DBOfflineUser2Todo {
         DBUtils.deleteById(DBOfflineUser2Todo.class, dbUser2Todo.getId());
     }
 
+    public static DBOfflineUser2Todo getById(int id) {
+        try {
+            DBOfflineUser2Todo dbOfflineUser2Todo = DBUtils.getDbManager().selector(DBOfflineUser2Todo.class).where("id", "=", id).findFirst();
+            dbOfflineUser2Todo.setUser(DBUser.getById(dbOfflineUser2Todo.getUserId()));
+            dbOfflineUser2Todo.setTodo(DBTodo.getById(dbOfflineUser2Todo.getTodoId()));
+            return dbOfflineUser2Todo;
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

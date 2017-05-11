@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.DeleteCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.util.DataUtils;
+import com.martsforever.owa.timekeeper.util.NetWorkUtils;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 import com.yydcdut.sdlv.Menu;
 import com.yydcdut.sdlv.MenuItem;
@@ -33,6 +36,7 @@ public class CategoryTodoActivity extends AppCompatActivity implements SlideAndD
 
 
     public static final int TODO_CHANGE = 0x001;
+    public static final String USER2TODO_CHANGE = "user2todo change";
     public static final String INTENT_PARAMETER_USER2TODO = "user2todo";
     public static final String INTENT_PARAMETER_POSITION = "position";
     public static final String INTENT_PARAMETER_CATEGORY_USER2TODO = "category user2todo";
@@ -126,13 +130,27 @@ public class CategoryTodoActivity extends AppCompatActivity implements SlideAndD
     }
 
     @Override
-    public int onMenuItemClick(View v, int itemPosition, int buttonPosition, int direction) {
+    public int onMenuItemClick(View v, final int itemPosition, int buttonPosition, int direction) {
         switch (direction) {
             case MenuItem.DIRECTION_RIGHT:
                 switch (buttonPosition) {
                     case 0:
-                        ShowMessageUtil.tosatFast("delete", this);
-                        return Menu.ITEM_DELETE_FROM_BOTTOM_TO_TOP;
+                        if (!NetWorkUtils.isNetworkAvailable(CategoryTodoActivity.this)) {
+                            NetWorkUtils.showNetworkNotAvailable(CategoryTodoActivity.this);
+                            return Menu.ITEM_NOTHING;
+                        } else {
+                            final AVObject user2todo =  user2todos.get(itemPosition);
+                            user2todo.deleteInBackground(new DeleteCallback() {
+                                @Override
+                                public void done(AVException e) {
+                                    Intent intent = new Intent(USER2TODO_CHANGE);
+                                    intent.putExtra("objectId",user2todo.getObjectId());
+                                    CategoryTodoActivity.this.sendBroadcast(intent);
+                                }
+                            });
+                            if (getIntent().getStringExtra(INTENT_PARAMETER_TITLE).equals("All")) user2todos.add(itemPosition,user2todo);
+                            return Menu.ITEM_DELETE_FROM_BOTTOM_TO_TOP;
+                        }
                 }
         }
         return Menu.ITEM_NOTHING;

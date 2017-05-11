@@ -10,25 +10,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.github.zagum.switchicon.SwitchIconView;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.dbbean.DBOfflineUser2Todo;
+import com.martsforever.owa.timekeeper.dbbean.DBUser2Todo;
 import com.martsforever.owa.timekeeper.dbbean.DBUtils;
-import com.martsforever.owa.timekeeper.javabean.FriendShip;
-import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
-import com.martsforever.owa.timekeeper.leanCloud.LeanCloudUtil;
-import com.martsforever.owa.timekeeper.main.push.MessageHandler;
-import com.martsforever.owa.timekeeper.main.push.TodosInvitationMessageHandler;
+import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.InformDialog;
 import com.martsforever.owa.timekeeper.util.NetWorkUtils;
@@ -37,15 +30,16 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 @ContentView(R.layout.activity_offline_todo_detail)
 public class OfflineTodoDetailActivity extends AppCompatActivity {
 
@@ -98,14 +92,7 @@ public class OfflineTodoDetailActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        Intent intent = getIntent();
-        try {
-            user2todo = AVObject.parseAVObject(intent.getStringExtra(TodoDetailActivity.ACTION_START_PARAMETER_USER2TODO));
-            dbOfflineUser2Todo = DBUtils.getDbManager().selector(DBOfflineUser2Todo.class).where("id","=",user2todo.get("id")).findFirst();
-            System.out.println(dbOfflineUser2Todo.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        user2todo = ((TimeKeeperApplication) getApplicationContext()).getOfflineUser2todoList().get(getIntent().getIntExtra(CategoryTodoActivity.INTENT_PARAMETER_POSITION, -1));
     }
 
     private void initView() {
@@ -132,16 +119,17 @@ public class OfflineTodoDetailActivity extends AppCompatActivity {
         createdByEdit.setText(user2todo.getAVUser(User2Todo.USER).getString(Person.NICK_NAME));
         stateEdit.setText(Todo.getStateString(todo.getInt(Todo.STATE)));
         switchIconView.setIconEnabled(user2todo.getBoolean(User2Todo.SWITCH));
+        levelEdit.setTag(Todo.LEVEL_IMPORTANT_NONE);
         if (todo.getInt(Todo.STATE) == Todo.STATUS_COMPLETE) {
             finishedBtn.setEnabled(false);
             finishedBtn.setBackgroundResource(R.drawable.bg_todo_detail_finish_btn_disable);
         }
     }
+
     public static void actionStart(Activity activity, AVObject user2todo, int position) {
         Intent intent = new Intent();
         intent.setClass(activity, OfflineTodoDetailActivity.class);
         intent.putExtra(CategoryTodoActivity.INTENT_PARAMETER_POSITION, position);
-        intent.putExtra(OfflineTodoDetailActivity.ACTION_START_PARAMETER_USER2TODO, user2todo.toString());
         activity.startActivityForResult(intent, 0);
     }
 
@@ -213,10 +201,7 @@ public class OfflineTodoDetailActivity extends AppCompatActivity {
 
     @Event(R.id.todo_detail_save_btn)
     private void edit(View view) {
-        if (!NetWorkUtils.isNetworkAvailable(OfflineTodoDetailActivity.this)) {
-            NetWorkUtils.showNetworkNotAvailable(OfflineTodoDetailActivity.this);
-            return;
-        }
+        modifiedTodoOnline(titleEdit.isEnabled());
         setEditable(!titleEdit.isEnabled());
     }
 
@@ -241,6 +226,36 @@ public class OfflineTodoDetailActivity extends AppCompatActivity {
             pickLevelImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_arrow_down_disable));
             pickStartTimeImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_select_disable));
             pickEndTimeImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_select_disable));
+        }
+    }
+
+    private void modifiedTodoOnline(boolean isEnable) {
+        if (isEnable) {
+            String description = descriptionEdit.getText().toString().trim();
+            String title = titleEdit.getText().toString().trim();
+            String place = placeEdit.getText().toString().trim();
+            Date startTime = DateUtil.string2Date(startTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
+            Date endTime = DateUtil.string2Date(endTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
+            int level = Integer.parseInt(levelEdit.getTag().toString());
+            int state;
+            Date now = new Date();
+            if (now.getTime() < startTime.getTime()) state = Todo.STATUS_NOTSTART;
+            else if (now.getTime() > endTime.getTime()) state = Todo.STATUS_NOTCOMPLETE;
+            else state = Todo.STATUS_DOING;
+            final AVObject todo = user2todo.getAVObject(User2Todo.TODO);
+            todo.put(Todo.TITLE, title);
+            todo.put(Todo.DESCRIPTION, description);
+            todo.put(Todo.PLACE, place);
+            todo.put(Todo.START_TIME, startTime);
+            todo.put(Todo.END_TIME, endTime);
+            todo.put(Todo.LEVEL, level);
+            todo.put(Todo.STATE, state);
+            user2todo.put(User2Todo.SWITCH, switchIconView.isIconEnabled());
+
+            System.out.println(user2todo.getInt("id"));
+            dbOfflineUser2Todo = DBOfflineUser2Todo.getById(user2todo.getInt("id"));
+            DBOfflineUser2Todo.delete(dbOfflineUser2Todo);
+            user2todo.put("id", DBOfflineUser2Todo.save(user2todo));
         }
     }
 
@@ -270,24 +285,40 @@ public class OfflineTodoDetailActivity extends AppCompatActivity {
 
     @Event(R.id.todo_detail_finish_btn)
     private void finishedTodo(View view) {
+        AVObject todo = (AVObject) user2todo.get(User2Todo.TODO);
+        todo.put(Todo.STATE, Todo.STATUS_COMPLETE);
+
+        dbOfflineUser2Todo = DBOfflineUser2Todo.getById(user2todo.getInt("id"));
+        DBOfflineUser2Todo.delete(dbOfflineUser2Todo);
+        user2todo.put("id", DBOfflineUser2Todo.save(user2todo));
+        backToAllTodoActivity();
+    }
+
+    @Event(R.id.todo_detail_convert_btn)
+    private void convertToOnline(View view) {
         if (!NetWorkUtils.isNetworkAvailable(OfflineTodoDetailActivity.this)) {
             NetWorkUtils.showNetworkNotAvailable(OfflineTodoDetailActivity.this);
             return;
         }
-        AVObject todo = (AVObject) user2todo.get(User2Todo.TODO);
-        todo.put(Todo.STATE, Todo.STATUS_COMPLETE);
-        todo.saveInBackground(new SaveCallback() {
+        user2todo.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                if (e == null)
-                    backToAllTodoActivity();
-                else ShowMessageUtil.tosatSlow(e.getMessage(), OfflineTodoDetailActivity.this);
+                if (e == null) {
+                    dbOfflineUser2Todo = DBOfflineUser2Todo.getById(user2todo.getInt("id"));
+                    DBOfflineUser2Todo.delete(dbOfflineUser2Todo);
+
+                    user2todo.put("id", DBUser2Todo.save(user2todo));
+                    System.out.println("objectId-------" + user2todo.getObjectId());
+                    ((TimeKeeperApplication) getApplicationContext()).getAllUser2todoList().add(0, user2todo);
+                    Intent intent = new Intent(AddTodosActivity.ADD_CONVERT_TODO);
+                    sendBroadcast(intent);
+                    setResult(OfflineTodoActivity.TODO_DELETE, getIntent());
+                    finish();
+                } else {
+                    ShowMessageUtil.tosatSlow(e.getMessage(), OfflineTodoDetailActivity.this);
+                }
+
             }
         });
-    }
-
-    @Event(R.id.todo_detail_convert_btn)
-    private void convertToOnline(View view){
-
     }
 }

@@ -217,4 +217,15 @@ public class DBTodo {
         DBUser.delete(dbTodo.getCreatedUser());
         DBUtils.deleteById(DBTodo.class, dbTodo.getId());
     }
+
+    public static DBTodo getById(int id) {
+        try {
+            DBTodo dbTodo = DBUtils.getDbManager().selector(DBTodo.class).where("id", "=", id).findFirst();
+            dbTodo.setCreatedUser(DBUser.getById(dbTodo.getCreatedUserId()));
+            return dbTodo;
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
