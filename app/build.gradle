@@ -39,7 +39,6 @@ dependencies {
     /*SwitchIcon*/
     /*BadgeView*/
     /*MaterialDesignEditText*/
-
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.0'
@@ -58,5 +57,6 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
     compile 'com.wdullaer:materialdatetimepicker:3.1.3'
+    compile 'org.json:json:20160810'
     testCompile 'junit:junit:4.12'
 }

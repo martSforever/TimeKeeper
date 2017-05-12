@@ -1,9 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.martsforever.owa.timekeeper.main.todo.FestivalTodoActivity">
+    android:background="#fff"
+    android:orientation="vertical"
+    tools:context=".main.todo.FestivalTodoActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/festival_previous_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/month_select_btn_bg"
+            android:text="previous"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/festival_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@drawable/month_select_btn_bg"
+            android:gravity="center"
+            android:text="2015-11-11"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/festival_next_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/month_select_btn_bg"
+            android:text="next"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/week_item_bg"
+                android:gravity="center"
+                android:text="Mon"
+                android:textColor="#ddffffff" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/week_item_bg"
+                android:gravity="center"
+                android:text="Tues"
+                android:textColor="#ddffffff" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/week_item_bg"
+                android:gravity="center"
+                android:text="Wed"
+                android:textColor="#ddffffff" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/week_item_bg"
+                android:gravity="center"
+                android:text="Thur"
+                android:textColor="#ddffffff" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/week_item_bg"
+                android:gravity="center"
+                android:text="Fri"
+                android:textColor="#ddffffff" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/week_item_bg"
+                android:gravity="center"
+                android:text="Sat"
+                android:textColor="#ddffffff" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/week_item_bg"
+                android:gravity="center"
+                android:text="Sun"
+                android:textColor="#ddffffff" />
+        </TableRow>
+    </TableLayout>
+
+    <GridView
+        android:id="@+id/festival_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0.5dp"
+        android:layout_marginRight="-1dp"
+        android:gravity="center"
+        android:numColumns="7"/>
+
+    <Button
+        android:id="@+id/festival_back_btn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#59b4ca"
+        android:textColor="#fff"
+        android:layout_weight="1"
+        android:layout_marginTop="0.5dp"
+        android:text="BACK" />
+
+</LinearLayout>

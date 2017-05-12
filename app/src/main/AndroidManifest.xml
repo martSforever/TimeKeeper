@@ -69,7 +69,8 @@
         <activity android:name=".main.todo.CategoryTodoActivity" />
         <activity android:name=".main.todo.OfflineTodoDetailActivity" />
         <activity android:name=".main.todo.OfflineTodoActivity" />
-        <activity android:name=".main.todo.FestivalTodoActivity"></activity>
+        <activity android:name=".main.todo.FestivalTodoActivity" />
+        <activity android:name=".main.todo.festival.DaysTodoActivity"></activity>
     </application>
 
 </manifest>
