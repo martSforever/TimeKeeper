@@ -42,42 +42,54 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="6"
-        android:orientation="vertical"
         android:background="#64b2ff"
-        android:layout_height="0dp">
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/days_todo_date_text"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:padding="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
             android:textColor="#fff"
-            android:layout_height="wrap_content" />
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/days_todo_week_text"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:padding="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
             android:textColor="#fff"
-            android:layout_height="wrap_content" />
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/days_todo_avoid_text"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:padding="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
             android:textColor="#fff"
-            android:layout_height="wrap_content" />
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/days_todo_suit_text"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:padding="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
             android:textColor="#fff"
-            android:layout_height="wrap_content" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
