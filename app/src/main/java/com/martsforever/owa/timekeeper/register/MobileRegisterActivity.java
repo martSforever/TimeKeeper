@@ -11,14 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.login.LoginActivity;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -110,13 +113,20 @@ public class MobileRegisterActivity extends AppCompatActivity implements View.On
      */
     private void verifiedCode(final Context context) {
         String code = vertificationCodeEdit.getText().toString().trim();
-
+        final AVUser avUser = AVUser.getCurrentUser();
         AVUser.verifyMobilePhoneInBackground(code, new AVMobilePhoneVerifyCallback() {
             @Override
             public void done(AVException e) {
                 if (e == null) {
                     ShowMessageUtil.tosatFast("verify vertification code successfully!", context);
-                    ActivityManager.entryMainActivity(MobileRegisterActivity.this, MainActivity.class);
+                    String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+                    avUser.put(Person.INSTALLATION_ID, installationId);
+                    avUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            ActivityManager.entryMainActivity(MobileRegisterActivity.this, MainActivity.class);
+                        }
+                    });
                 } else {
                     ShowMessageUtil.tosatSlow("verify vertification code failure!" + e.getMessage(), context);
                 }

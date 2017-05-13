@@ -13,13 +13,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.RequestEmailVerifyCallback;
 import com.avos.avoscloud.RequestPasswordResetCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Person;
+import com.martsforever.owa.timekeeper.login.LoginActivity;
 import com.martsforever.owa.timekeeper.main.MainActivity;
 import com.martsforever.owa.timekeeper.util.ActivityManager;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
@@ -89,7 +92,15 @@ public class ValidateEmailDialog extends Dialog {
                                 msg.setText("Are you sure you have opened the verification link in your email?We haven't received any messages yet");
                             } else {
                                 ShowMessageUtil.tosatFast("verify pass!", activity);
-                                ActivityManager.entryMainActivity(activity, MainActivity.class);
+                                final AVUser avUser = AVUser.getCurrentUser();
+                                String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+                                avUser.put(Person.INSTALLATION_ID, installationId);
+                                avUser.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(AVException e) {
+                                        ActivityManager.entryMainActivity(activity, MainActivity.class);
+                                    }
+                                });
                             }
                         } else {
                             ShowMessageUtil.tosatFast("fail to access data!" + e.getMessage(), activity);

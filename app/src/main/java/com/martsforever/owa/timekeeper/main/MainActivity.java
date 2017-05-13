@@ -1,5 +1,7 @@
 package com.martsforever.owa.timekeeper.main;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +11,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +64,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import q.rorbin.badgeview.QBadgeView;
 
@@ -170,6 +176,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*toamto interface element*/
     private RippleBackground rippleBackground;
     private TextView tomatoTimeText;
+    private Button tomatoStartBtn;
+    private Button tomatoContinueBtn;
+    private Button tomatoGiveupBtn;
+    private Button tomatoPauseBtn;
+    private Button tomatoStopBtn;
+
+    private static final int SECOND = 5;
+    private static final int MINUTE = 00;
+
+    private int minute = MINUTE;
+    private int second = SECOND;
+    private boolean isPause = false;
+    private Timer mTimer = null;
+    private TimerTask mTimerTask = null;
+
     /*me interface element*/
     private TextView messageText;
     private ImageView messageInformImg;
@@ -407,6 +428,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initTomatoInterface() {
         rippleBackground = (RippleBackground) tomatoView.findViewById(R.id.tomato_ripple_view);
         tomatoTimeText = (TextView) tomatoView.findViewById(R.id.tomato_time_text);
+        setTime(minute,second);
         tomatoTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -418,6 +440,188 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     rippleBackground.startRippleAnimation();
             }
         });
+
+
+        tomatoStartBtn = (Button) tomatoView.findViewById(R.id.tomato_start_btn);
+        tomatoContinueBtn = (Button) tomatoView.findViewById(R.id.tomato_continue_btn);
+        tomatoGiveupBtn = (Button) tomatoView.findViewById(R.id.tomato_giveup_btn);
+        tomatoPauseBtn = (Button) tomatoView.findViewById(R.id.tomato_pause_btn);
+        tomatoStopBtn = (Button) tomatoView.findViewById(R.id.tomato_stop_btn);
+        tomatoPauseBtn.setVisibility(View.INVISIBLE);
+        tomatoContinueBtn.setVisibility(View.INVISIBLE);
+        tomatoGiveupBtn.setVisibility(View.INVISIBLE);
+        tomatoStopBtn.setVisibility(View.INVISIBLE);
+
+
+        tomatoStartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("start");
+                isPause = false;
+                tomatoStartBtn.animate().alpha(0f).setDuration(250).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        tomatoStartBtn.setVisibility(View.INVISIBLE);
+                        tomatoPauseBtn.setVisibility(View.VISIBLE);
+                        tomatoPauseBtn.setAlpha(0f);
+                        tomatoPauseBtn.animate().alpha(1f).setDuration(250).setListener(null);
+                    }
+                });
+                startTimer();
+                rippleBackground.startRippleAnimation();
+            }
+        });
+        tomatoPauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("pause");
+                tomatoPauseBtn.setVisibility(View.INVISIBLE);
+                tomatoContinueBtn.setVisibility(View.VISIBLE);
+                tomatoContinueBtn.setAlpha(0f);
+                tomatoContinueBtn.animate().alpha(1f).translationX(-100f).setDuration(500).setListener(null);
+                tomatoGiveupBtn.setVisibility(View.VISIBLE);
+                tomatoGiveupBtn.setAlpha(0f);
+                tomatoGiveupBtn.animate().alpha(1f).translationX(100f).setDuration(500).setListener(null);
+                pauseTimer(true);
+                System.out.println("isPause:" + isPause);
+                rippleBackground.stopRippleAnimation();
+            }
+        });
+        tomatoContinueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("continue");
+                tomatoGiveupBtn.animate().alpha(0f).translationX(-25f).setDuration(250).setListener(null);
+                tomatoContinueBtn.animate().alpha(0f).translationX(25f).setDuration(250).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        tomatoGiveupBtn.setVisibility(View.INVISIBLE);
+                        tomatoContinueBtn.setVisibility(View.INVISIBLE);
+                        tomatoPauseBtn.setVisibility(View.VISIBLE);
+                        tomatoPauseBtn.setAlpha(0f);
+                        tomatoPauseBtn.animate().alpha(1f).setDuration(250).setListener(null);
+                        pauseTimer(false);
+                        rippleBackground.startRippleAnimation();
+                        System.out.println("isPause:" + isPause);
+                    }
+                });
+            }
+        });
+        tomatoGiveupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("give up");
+                tomatoGiveupBtn.animate().alpha(0f).translationX(-25f).setDuration(250).setListener(null);
+                tomatoContinueBtn.animate().alpha(0f).translationX(25f).setDuration(250).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        tomatoGiveupBtn.setVisibility(View.INVISIBLE);
+                        tomatoContinueBtn.setVisibility(View.INVISIBLE);
+                        tomatoStartBtn.setVisibility(View.VISIBLE);
+                        tomatoStartBtn.setAlpha(0f);
+                        tomatoStartBtn.animate().alpha(1f).setDuration(250).setListener(null);
+                        stopTimer();
+                        rippleBackground.stopRippleAnimation();
+                        setTime(minute, second);
+                    }
+                });
+            }
+        });
+        tomatoStopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlarmService.stopMusic(MainActivity.this);
+                tomatoStopBtn.animate().alpha(0f).setDuration(250).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        rippleBackground.stopRippleAnimation();
+                        setTime(MINUTE,SECOND);
+                        stopTimer();
+                        tomatoStopBtn.setVisibility(View.INVISIBLE);
+                        tomatoStartBtn.setVisibility(View.VISIBLE);
+                        tomatoStartBtn.setAlpha(0f);
+                        tomatoStartBtn.animate().alpha(1f).setDuration(250).setListener(null);
+                    }
+                });
+            }
+        });
+    }
+
+    private Handler tomatoHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            setTime(msg.arg1, msg.arg2);
+            if (msg.arg1 == 0 && msg.arg2 == 0) {
+                tomatoPauseBtn.animate().alpha(0f).setDuration(250).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        tomatoPauseBtn.setVisibility(View.INVISIBLE);
+                        tomatoStopBtn.setVisibility(View.VISIBLE);
+                        tomatoStopBtn.setAlpha(0f);
+                        tomatoStopBtn.animate().alpha(1f).setDuration(250).setListener(null);
+                    }
+                });
+            }
+        }
+    };
+    private void startTimer() {
+        if (mTimer == null) {
+            mTimer = new Timer();
+        }
+        if (mTimerTask == null) {
+            mTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if (!isPause && minute >= 0 && second >= 0) {
+                        second--;
+                        if (second < 0) {
+                            second = 59;
+                            minute--;
+                            if (minute < 0) {
+                                System.out.println("done");
+                                Message message = new Message();
+                                message.arg1 = 0;
+                                message.arg2 = 0;
+                                tomatoHandler.sendMessage(message);
+                                AlarmService.startMusic(MainActivity.this);
+                                return;
+                            }
+                        }
+                        Message message = new Message();
+                        message.arg1 = minute;
+                        message.arg2 = second;
+                        tomatoHandler.sendMessage(message);
+                    }
+                }
+            };
+        }
+        if (mTimer != null && mTimerTask != null)
+            mTimer.schedule(mTimerTask, 1000, 1000);
+    }
+
+    private void pauseTimer(boolean flag) {
+        isPause = flag;
+    }
+
+    private void stopTimer() {
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+        if (mTimerTask != null) {
+            mTimerTask.cancel();
+            mTimerTask = null;
+        }
+        minute = MINUTE;
+        second = SECOND;
+    }
+
+    private void setTime(int minute, int second) {
+        if (second < 10) tomatoTimeText.setText(minute + ":0" + second);
+        else {
+            tomatoTimeText.setText(minute + ":" + second);
+        }
+
     }
 
     private void initMeInterface() {
@@ -716,6 +920,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (addNewFriend != null && addNewFriend) {
                     String friendshipId = jsonObject.getString(MessageHandler.MESSAGE_FRIENDSHIP_ID);
                     AVQuery<AVObject> query = new AVQuery<AVObject>(FriendShip.TABLE_FRIENDSHIP);
+                    query.include(FriendShip.FRIEND);
                     query.getInBackground(friendshipId, new GetCallback<AVObject>() {
                         @Override
                         public void done(AVObject avObject, AVException e) {
@@ -858,9 +1063,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (startTime.getTime() > todayTime.getTime()) readyUser2todoList.add(user2todo);
     }
 
-    public void startAlarmService(){
+    public void startAlarmService() {
         Intent intent = new Intent(MainActivity.this, AlarmService.class);
         startService(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
