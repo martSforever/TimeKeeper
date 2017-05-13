@@ -18,6 +18,7 @@ import com.martsforever.owa.timekeeper.R;
 import com.martsforever.owa.timekeeper.javabean.Message;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
+import com.martsforever.owa.timekeeper.main.alarm.AlarmUtils;
 import com.martsforever.owa.timekeeper.util.DateUtil;
 import com.martsforever.owa.timekeeper.util.ShowMessageUtil;
 
@@ -101,8 +102,14 @@ public class TodoAdapter extends BaseAdapter {
             Integer position = (Integer) v.getTag();
             SwitchIconView switchIconView = (SwitchIconView) v;
             switchIconView.switchState();
-            user2todos.get(position).put(User2Todo.SWITCH, switchIconView.isIconEnabled());
-            user2todos.get(position).saveInBackground();
+            AVObject user2todo = user2todos.get(position);
+            user2todo.put(User2Todo.SWITCH, switchIconView.isIconEnabled());
+            user2todo.saveInBackground();
+            if (switchIconView.isIconEnabled()) {
+                AlarmUtils.addAlarm(context, user2todo);
+            } else {
+                AlarmUtils.deleteAlarm(context, user2todo);
+            }
         }
     };
 

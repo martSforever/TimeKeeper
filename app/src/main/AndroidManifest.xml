@@ -70,7 +70,10 @@
         <activity android:name=".main.todo.OfflineTodoDetailActivity" />
         <activity android:name=".main.todo.OfflineTodoActivity" />
         <activity android:name=".main.todo.FestivalTodoActivity" />
-        <activity android:name=".main.todo.festival.DaysTodoActivity"></activity>
+        <activity android:name=".main.todo.festival.DaysTodoActivity" />
+        <activity android:name=".main.alarm.AlarmTodoDetailActivity"></activity>
+
+        <service android:name=".main.alarm.AlarmService"/>
     </application>
 
 </manifest>

@@ -197,7 +197,7 @@ public class TodoInvitationMessageDetailActivity extends AppCompatActivity {
         avMessage.put(Message.MESSAGE_TYPE, Message.MESSAGE_TYPE_SYATEM);
         avMessage.put(Message.SENDER, currentUser);
         avMessage.put(Message.RECEIVER, sender);
-        avMessage.put(Message.VERIFY_MESSAGE, currentUser.get(Person.NICK_NAME) + " has accspted you friend's invitation!");
+        avMessage.put(Message.VERIFY_MESSAGE, currentUser.get(Person.NICK_NAME) + " has accspted you todo's invitation!");
         avMessage.put(Message.IS_READ, Message.UNREAD);
         avMessage.put(Message.TIME, new Date());
         avMessage.put(Message.HANDLE_CLASS_NAME, SystemMessageHandler.class.getName());
@@ -206,7 +206,7 @@ public class TodoInvitationMessageDetailActivity extends AppCompatActivity {
         /*push message to friends*/
         String installationId = sender.get(Person.INSTALLATION_ID).toString();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString() + " has accepted your friend's invitation!");
+        jsonObject.put(MessageHandler.MESSAGE_SENDER_MESSAGE, currentUser.get(Person.NICK_NAME).toString() + " has accepted your todo's invitation!");
         jsonObject.put(MessageHandler.MESSAGE_SENDER_NAME, currentUser.get(Person.NICK_NAME).toString());
         jsonObject.put(MessageHandler.MESSAGE_HANDLE_CLASS, SystemMessageHandler.class.getName());
         LeanCloudUtil.pushMessage(installationId, jsonObject, this);

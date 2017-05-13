@@ -32,6 +32,7 @@ import com.martsforever.owa.timekeeper.javabean.Person;
 import com.martsforever.owa.timekeeper.javabean.Todo;
 import com.martsforever.owa.timekeeper.javabean.User2Todo;
 import com.martsforever.owa.timekeeper.leanCloud.TimeKeeperApplication;
+import com.martsforever.owa.timekeeper.main.alarm.AlarmService;
 import com.martsforever.owa.timekeeper.main.friend.AddFriendsActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendDetailActivity;
 import com.martsforever.owa.timekeeper.main.friend.FriendShipBaseAdapter;
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case INIT_TODO:
                     allUser2todoList = (List<AVObject>) msg.obj;
+                   /*for (AVObject user2todo : allUser2todoList) {
+                        System.out.println(user2todo.getInt("id"));
+                    }*/
                     application.setAllUser2todoList(allUser2todoList);
                     for (AVObject user2todo : allUser2todoList)
                         categoryUser2todo(user2todo);
@@ -199,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerAddOfflineTodoReceiver();
         registerTodoDeleteReceiver();
         registerAddConvertTodoReceiver();
+        startAlarmService();
     }
 
     private void checkNetworkIsAvailable() {
@@ -605,11 +610,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 for (DBOfflineUser2Todo dBOfflineUser2Todo : dBOfflineUser2TodoList)
                     user2todoList.add(DBOfflineUser2Todo.getUser2todo(dBOfflineUser2Todo));
-                for (AVObject user2todo : user2todoList) {
-                    System.out.println("didididiidididid" + user2todo.getInt("id"));
-                }
             }
             offlineUser2todoList = user2todoList;
+            /*System.out.println("offline user2todo");
+            for (AVObject user2todo : offlineUser2todoList) {
+                System.out.println(user2todo.getInt("id"));
+            }*/
+
             ((TimeKeeperApplication) getApplicationContext()).setOfflineUser2todoList(offlineUser2todoList);
         } catch (DbException e) {
             e.printStackTrace();
@@ -617,20 +624,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initMessageTextBadge() {
-
-            /*       AVQuery<AVObject> query = new AVQuery<>(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
-            query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.RECEIVER, AVUser.getCurrentUser());
-            query.whereEqualTo(com.martsforever.owa.timekeeper.javabean.Message.IS_READ, com.martsforever.owa.timekeeper.javabean.Message.UNREAD);
-            query.countInBackground(new CountCallback() {
-                @Override
-                public void done(int i, AVException e) {
-                    if (e == null) {
-                        messageTextBadge.setBadgeNumber(i);
-                    } else {
-                        ShowMessageUtil.tosatSlow(e.getMessage(), MainActivity.this);
-                    }
-                }
-            });*/
         if (NetWorkUtils.isNetworkAvailable(this)) {
             System.out.println("query message from network");
             AVQuery<AVObject> query = new AVQuery<>(com.martsforever.owa.timekeeper.javabean.Message.TABLE_MESSAGE);
@@ -863,6 +856,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (todo.getInt(Todo.STATE) == Todo.STATUS_COMPLETE)
             completeUser2todoList.add(user2todo);
         if (startTime.getTime() > todayTime.getTime()) readyUser2todoList.add(user2todo);
+    }
+
+    public void startAlarmService(){
+        Intent intent = new Intent(MainActivity.this, AlarmService.class);
+        startService(intent);
     }
 
 

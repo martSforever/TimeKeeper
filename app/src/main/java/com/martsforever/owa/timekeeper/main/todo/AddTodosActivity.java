@@ -81,6 +81,14 @@ public class AddTodosActivity extends AppCompatActivity {
         String place = placeEdit.getText().toString().trim();
         Date startTime = DateUtil.string2Date(startTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
         Date endTime = DateUtil.string2Date(endTimeEdit.getText().toString().trim(), DateUtil.COMPLICATED_DATE);
+        if (startTime == null) {
+            ShowMessageUtil.tosatFast("Start Time can't be empty", this);
+            return;
+        }
+        if (endTime == null) {
+            ShowMessageUtil.tosatFast("End Time can't be empty", this);
+            return;
+        }
         int level = Integer.parseInt(levelEdit.getTag().toString());
         int state;
         Date now = new Date();
@@ -144,10 +152,10 @@ public class AddTodosActivity extends AppCompatActivity {
         user2todo.put(User2Todo.USER, AVUser.getCurrentUser());
         user2todo.put(User2Todo.TODO, todo);
         user2todo.put(User2Todo.SWITCH, false);
-        user2todo.put("id",DBOfflineUser2Todo.save(user2todo));
+        user2todo.put("id", DBOfflineUser2Todo.save(user2todo));
 
-        System.out.println("offlineUser2todo is null:"+(((TimeKeeperApplication)getApplicationContext()).getOfflineUser2todoList() == null));
-        ((TimeKeeperApplication)getApplicationContext()).getOfflineUser2todoList().add(0,user2todo);
+        System.out.println("offlineUser2todo is null:" + (((TimeKeeperApplication) getApplicationContext()).getOfflineUser2todoList() == null));
+        ((TimeKeeperApplication) getApplicationContext()).getOfflineUser2todoList().add(0, user2todo);
         Intent intent = new Intent(ADD_NEW_OFFLINE_TODO);
         sendBroadcast(intent);
     }
