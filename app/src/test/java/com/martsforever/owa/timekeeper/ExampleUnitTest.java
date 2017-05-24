@@ -1,5 +1,6 @@
 package com.martsforever.owa.timekeeper;
 
+import com.avos.avoscloud.AVObject;
 import com.martsforever.owa.timekeeper.main.todo.festival.FestivalOfMonth;
 import com.martsforever.owa.timekeeper.main.todo.festival.FestivalUtils;
 import com.martsforever.owa.timekeeper.main.todo.festival.Lunar;
@@ -48,6 +49,12 @@ public class ExampleUnitTest {
         System.out.println("北京时间：" + chineseDateFormat.format(today.getTime())
                 + "　农历" + lunar);
         System.out.println(lunar.getLunarMonthAndDay());
+
+        AVObject todo = new AVObject("Todo");
+        todo.put("title", "工程师周会");
+        todo.put("content", "每周工程师会议，周一下午2点");
+        todo.put("location", "会议室");// 只要添加这一行代码，服务端就会自动添加这个字段
+        todo.saveInBackground();
     }
 
 }
